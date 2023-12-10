@@ -17,19 +17,21 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import edu.remad.tutoring2.appconstants.JavaAppConstants;
+import edu.remad.tutoring2.appconstants.PackagesAppConstants;
 import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan({ "edu.remad.tutoring2" })
-@EnableJpaRepositories(basePackages = "edu.remad.tutoring2.repositories")
+@ComponentScan({ PackagesAppConstants.EDU_REMAD_TUTORING2 })
+@EnableJpaRepositories(basePackages = PackagesAppConstants.EDU_REMAD_TUTORING2_REPOSITORIES)
 public class JPASecurityConfig {
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(SystemEnvironment systemEnvironment) {
 		final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource(systemEnvironment));
-		entityManagerFactoryBean.setPackagesToScan(new String[] { "edu.remad.tutoring2.models" });
+		entityManagerFactoryBean.setPackagesToScan(new String[] { PackagesAppConstants.EDU_REMAD_TUTORING2_MODELS });
 
 		final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -42,7 +44,7 @@ public class JPASecurityConfig {
 	public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan(new String[] { "edu.remad.tutoring2.models" });
+		sessionFactory.setPackagesToScan(new String[] { PackagesAppConstants.EDU_REMAD_TUTORING2_MODELS });
 		sessionFactory.setHibernateProperties(additionalProperties());
 
 		return sessionFactory;
@@ -52,10 +54,10 @@ public class JPASecurityConfig {
 		final Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-		hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");
-		hibernateProperties.setProperty("hibernate.cache.use_query_cache", "false");
-		hibernateProperties.setProperty("hibernate.show_sql", "true");
-		hibernateProperties.setProperty("hibernate.format_sql", "true");
+		hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", JavaAppConstants.FALSE);
+		hibernateProperties.setProperty("hibernate.cache.use_query_cache", JavaAppConstants.FALSE);
+		hibernateProperties.setProperty("hibernate.show_sql", JavaAppConstants.TRUE);
+		hibernateProperties.setProperty("hibernate.format_sql", JavaAppConstants.TRUE);
 
 		return hibernateProperties;
 	}

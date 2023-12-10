@@ -20,13 +20,17 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import edu.remad.tutoring2.appconstants.CORSAppConstants;
+import edu.remad.tutoring2.appconstants.JavaAppConstants;
+import edu.remad.tutoring2.appconstants.SmtpAppConstants;
+import edu.remad.tutoring2.appconstants.ViewResolversAppConstants;
 import edu.remad.tutoring2.security.interceptors.GlobalInterceptor;
 import edu.remad.tutoring2.security.interceptors.HandlerTimeLoggingInterceptor;
 import edu.remad.tutoring2.security.interceptors.SecuritySignupFilter;
 import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
 import edu.remad.tutoring2.systemenvironment.SystemEnvironmentFactory;
 
-public class TutoringWebMvcConfig  implements WebMvcConfigurer {
+public class TutoringWebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -37,8 +41,8 @@ public class TutoringWebMvcConfig  implements WebMvcConfigurer {
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/view/");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setPrefix(ViewResolversAppConstants.PATH_WEB_INF + "view/");
+		viewResolver.setSuffix(ViewResolversAppConstants.JSP_SUFFIX);
 		viewResolver.setOrder(1);
 
 		return viewResolver;
@@ -79,14 +83,14 @@ public class TutoringWebMvcConfig  implements WebMvcConfigurer {
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.properties.mail.smtp.starttls.required", "true");
-		props.put("mail.properties.mail.smtp.ssl.enable", "false");
-		props.put("mail.properties.mail.smtp.timeout", "15000");
-		props.put("mail.properties.mail.smtp.connectiontimeout", "15000");
-		props.put("mail.properties.mail.smtp.socketFactory.fallback", "true");
-		props.put("mail.debug", "true");
+		props.put("mail.smtp.auth", JavaAppConstants.TRUE);
+		props.put("mail.smtp.starttls.enable", JavaAppConstants.TRUE);
+		props.put("mail.properties.mail.smtp.starttls.required",  JavaAppConstants.TRUE);
+		props.put("mail.properties.mail.smtp.ssl.enable", JavaAppConstants.FALSE);
+		props.put("mail.properties.mail.smtp.timeout", SmtpAppConstants.SMTP_TIMEOUT_15_SECONDS_IN_MS);
+		props.put("mail.properties.mail.smtp.connectiontimeout", SmtpAppConstants.SMTP_TIMEOUT_15_SECONDS_IN_MS);
+		props.put("mail.properties.mail.smtp.socketFactory.fallback", JavaAppConstants.TRUE);
+		props.put("mail.debug", JavaAppConstants.TRUE);
 
 		return mailSender;
 	}
@@ -94,7 +98,7 @@ public class TutoringWebMvcConfig  implements WebMvcConfigurer {
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
 		registry.freeMarker().cache(true).cacheLimit(1000);
-		registry.jsp("/WEB-INF/view/", ".jsp");
+		registry.jsp(ViewResolversAppConstants.PATH_WEB_INF + "view/", ViewResolversAppConstants.JSP_SUFFIX);
 	}
 
 	@Bean(name = "messageSource")
@@ -115,15 +119,12 @@ public class TutoringWebMvcConfig  implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/cors/greeting-javaconfig").allowedOrigins("http://localhost:8080");
+		registry.addMapping("/cors/greeting-javaconfig").allowedOrigins(CORSAppConstants.CORS_LOCALHOST_PORT_8080);
 	}
-	
+
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		configurer.favorPathExtension(false).
-	    favorParameter(true).
-	    parameterName("format").
-	    mediaType("xml", MediaType.APPLICATION_XML). 
-	    mediaType("json", MediaType.APPLICATION_JSON); 
+		configurer.favorPathExtension(false).favorParameter(true).parameterName("format")
+				.mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON);
 	}
 }

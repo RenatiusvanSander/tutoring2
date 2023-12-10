@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import edu.remad.tutoring2.appconstants.ViewResolversAppConstants;
+
 @Configuration
 public class FreeMarkerConfig {
 
@@ -15,8 +17,8 @@ public class FreeMarkerConfig {
 	public FreeMarkerViewResolver freeMarkerViewResolver() { 
 	    FreeMarkerViewResolver resolver = new FreeMarkerViewResolver(); 
 	    resolver.setCache(true); 
-	    resolver.setPrefix("/freemarker/"); 
-	    resolver.setSuffix(".ftl");
+	    resolver.setPrefix(ViewResolversAppConstants.FREE_MARKER_PREFIX); 
+	    resolver.setSuffix(ViewResolversAppConstants.FREE_MARKER_SUFFIX);
 	    resolver.setOrder(0);
 	    
 	    return resolver; 
@@ -29,7 +31,7 @@ public class FreeMarkerConfig {
 		properties.put("template_exception_handler", "rethrow");
 
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-		configurer.setTemplateLoaderPath("/WEB-INF/templates");
+		configurer.setTemplateLoaderPath(ViewResolversAppConstants.PATH_WEB_INF + "templates");
 		configurer.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		configurer.setFreemarkerSettings(properties);
 
