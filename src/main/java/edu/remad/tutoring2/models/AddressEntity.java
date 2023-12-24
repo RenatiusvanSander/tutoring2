@@ -9,9 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
+@Entity
 @Table(name = "Address")
-public class Address {
+public class AddressEntity {
 
   /**
    * the primary key for an address
@@ -35,7 +35,7 @@ public class Address {
    */
   @OneToOne
   @JoinColumn(name = "zipcode_id", referencedColumnName = "id")
-  private ZipCode addressZipCode;
+  private ZipCodeEntity addressZipCode;
 
   /**
    *Constructor
@@ -44,7 +44,7 @@ public class Address {
    * @param addressHouseNo address's house number
    * @param addressZipCode address's zipcode
    */
-  public Address(String addressStreet, String addressHouseNo, ZipCode addressZipCode) {
+  public AddressEntity(String addressStreet, String addressHouseNo, ZipCodeEntity addressZipCode) {
     this.addressStreet = addressStreet;
     this.addressHouseNo = addressHouseNo;
     this.addressZipCode = addressZipCode;
@@ -53,7 +53,7 @@ public class Address {
   /**
    * Constructor
    */
-  public Address() {
+  public AddressEntity() {
   }
 
   @Override
@@ -66,10 +66,10 @@ public class Address {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Address)) {
+    if (!(o instanceof AddressEntity)) {
       return false;
     }
-    Address address = (Address) o;
+    AddressEntity address = (AddressEntity) o;
     return getId() == address.getId() && getAddressStreet().equals(address.getAddressStreet())
         && getAddressHouseNo().equals(address.getAddressHouseNo()) && addressZipCode.equals(
         address.addressZipCode);

@@ -48,14 +48,14 @@ public class Customer {
    */
   @OneToOne
   @JoinColumn(name = "customer_zip_code_id", referencedColumnName = "id")
-  private ZipCode customerZipCode;
+  private ZipCodeEntity customerZipCode;
 
   /**
    * customer's address
    */
   @OneToOne
   @JoinColumn(name = "address_id", referencedColumnName = "id")
-  private Address customerAddress;
+  private AddressEntity customerAddress;
 
   /**
    * customer's phone number
@@ -93,7 +93,7 @@ public class Customer {
    */
   public Customer(String customerFirstName, String customerLastName,
       LocalDateTime customerBirthday,
-      Address customerAddress, ZipCode customerZipCode, String customerTelephoneNo,
+      AddressEntity customerAddress, ZipCodeEntity customerZipCode, String customerTelephoneNo,
       String customerEmail, LocalDateTime customerCreationDate) {
     this.customerFirstName = customerFirstName;
     this.customerLastName = customerLastName;
@@ -110,7 +110,7 @@ public class Customer {
    *
    * @return zip code
    */
-  public ZipCode getCustomerZipCode() {
+  public ZipCodeEntity getCustomerZipCode() {
     return customerZipCode;
   }
 
@@ -119,7 +119,7 @@ public class Customer {
    *
    * @param customerZipCode customer's zip code to set
    */
-  public void setCustomerZipCode(ZipCode customerZipCode) {
+  public void setCustomerZipCode(ZipCodeEntity customerZipCode) {
     this.customerZipCode = customerZipCode;
   }
 
@@ -242,7 +242,7 @@ public class Customer {
    *
    * @return customer's address
    */
-  public Address getCustomerAddress() {
+  public AddressEntity getCustomerAddress() {
     return customerAddress;
   }
 
@@ -251,7 +251,7 @@ public class Customer {
    *
    * @param customerAddress customer's address to set
    */
-  public void setCustomerAddress(Address customerAddress) {
+  public void setCustomerAddress(AddressEntity customerAddress) {
     this.customerAddress = customerAddress;
   }
 

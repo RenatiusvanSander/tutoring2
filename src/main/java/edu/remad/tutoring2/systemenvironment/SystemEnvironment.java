@@ -30,6 +30,10 @@ public class SystemEnvironment {
 	public String getAppUser() {
 		return properties.get(SystemAppConstants.TUTOR_USER);
 	}
+	
+	public String getAppStage() {
+		return properties.get(SystemAppConstants.TUTOR_STAGE);
+	}
 
 	public String getAppUserPassword() {
 		return properties.get(SystemAppConstants.TUTOR_USER_PASSWORD);
@@ -53,5 +57,17 @@ public class SystemEnvironment {
 
 	public String getAppDataSourcesMysqlPassword() {
 		return properties.get(DataSourcesAppConstants.DATA_SOURCES_MYSQL_PASSWORD);
+	}
+	
+	public String getAppDataDevelopmentSourcesMysqlUrl() {
+		return properties.get(DataSourcesAppConstants.DEVELOPMENT_DATA_SOURCES_MYSQL_URL);
+	}
+
+	public String getAppDevelopmentDataSourcesMysqlUsername() {
+		return properties.get(DataSourcesAppConstants.DEVELOPMENT_DATA_SOURCES_MYSQL_USERNAME);
+	}
+	
+	public String getAppDevelopmentDataSourcesMysqlPassword() {
+		return properties.get(DataSourcesAppConstants.DEVELOPMENT_DATA_SOURCES_MYSQL_PASSWORD);
 	}
 }
