@@ -23,6 +23,7 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 
 import com.mysql.cj.jdbc.Driver;
 
+import edu.remad.tutoring2.appconstants.AppStageConstants;
 import edu.remad.tutoring2.security.ContentSecurityPolicySettings;
 import edu.remad.tutoring2.security.filters.TenantFilter;
 import edu.remad.tutoring2.services.impl.CustomJpaUserDetailsService;
@@ -35,47 +36,14 @@ public class JdbcSecurityConfiguration {
 	boolean webSecurityDebug;
 
 	private static final ClearSiteDataHeaderWriter.Directive[] COOKIES = Directive.values();
-	
+
 	@Autowired
 	private ContentSecurityPolicySettings contentSecurityPolicies;
-	
+
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.debug(webSecurityDebug);
 	}
-	
-	@Bean
-	public DataSource createDataSource(SystemEnvironment systemEnvironment) {
-		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-		dataSource.setDriverClass(Driver.class);
-		dataSource.setUrl(systemEnvironment.getAppDataSourcesMysqlUrl());
-		dataSource.setUsername(systemEnvironment.getAppDataSourcesMysqlUsername());
-		dataSource.setPassword(systemEnvironment.getAppDataSourcesMysqlPassword());
-
-		return dataSource;
-	}
-
-	@Bean
-	DataSource dataSource(SystemEnvironment systemEnvironment) {
-		return new DriverManagerDataSource(systemEnvironment.getAppDataSourcesMysqlUrl(),
-				systemEnvironment.getAppDataSourcesMysqlUsername(), systemEnvironment.getAppDataSourcesMysqlPassword());
-	}
-
-//	@Bean
-//	public JdbcUserDetailsManager users(DataSource dataSource, PasswordEncoder encoder) {
-//		UserDetails admin = User.builder().username("admin").password(encoder.encode("dummyAdmin")).roles("ADMIN").build();
-//		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-//
-//		try {
-//			jdbcUserDetailsManager.createUser(admin);
-//		} catch(CannotGetJdbcConnectionException ex) {
-//			System.out.println("#############################");
-//			System.out.println("# admin exists in data base #");
-//			System.out.println("#############################");
-//		}
-//		
-//		return jdbcUserDetailsManager;
-//	}
 
 	/**
 	 * Does form login filter chain and has also http security.
@@ -87,7 +55,8 @@ public class JdbcSecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors();
-		http.headers().xssProtection().and().contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies());
+		http.headers().xssProtection().and()
+				.contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies());
 		http.addFilterAfter(new TenantFilter(), BasicAuthenticationFilter.class)
 				.securityContext((securityContext) -> securityContext.requireExplicitSave(true))
 				.sessionManagement(

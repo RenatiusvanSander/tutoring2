@@ -17,6 +17,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import edu.remad.tutoring2.appconstants.AppStageConstants;
 import edu.remad.tutoring2.appconstants.JavaAppConstants;
 import edu.remad.tutoring2.appconstants.PackagesAppConstants;
 import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
@@ -66,9 +67,16 @@ public class JPASecurityConfig {
 	public DataSource dataSource(SystemEnvironment systemEnvironment) {
 		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl(systemEnvironment.getAppDataSourcesMysqlUrl());
-		dataSource.setUsername(systemEnvironment.getAppDataSourcesMysqlUsername());
-		dataSource.setPassword(systemEnvironment.getAppDataSourcesMysqlPassword());
+
+		if (AppStageConstants.DEVELOPMENT.getStatusName().equals(systemEnvironment.getAppStage())) {
+			dataSource.setUrl(systemEnvironment.getAppDataDevelopmentSourcesMysqlUrl());
+			dataSource.setUsername(systemEnvironment.getAppDevelopmentDataSourcesMysqlUsername());
+			dataSource.setPassword(systemEnvironment.getAppDevelopmentDataSourcesMysqlPassword());
+		} else {
+			dataSource.setUrl(systemEnvironment.getAppDataSourcesMysqlUrl());
+			dataSource.setUsername(systemEnvironment.getAppDataSourcesMysqlUsername());
+			dataSource.setPassword(systemEnvironment.getAppDataSourcesMysqlPassword());
+		}
 
 		return dataSource;
 	}
