@@ -38,6 +38,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 		if (!ObjectUtils.isEmpty(configClasses)) {
 			AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 			context.register(configClasses);
+
 			return context;
 		} else {
 			return null;
