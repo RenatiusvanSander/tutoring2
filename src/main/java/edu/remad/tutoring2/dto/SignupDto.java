@@ -2,12 +2,11 @@ package edu.remad.tutoring2.dto;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-
 import edu.remad.tutoring2.validators.annotations.EqualRepeatedEmail;
 import edu.remad.tutoring2.validators.annotations.HouseNumber;
 import edu.remad.tutoring2.validators.annotations.Location;
 import edu.remad.tutoring2.validators.annotations.SinglePassword;
+import edu.remad.tutoring2.validators.annotations.Street;
 import edu.remad.tutoring2.validators.annotations.ValidUsername;
 import edu.remad.tutoring2.validators.annotations.Zip;
 import lombok.AllArgsConstructor;
@@ -36,6 +35,7 @@ public class SignupDto {
 	@EqualRepeatedEmail
 	private String repeatedEmail;
 
+	@Street
 	private String addressStreet;
 
 	@HouseNumber

@@ -63,6 +63,7 @@ public class LoginController {
 
 	@GetMapping(SIGNUP)
 	public String signUp(@ModelAttribute("signupdto") SignupDto signupDto) {
+		System.out.println("invoked signup");
 		return "signup";
 	}
 

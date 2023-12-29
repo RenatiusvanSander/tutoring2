@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,11 +21,9 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 
 import com.mysql.cj.jdbc.Driver;
 
-import edu.remad.tutoring2.appconstants.AppStageConstants;
 import edu.remad.tutoring2.security.ContentSecurityPolicySettings;
 import edu.remad.tutoring2.security.filters.TenantFilter;
 import edu.remad.tutoring2.services.impl.CustomJpaUserDetailsService;
-import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
 
 @Configuration
 public class JdbcSecurityConfiguration {

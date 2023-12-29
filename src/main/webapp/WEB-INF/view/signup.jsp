@@ -19,6 +19,14 @@
 		<br />
 		repeat E-Mail: <form:input path="repeatedEmail"/>
 		<br />
+		Street: <form:input path="addressStreet"/>
+		<br />
+		House Number: <form:input path="addressHouseNo"/>
+		<br />
+		Zip Code: <form:input path="zipCode"/>
+		<br />
+		Location: <form:input path="zipCodeLocation"/>
+		<br />
 		<input type="submit" value="signup">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form:form>
