@@ -9,6 +9,14 @@
 <body>
 	<h1>Signup page</h1>
 	<form:form action="process-signup" method="POST" modelAttribute="signupdto">
+		First Name : <form:input path="firstName"/>
+		<br />
+		Last Name : <form:input path="lastName"/>
+		<br />
+		Gender : <form:input path="gender"/>
+		<br />
+		Cell Phone : <form:input path="cellPhone"/>
+		<br />
 		Username : <form:input path="username"/>
 		<br />
 		Password : <form:password path="password"/>

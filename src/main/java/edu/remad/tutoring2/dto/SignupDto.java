@@ -2,7 +2,7 @@ package edu.remad.tutoring2.dto;
 
 import java.time.LocalDateTime;
 
-import edu.remad.tutoring2.validators.annotations.EqualRepeatedEmail;
+import edu.remad.tutoring2.validators.annotations.CreationDate;
 import edu.remad.tutoring2.validators.annotations.HouseNumber;
 import edu.remad.tutoring2.validators.annotations.Location;
 import edu.remad.tutoring2.validators.annotations.SinglePassword;
@@ -20,6 +20,14 @@ import lombok.Setter;
 @Setter
 public class SignupDto {
 
+	private String firstName;
+	
+	private String lastName;
+	
+	private String gender;
+	
+	private String cellPhone;
+	
 	@ValidUsername
 	private String username;
 
@@ -29,23 +37,22 @@ public class SignupDto {
 	@SinglePassword
 	private String repeatedPassword;
 
-	@EqualRepeatedEmail
 	private String email;
 
-	@EqualRepeatedEmail
 	private String repeatedEmail;
 
-	@Street
+	//@Street
 	private String addressStreet;
 
-	@HouseNumber
+	//@HouseNumber
 	private String addressHouseNo;
 	
-	@Zip
+//	@Zip
 	private String zipCode;
 	
-	@Location
+//	@Location
 	private String zipCodeLocation;
 
+//	@CreationDate
 	private LocalDateTime zipCodeCreationDate = LocalDateTime.now();
 }

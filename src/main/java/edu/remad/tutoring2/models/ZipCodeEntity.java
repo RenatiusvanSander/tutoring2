@@ -2,11 +2,15 @@ package edu.remad.tutoring2.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -39,6 +43,9 @@ public class ZipCodeEntity {
 	@Column(name = "zip_code_creation_date", columnDefinition = "TIMESTAMP")
 	private LocalDateTime zipCodeCreationDate;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	private AddressEntity address;
+
 	/**
 	 * Constructor
 	 */
@@ -48,13 +55,17 @@ public class ZipCodeEntity {
 	/**
 	 * Constructor
 	 *
+	 * @param zipCode             zip code itself
 	 * @param zipCodeLocation     location of belonging zip code
 	 * @param zipCodeCreationDate creation time of the zip code
+	 * @param address             address of the zip code
 	 */
-	public ZipCodeEntity(String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate) {
+	public ZipCodeEntity(String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate,
+			AddressEntity address) {
 		this.zipCode = zipCode;
 		this.zipCodeLocation = zipCodeLocation;
 		this.zipCodeCreationDate = zipCodeCreationDate;
+		this.address = address;
 	}
 
 	/**
@@ -62,10 +73,11 @@ public class ZipCodeEntity {
 	 *
 	 * @param zipCodeLocation location of belonging zip code
 	 */
-	public ZipCodeEntity(String zipCode, String zipCodeLocation) {
+	public ZipCodeEntity(String zipCode, String zipCodeLocation, AddressEntity address) {
 		this.zipCode = zipCode;
 		this.zipCodeLocation = zipCodeLocation;
 		this.zipCodeCreationDate = null;
+		this.address = address;
 	}
 
 	public String getZipCode() {
@@ -83,7 +95,7 @@ public class ZipCodeEntity {
 	 * @return zip code
 	 */
 	public static ZipCodeEntity from(ZipCodeEntity zipCode) {
-		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation());
+		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation(), zipCode.getZipCodeCreationDate(), zipCode.getAddress());
 	}
 
 	/**
@@ -138,6 +150,14 @@ public class ZipCodeEntity {
 	 */
 	public void setZipCodeCreationDate(LocalDateTime zipCodeCreationDate) {
 		this.zipCodeCreationDate = zipCodeCreationDate;
+	}
+
+	public AddressEntity getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressEntity address) {
+		this.address = address;
 	}
 
 	@Override

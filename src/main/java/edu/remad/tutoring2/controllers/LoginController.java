@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.remad.tutoring2.dto.RegistrationDto;
 import edu.remad.tutoring2.dto.SignupDto;
 import edu.remad.tutoring2.dto.UserDto;
+import edu.remad.tutoring2.globalexceptions.Error;
 import edu.remad.tutoring2.globalexceptions.ErrorInfo;
 import edu.remad.tutoring2.globalexceptions.HttpStatus404Exception;
 import edu.remad.tutoring2.globalexceptions.HttpStatus500Exception;
@@ -26,7 +28,6 @@ import edu.remad.tutoring2.services.VerificationLinkCreationService;
 import edu.remad.tutoring2.services.VerificationService;
 import edu.remad.tutoring2.services.impl.EmailServiceImpl;
 import edu.remad.tutoring2.services.impl.VerificationServiceImpl;
-import edu.remad.tutoring2.globalexceptions.Error;
 
 @Controller
 public class LoginController {
@@ -64,18 +65,23 @@ public class LoginController {
 	@GetMapping(SIGNUP)
 	public String signUp(@ModelAttribute("signupdto") SignupDto signupDto) {
 		System.out.println("invoked signup");
+
 		return "signup";
 	}
 
 	@PostMapping(PROCESS_SIGNUP)
-	public String processSignUp(@Valid SignupDto signupDto) {
+	public String processSignUp(@Valid SignupDto signupDto, RedirectAttributes redirectAttributes) {
 
-		if (userService.isUserExisting(signupDto.getUsername())) {
+		if (userService.isUserExisting(signupDto.getUsername(), signupDto.getEmail())) {
 			return "redirect:/myCustomLogin";
 		}
 
 		RegistrationDto registrationDto = RegistrationDto.builder().username(signupDto.getUsername())
-				.email(signupDto.getEmail()).password(signupDto.getPassword()).build();
+				.email(signupDto.getEmail()).password(signupDto.getPassword()).firstName(signupDto.getFirstName())
+				.lastName(signupDto.getLastName()).gender(signupDto.getGender()).cellPhone(signupDto.getCellPhone())
+				.addressStreet(signupDto.getAddressStreet()).addressHouseNo(signupDto.getAddressHouseNo())
+				.zipCode(signupDto.getZipCode()).zipCodeLocation(signupDto.getZipCodeLocation())
+				.zipCodeCreationDate(signupDto.getZipCodeCreationDate()).build();
 		userService.saveUser(registrationDto);
 
 		try {
@@ -98,7 +104,9 @@ public class LoginController {
 			throw new HttpStatus500Exception(ACTIVATE_SIGNUP, ex.getCause(), info);
 		}
 
-		return "redirect:/myCustomLogin";
+		redirectAttributes.addAttribute("signupDto", signupDto);
+
+		return "redirect:/api/address/add-signup-address";
 	}
 
 	@GetMapping("/get-login-users")

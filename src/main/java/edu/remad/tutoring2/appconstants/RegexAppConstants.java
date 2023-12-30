@@ -10,6 +10,10 @@ public final class RegexAppConstants {
 	public final static String STREET_REGEX = "^[a-zA-Z ]*$";
 	public final static String ZIP_REGEX = "^[0-9]*$";
 	public final static String ZIP_LOCATION_REGEX = "^[a-zA-Z -.]*$";
+	public final static String FIRST_NAME_REGEX = "^[1-9a-zA-Z -.]*$";
+	public final static String LAST_NAME_REGEX = "^[1-9a-zA-Z -.]*$";
+	public final static String GENDER_REGEX = "^[a-z]*$";
+	public final static String CELL_PHONE_REGEX = "[0-9+-]*";
 
 	private RegexAppConstants() {
 		throw new UnsupportedOperationException(this.getClass().getName() + " shall not be supported.");

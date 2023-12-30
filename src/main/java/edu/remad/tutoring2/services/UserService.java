@@ -9,7 +9,7 @@ import edu.remad.tutoring2.models.Role;
 public interface UserService {
 	void saveUser(RegistrationDto registrationDto);
 
-	boolean isUserExisting(String username);
+	boolean isUserExisting(String username, String email);
 
 	List<UserDto> getAllUsers();
 

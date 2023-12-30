@@ -7,5 +7,4 @@ import edu.remad.tutoring2.models.AddressEntity;
 
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
-
 }
