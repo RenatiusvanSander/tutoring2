@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import edu.remad.tutoring2.dto.RegistrationDto;
 import edu.remad.tutoring2.dto.SignupDto;
 import edu.remad.tutoring2.dto.UserDto;
@@ -22,6 +20,7 @@ import edu.remad.tutoring2.globalexceptions.Error;
 import edu.remad.tutoring2.globalexceptions.ErrorInfo;
 import edu.remad.tutoring2.globalexceptions.HttpStatus404Exception;
 import edu.remad.tutoring2.globalexceptions.HttpStatus500Exception;
+import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.services.EmailService;
 import edu.remad.tutoring2.services.UserService;
 import edu.remad.tutoring2.services.VerificationLinkCreationService;
@@ -31,6 +30,8 @@ import edu.remad.tutoring2.services.impl.VerificationServiceImpl;
 
 @Controller
 public class LoginController {
+
+	private static final String MY_CUSTOM_LOGIN = "/myCustomLogin";
 
 	private static final String PROCESS_SIGNUP = "/process-signup";
 
@@ -57,7 +58,7 @@ public class LoginController {
 		this.verificationService = verificationService;
 	}
 
-	@GetMapping("/myCustomLogin")
+	@GetMapping(MY_CUSTOM_LOGIN)
 	public String formLogin() {
 		return "login";
 	}
@@ -70,10 +71,10 @@ public class LoginController {
 	}
 
 	@PostMapping(PROCESS_SIGNUP)
-	public String processSignUp(@Valid SignupDto signupDto, RedirectAttributes redirectAttributes) {
+	public String processSignUp(@Valid SignupDto signupDto) {
 
 		if (userService.isUserExisting(signupDto.getUsername(), signupDto.getEmail())) {
-			return "redirect:/myCustomLogin";
+			return "redirect:" + MY_CUSTOM_LOGIN;
 		}
 
 		RegistrationDto registrationDto = RegistrationDto.builder().username(signupDto.getUsername())
@@ -82,7 +83,15 @@ public class LoginController {
 				.addressStreet(signupDto.getAddressStreet()).addressHouseNo(signupDto.getAddressHouseNo())
 				.zipCode(signupDto.getZipCode()).zipCodeLocation(signupDto.getZipCodeLocation())
 				.zipCodeCreationDate(signupDto.getZipCodeCreationDate()).build();
-		userService.saveUser(registrationDto);
+
+		UserEntity savedUser = userService.saveUser(registrationDto);
+		String additionalText = "Signup had an error.";
+
+		if (savedUser == null) {
+			ErrorInfo info = new ErrorInfo(PROCESS_SIGNUP, Error.HTTP_500_ERROR, additionalText,
+					"Problems saving user.");
+			throw new HttpStatus500Exception(ACTIVATE_SIGNUP, new Throwable(), info);
+		}
 
 		try {
 			String email = signupDto.getEmail();
@@ -99,14 +108,11 @@ public class LoginController {
 			emailService.sendMessageUsingFreemarkerTemplate(signupDto.getEmail(),
 					EmailServiceImpl.VERIFICATION_LINK_SUBJECT, VERIFICATION_EMAIL_TEMPLATE_NAME, templateModel);
 		} catch (Exception ex) {
-			String additionalText = "Signup had an error.";
 			ErrorInfo info = new ErrorInfo(PROCESS_SIGNUP, Error.HTTP_500_ERROR, additionalText, ex.getMessage());
 			throw new HttpStatus500Exception(ACTIVATE_SIGNUP, ex.getCause(), info);
 		}
 
-		redirectAttributes.addAttribute("signupDto", signupDto);
-
-		return "redirect:/api/address/add-signup-address";
+		return "redirect:" + MY_CUSTOM_LOGIN;
 	}
 
 	@GetMapping("/get-login-users")

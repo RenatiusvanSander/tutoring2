@@ -3,13 +3,13 @@ package edu.remad.tutoring2.models;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,7 +43,7 @@ public class ZipCodeEntity {
 	@Column(name = "zip_code_creation_date", columnDefinition = "TIMESTAMP")
 	private LocalDateTime zipCodeCreationDate;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private AddressEntity address;
 
 	/**
@@ -95,7 +95,8 @@ public class ZipCodeEntity {
 	 * @return zip code
 	 */
 	public static ZipCodeEntity from(ZipCodeEntity zipCode) {
-		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation(), zipCode.getZipCodeCreationDate(), zipCode.getAddress());
+		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation(), zipCode.getZipCodeCreationDate(),
+				zipCode.getAddress());
 	}
 
 	/**

@@ -21,13 +21,13 @@ import lombok.Setter;
 public class SignupDto {
 
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String gender;
-	
+
 	private String cellPhone;
-	
+
 	@ValidUsername
 	private String username;
 
@@ -41,15 +41,15 @@ public class SignupDto {
 
 	private String repeatedEmail;
 
-	//@Street
+	// @Street
 	private String addressStreet;
 
-	//@HouseNumber
+	// @HouseNumber
 	private String addressHouseNo;
-	
+
 //	@Zip
 	private String zipCode;
-	
+
 //	@Location
 	private String zipCodeLocation;
 

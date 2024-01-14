@@ -5,9 +5,10 @@ import java.util.List;
 import edu.remad.tutoring2.dto.RegistrationDto;
 import edu.remad.tutoring2.dto.UserDto;
 import edu.remad.tutoring2.models.Role;
+import edu.remad.tutoring2.models.UserEntity;
 
 public interface UserService {
-	void saveUser(RegistrationDto registrationDto);
+	UserEntity saveUser(RegistrationDto registrationDto);
 
 	boolean isUserExisting(String username, String email);
 

@@ -2,6 +2,7 @@ package edu.remad.tutoring2.security.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -39,16 +39,6 @@ public class JPASecurityConfig {
 		entityManagerFactoryBean.setJpaProperties(additionalProperties());
 
 		return entityManagerFactoryBean;
-	}
-
-	@Bean
-	public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan(new String[] { PackagesAppConstants.EDU_REMAD_TUTORING2_MODELS });
-		sessionFactory.setHibernateProperties(additionalProperties());
-
-		return sessionFactory;
 	}
 
 	private final Properties additionalProperties() {
@@ -82,9 +72,10 @@ public class JPASecurityConfig {
 	}
 
 	@Bean
-	public PlatformTransactionManager transactionManager(final LocalSessionFactoryBean sessionFactory) {
-		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(sessionFactory.getObject());
+	public PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory, DataSource dataSource) {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(entityManagerFactory);
+		//transactionManager.setDataSource(dataSource);
 
 		return transactionManager;
 	}

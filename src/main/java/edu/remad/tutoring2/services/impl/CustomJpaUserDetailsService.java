@@ -28,6 +28,7 @@ public class CustomJpaUserDetailsService implements UserDetailsService {
 		this.userEntityRepository = userEntityRepository;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userEntityRepository.findFirstByUsername(username);
@@ -36,14 +37,14 @@ public class CustomJpaUserDetailsService implements UserDetailsService {
 
 		System.out.println("##### User is " + user);
 
-		if (user != null) {
-			List<GrantedAuthority> grantedAuthorities = userRoles.stream()
-					.map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-			User authUser = new User(user.getUsername(), user.getPassword(), grantedAuthorities);
-
-			return authUser;
+		if (user == null) {
+			throw new UsernameNotFoundException("Username is not found: " + username);
 		}
 
-		throw new UsernameNotFoundException("Username is not found: " + username);
+		List<GrantedAuthority> grantedAuthorities = userRoles.stream()
+				.map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+		User authUser = new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+
+		return authUser;
 	}
 }

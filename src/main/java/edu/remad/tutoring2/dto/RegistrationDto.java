@@ -22,7 +22,7 @@ public class RegistrationDto {
 	private String username;
 	
 	@NotBlank
-	@Min(8)
+	@Min(3)
 	@Max(256)
 	@Email
 	private String email;

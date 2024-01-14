@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.remad.tutoring2.dto.RegistrationDto;
 import edu.remad.tutoring2.dto.UserDto;
@@ -18,6 +20,7 @@ import edu.remad.tutoring2.repositories.RoleRepository;
 import edu.remad.tutoring2.repositories.UserEntityRepository;
 import edu.remad.tutoring2.services.UserService;
 
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -36,13 +39,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void saveUser(RegistrationDto registrationDto) {
+	public UserEntity saveUser(RegistrationDto registrationDto) {
 		Role role = roleRepository.findByName("USER");
 		List<Role> roles = Arrays.asList(role);
 
 		AddressEntity address = new AddressEntity();
 		address.setAddressStreet(registrationDto.getUsername());
-		address.setAddressHouseNo(registrationDto.getCellPhone());
+		address.setAddressHouseNo(registrationDto.getAddressHouseNo());
 		
 		ZipCodeEntity zipCode = new ZipCodeEntity();
 		zipCode.setZipCode(registrationDto.getZipCode());
@@ -52,17 +55,21 @@ public class UserServiceImpl implements UserService {
 		address.setAddressZipCode(zipCode);
 		
 		List<AddressEntity> addresses = Arrays.asList(address);
-
 		UserEntity user = UserEntity.builder().username(registrationDto.getUsername()).email(registrationDto.getEmail())
 				.password(passwordEncoder.encode(registrationDto.getPassword())).enabled(false).roles(roles)
 				.firstName(registrationDto.getFirstName()).lastName(registrationDto.getLastName())
-				.gender(registrationDto.getGender()).cellPhone(registrationDto.getCellPhone()).addresses(addresses)
+				.gender(registrationDto.getGender()).cellPhone(registrationDto.getCellPhone()).addresses(addresses).creationDate(registrationDto.getZipCodeCreationDate())
 				.build();
 
 		System.out.println("#### UserService versucht zu speichern : " + user);
 
-		userEntityRepository.save(user);
-		userEntityRepository.flush();
+		UserEntity savedUser = userEntityRepository.saveAndFlush(user);
+		
+		System.out.println("#### UserService speicherte : " + savedUser);
+		savedUser.getAddresses().get(0);
+		savedUser.getRoles().get(0);
+		
+		return savedUser;
 	}
 
 	@Override

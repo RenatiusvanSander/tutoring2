@@ -67,13 +67,11 @@ public class UserEntity {
 	private List<TokenEntity> tokens;
 	
 	@NotBlank
-	@Max(256)
-	@Pattern(regexp = RegexAppConstants.FIRST_NAME_REGEX)
+	//@Pattern(regexp = RegexAppConstants.FIRST_NAME_REGEX)
 	private String firstName;
 	
 	@NotBlank
-	@Max(256)
-	@Pattern(regexp = RegexAppConstants.LAST_NAME_REGEX)
+	//@Pattern(regexp = RegexAppConstants.LAST_NAME_REGEX)
 	private String lastName;
 	
 	@NotBlank
@@ -81,8 +79,7 @@ public class UserEntity {
 	private String gender;
 	
 	@NotBlank
-	@Max(256)
-	@Pattern(regexp = RegexAppConstants.CELL_PHONE_REGEX)
+	//@Pattern(regexp = RegexAppConstants.CELL_PHONE_REGEX)
 	private String cellPhone;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
