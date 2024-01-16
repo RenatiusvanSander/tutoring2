@@ -17,7 +17,7 @@ public class FreeMarkerConfig {
 	public FreeMarkerViewResolver freeMarkerViewResolver() { 
 	    FreeMarkerViewResolver resolver = new FreeMarkerViewResolver(); 
 	    resolver.setCache(true); 
-	    resolver.setPrefix(ViewResolversAppConstants.FREE_MARKER_PREFIX); 
+	    //resolver.setPrefix(ViewResolversAppConstants.FREE_MARKER_PREFIX); 
 	    resolver.setSuffix(ViewResolversAppConstants.FREE_MARKER_SUFFIX);
 	    resolver.setOrder(0);
 	    
@@ -31,7 +31,7 @@ public class FreeMarkerConfig {
 		properties.put("template_exception_handler", "rethrow");
 
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-		configurer.setTemplateLoaderPath(ViewResolversAppConstants.PATH_WEB_INF + "templates");
+		configurer.setTemplateLoaderPath(ViewResolversAppConstants.PATH_WEB_INF + "templates/freemarker");
 		configurer.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		configurer.setFreemarkerSettings(properties);
 
