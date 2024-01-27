@@ -31,7 +31,7 @@ public class Invoice {
    */
   @OneToOne
   @JoinColumn(name = "service_contract_id", referencedColumnName = "service_contract_no")
-  private ServiceContract invoiceServiceContract;
+  private ServiceContractEntity invoiceServiceContract;
 
   /**
    * amount of done tutoring hours to pay for
@@ -79,7 +79,7 @@ public class Invoice {
    * @param invoiceCustomer        given invoice's customer no
    * @param invoiceCreationDate    given invoice's creation date of this data set
    */
-  public Invoice(ServiceContract invoiceServiceContract,
+  public Invoice(ServiceContractEntity invoiceServiceContract,
       float invoiceTutoringHours,
       LocalDateTime invoiceDate,
       LocalDateTime invoiceTutoringDate,
@@ -116,7 +116,7 @@ public class Invoice {
    *
    * @return invoice's service contract
    */
-  public ServiceContract getInvoiceServiceContract() {
+  public ServiceContractEntity getInvoiceServiceContract() {
     return invoiceServiceContract;
   }
 
@@ -125,7 +125,7 @@ public class Invoice {
    *
    * @param invoiceServiceContract invoice's service contract to set
    */
-  public void setInvoiceServiceContract(ServiceContract invoiceServiceContract) {
+  public void setInvoiceServiceContract(ServiceContractEntity invoiceServiceContract) {
     this.invoiceServiceContract = invoiceServiceContract;
   }
 

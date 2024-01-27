@@ -7,12 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Store data concerning the service contract we and customer committed and is part of invoice.
  */
-//@Entity
-public class ServiceContract {
+@Entity
+@Table(name = "service_contracts")
+public class ServiceContractEntity {
 
   /**
    * service contract number as primary key
@@ -41,7 +43,7 @@ public class ServiceContract {
   /**
    * Constructor
    */
-  public ServiceContract() {
+  public ServiceContractEntity() {
   }
 
   /**
@@ -51,7 +53,7 @@ public class ServiceContract {
    * @param serviceContractDescription  given service contract description
    * @param serviceContractCreationDate creation date of service contract
    */
-  public ServiceContract(String serviceContractName,
+  public ServiceContractEntity(String serviceContractName,
       String serviceContractDescription, LocalDateTime serviceContractCreationDate) {
     this.serviceContractName = serviceContractName;
     this.serviceContractDescription = serviceContractDescription;
@@ -141,10 +143,10 @@ public class ServiceContract {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ServiceContract)) {
+    if (!(o instanceof ServiceContractEntity)) {
       return false;
     }
-    ServiceContract that = (ServiceContract) o;
+    ServiceContractEntity that = (ServiceContractEntity) o;
     return serviceContractNo == that.serviceContractNo && serviceContractName.equals(
         that.serviceContractName) && serviceContractDescription.equals(
         that.serviceContractDescription) && serviceContractCreationDate.equals(
