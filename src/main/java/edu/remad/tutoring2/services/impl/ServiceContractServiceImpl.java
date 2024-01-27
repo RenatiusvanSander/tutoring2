@@ -107,4 +107,29 @@ public class ServiceContractServiceImpl implements ServiceContractService {
 		return serviceContractsToDelete;
 	}
 
+	@Override
+	public ServiceContractEntity getServiceContract(Long id) {
+		Optional<ServiceContractEntity> loadedServiceContract = serviceContractEntityRepository.findById(id);
+		
+		if(loadedServiceContract.isEmpty()) {
+			throw new RuntimeException();
+		}
+		
+		return loadedServiceContract.get();
+	}
+
+	@Override
+	public List<ServiceContractEntity> getMultipleServiceContracts(List<Long> Ids) {
+		List<ServiceContractEntity> loadedMultipleServiceContracts = serviceContractEntityRepository.findAllById(Ids);
+		
+		return loadedMultipleServiceContracts;
+	}
+
+	@Override
+	public List<ServiceContractEntity> getAllServiceContracts() {
+		return serviceContractEntityRepository.findAll();
+	}
+	
+	
+
 }

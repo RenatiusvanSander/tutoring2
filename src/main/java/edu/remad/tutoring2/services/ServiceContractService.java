@@ -17,5 +17,10 @@ public interface ServiceContractService {
 	ServiceContractEntity deleteServiceContract(ServiceContractEntity serviceContractToDelete);
 
 	List<ServiceContractEntity> deleteMultipleServiceContracts(List<ServiceContractEntity> serviceContractsToDelete);
+	
+	ServiceContractEntity getServiceContract(Long id);
+	
+	List<ServiceContractEntity> getMultipleServiceContracts(List<Long> Ids);
 
+	List<ServiceContractEntity> getAllServiceContracts();
 }
