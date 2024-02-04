@@ -103,25 +103,25 @@ public class ServiceContractServiceImpl implements ServiceContractService {
 	public List<ServiceContractEntity> deleteMultipleServiceContracts(
 			List<ServiceContractEntity> serviceContractsToDelete) {
 		serviceContractEntityRepository.deleteAll(serviceContractsToDelete);
-		
+
 		return serviceContractsToDelete;
 	}
 
 	@Override
 	public ServiceContractEntity getServiceContract(Long id) {
 		Optional<ServiceContractEntity> loadedServiceContract = serviceContractEntityRepository.findById(id);
-		
-		if(loadedServiceContract.isEmpty()) {
+
+		if (loadedServiceContract.isEmpty()) {
 			throw new RuntimeException();
 		}
-		
+
 		return loadedServiceContract.get();
 	}
 
 	@Override
 	public List<ServiceContractEntity> getMultipleServiceContracts(List<Long> Ids) {
 		List<ServiceContractEntity> loadedMultipleServiceContracts = serviceContractEntityRepository.findAllById(Ids);
-		
+
 		return loadedMultipleServiceContracts;
 	}
 
@@ -129,7 +129,38 @@ public class ServiceContractServiceImpl implements ServiceContractService {
 	public List<ServiceContractEntity> getAllServiceContracts() {
 		return serviceContractEntityRepository.findAll();
 	}
-	
-	
 
+	@Override
+	public ServiceContractEntity getServiceContract(ServiceContractEntity serviceContract) {
+		return findServiceContractById(serviceContract.getServiceContractNo());
+	}
+
+	@Override
+	public List<ServiceContractEntity> getServiceContracts(List<ServiceContractEntity> serviceContracts) {
+		List<Long> ids = serviceContracts.stream().map(ServiceContractEntity::getServiceContractNo).collect(Collectors.toList());
+
+		return findServiceContractsByIds(ids);
+	}
+
+	@Override
+	public ServiceContractEntity findServiceContractById(Long id) {
+		Optional<ServiceContractEntity> serviceContract = serviceContractEntityRepository.findById(id);
+		
+		if(serviceContract.isEmpty()) {
+			throw new RuntimeException("ServiceContract not found or database does not respond.");
+		}
+		
+		return serviceContract.get();
+	}
+
+	@Override
+	public List<ServiceContractEntity> findServiceContractsByIds(List<Long> ids) {
+		List<ServiceContractEntity> serviceContracts = serviceContractEntityRepository.findAllById(ids);
+		
+		if(serviceContracts.isEmpty()) {
+			throw new RuntimeException("ServiceContract not found or database does not respond.");
+		}
+		
+		return serviceContracts;
+	}
 }

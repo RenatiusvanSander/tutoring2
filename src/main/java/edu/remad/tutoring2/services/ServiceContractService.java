@@ -23,4 +23,12 @@ public interface ServiceContractService {
 	List<ServiceContractEntity> getMultipleServiceContracts(List<Long> Ids);
 
 	List<ServiceContractEntity> getAllServiceContracts();
+	
+	ServiceContractEntity getServiceContract(ServiceContractEntity serviceContract);
+	
+	List<ServiceContractEntity> getServiceContracts(List<ServiceContractEntity> serviceContracts);
+	
+	ServiceContractEntity findServiceContractById(Long id);
+	
+	List<ServiceContractEntity> findServiceContractsByIds(List<Long> ids);
 }
