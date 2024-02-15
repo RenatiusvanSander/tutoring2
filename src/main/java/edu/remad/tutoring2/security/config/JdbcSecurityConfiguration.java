@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 
@@ -57,12 +58,12 @@ public class JdbcSecurityConfiguration {
 				.securityContext((securityContext) -> securityContext.requireExplicitSave(true))
 				.sessionManagement(
 						session -> session.maximumSessions(1).maxSessionsPreventsLogin(true).expiredUrl("/login"))
-				.authorizeRequests().antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup").permitAll()
+				.authorizeRequests().antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup","/api/v1/csrf").permitAll()
 				.antMatchers("/hello", "/bye", "/login", "/logout", "/templates/**").authenticated().and().formLogin()
 				.loginPage("/myCustomLogin").loginProcessingUrl("/process-login").defaultSuccessUrl("/hello", true)
 //        .failureUrl("/login.html?error=true")
 //        .failureHandler(authenticationFailureHandler())
-				.and().csrf().and().logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
+				.and().csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())).logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
 						.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))));
 //        .logoutSuccessHandler(logoutSuccessHandler())
 
