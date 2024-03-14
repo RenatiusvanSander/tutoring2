@@ -31,7 +31,7 @@ public class Reminder {
    */
   @OneToOne
   @JoinColumn(name = "tutoring_appointment_id", referencedColumnName = "tutoring_appointment_no")
-  private TutoringAppointment reminderTutoringAppointment;
+  private TutoringAppointmentEntity reminderTutoringAppointment;
 
   /**
    * reminder's customer number
@@ -66,7 +66,7 @@ public class Reminder {
    * @param reminderDate                  reminder's date
    * @param reminderCreationDate          reminder's creation date
    */
-  public Reminder(TutoringAppointment reminderTutoringAppointmentNo,
+  public Reminder(TutoringAppointmentEntity reminderTutoringAppointmentNo,
       Customer reminderCustomer,
       LocalDateTime reminderDate, LocalDateTime reminderCreationDate) {
     this.reminderTutoringAppointment = reminderTutoringAppointmentNo;
@@ -89,7 +89,7 @@ public class Reminder {
    *
    * @return Reminder's tutoring appointment
    */
-  public TutoringAppointment getReminderTutoringAppointment() {
+  public TutoringAppointmentEntity getReminderTutoringAppointment() {
     return reminderTutoringAppointment;
   }
 
@@ -98,7 +98,7 @@ public class Reminder {
    *
    * @param reminderTutoringAppointment given Reminder's tutoring appointment to set
    */
-  public void setReminderTutoringAppointment(TutoringAppointment reminderTutoringAppointment) {
+  public void setReminderTutoringAppointment(TutoringAppointmentEntity reminderTutoringAppointment) {
     this.reminderTutoringAppointment = reminderTutoringAppointment;
   }
 

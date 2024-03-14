@@ -2,6 +2,7 @@ package edu.remad.tutoring2.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import edu.remad.tutoring2.json.customdeserializers.ServiceContractEntityDeserializer;
+import edu.remad.tutoring2.json.customserializer.ServiceContractEntitySerializer;
+
 /**
  * Store data concerning the service contract we and customer committed and is
  * part of invoice.
  */
 @Entity
 @Table(name = "service_contracts")
+@JsonSerialize(using = ServiceContractEntitySerializer.class)
+@JsonDeserialize(using = ServiceContractEntityDeserializer.class)
 public class ServiceContractEntity {
 
 	/**

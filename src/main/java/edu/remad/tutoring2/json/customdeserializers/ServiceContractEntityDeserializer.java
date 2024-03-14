@@ -8,9 +8,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.LongNode;
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.jayway.jsonpath.internal.filter.ValueNodes.StringNode;
 
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ServiceContractEntity;
@@ -18,7 +17,7 @@ import edu.remad.tutoring2.models.ServiceContractEntity;
 public class ServiceContractEntityDeserializer extends StdDeserializer<ServiceContractEntity> {
 
 	/**
-	 * 
+	 * serial version uid
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -35,9 +34,9 @@ public class ServiceContractEntityDeserializer extends StdDeserializer<ServiceCo
 			throws IOException, JacksonException {
 		TreeNode node = p.getCodec().readTree(p);
 		
-		Long serviceContractNo = (Long)((LongNode) node.get("serviceContractNo")).numberValue();
-		String serviceContractName = (String) ((StringNode)node.get("serviceContractName")).getString();
-		String serviceContractDescription = (String) ((StringNode)node.get("serviceContractDescription")).getString();
+		Long serviceContractNo = ((IntNode) node.get("serviceContractNo")).numberValue().longValue();
+		String serviceContractName = ((TextNode)node.get("serviceContractName")).textValue();
+		String serviceContractDescription = ((TextNode)node.get("serviceContractDescription")).textValue();
 		LocalDateTime serviceContractCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("serviceContractCreationDate")).textValue());
 		
 		ServiceContractEntity serviceContract = new ServiceContractEntity(serviceContractNo, serviceContractName, serviceContractDescription, serviceContractCreationDate);
