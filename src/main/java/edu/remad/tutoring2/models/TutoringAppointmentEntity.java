@@ -11,11 +11,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import edu.remad.tutoring2.json.customdeserializers.TutoringAppointmentEntityDeserializer;
+import edu.remad.tutoring2.json.customserializer.TutoringAppointmentEntitySerializer;
+
 /**
  * a data set entry for tutoring appointment
  */
 @Entity
 @Table(name = "tutoring_appointments")
+@JsonSerialize(using = TutoringAppointmentEntitySerializer.class)
+@JsonDeserialize(using = TutoringAppointmentEntityDeserializer.class)
 public class TutoringAppointmentEntity {
 
 	/**
@@ -30,7 +38,7 @@ public class TutoringAppointmentEntity {
 	 * tutoring appointment's customer number
 	 */
 	@OneToOne
-	@JoinColumn(name = "tutoring_appointment_user_id", referencedColumnName = "userentity_id")
+	@JoinColumn(name = "tutoring_appointment_user", referencedColumnName = "id")
 	private UserEntity tutoringAppointmentUser;
 
 	/**

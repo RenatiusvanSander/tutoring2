@@ -17,6 +17,11 @@ import edu.remad.tutoring2.models.UserEntity;
 
 public class TutoringAppointmentEntityDeserializer extends StdDeserializer<TutoringAppointmentEntity> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TutoringAppointmentEntityDeserializer() {
 		this(null);
 	}
@@ -31,11 +36,12 @@ public class TutoringAppointmentEntityDeserializer extends StdDeserializer<Tutor
 		TreeNode node = p.getCodec().readTree(p);
 		
 		Long tutoringAppointmentNo = ((IntNode)node.get("tutoringAppointmentNo")).asLong();
-		long tutoringAppointmentUser = ((IntNode) node.get("tutoringAppointmentCustomer")).asLong();
 		LocalDateTime tutoringAppointmentDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentDate")).textValue());
 		LocalDateTime tutoringAppointmentStartDateTime = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentStartDateTime")).textValue());
 		LocalDateTime tutoringAppointmentEndDateTime = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentEndDateTime")).textValue());
 		LocalDateTime tutoringAppointmentCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentCreationDate")).textValue());
+		
+		long tutoringAppointmentUser = ((IntNode)node.get("tutoringAppointmentUser").get("id")).asLong();
 		UserEntity user = new UserEntity();
 		user.setId(tutoringAppointmentUser);
 		
@@ -43,5 +49,4 @@ public class TutoringAppointmentEntityDeserializer extends StdDeserializer<Tutor
 		
 		return appointment;
 	}
-
 }
