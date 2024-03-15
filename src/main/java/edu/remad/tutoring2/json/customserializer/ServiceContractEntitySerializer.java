@@ -27,6 +27,7 @@ public class ServiceContractEntitySerializer extends StdSerializer<ServiceContra
 	@Override
 	public void serialize(ServiceContractEntity serviceContractEntity, JsonGenerator gen, SerializerProvider provider)
 			throws IOException {
+		
 		gen.writeStartObject();
 		gen.writeNumberField("serviceContractNo", serviceContractEntity.getServiceContractNo());
 		gen.writeStringField("serviceContractName", serviceContractEntity.getServiceContractName());
