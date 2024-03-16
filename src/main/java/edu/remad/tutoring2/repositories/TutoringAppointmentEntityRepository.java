@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
 @Repository
-public interface TutoringAppointmentEntityRepository  extends JpaRepository<TutoringAppointmentEntity, Long> {
+public interface TutoringAppointmentEntityRepository extends JpaRepository<TutoringAppointmentEntity, Long> {
 }

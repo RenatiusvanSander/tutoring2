@@ -9,7 +9,7 @@ import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.models.ZipCodeEntity;
 
-public abstract class AbstractControllerTest {
+public abstract class AbstractJunit5Test {
 	
 	protected TutoringAppointmentEntity createAppointment() {
 		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity();
@@ -31,7 +31,7 @@ public abstract class AbstractControllerTest {
 		user.setLastName("Mustermann");
 		user.setGender("male");
 		user.setUsername("mustermann");
-		user.setId(1l);
+		user.setId(3l);
 		user.setPassword("MusterCity");
 		List<AddressEntity> address = List.of(createAddress());
 		user.setAddresses(address);

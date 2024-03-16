@@ -5,18 +5,24 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.services.TutoringAppointmentService;
 
 public class TutoringAppointmentServiceImpl implements TutoringAppointmentService {
 	
-	public TutoringAppointmentServiceImpl(PersistentCache cache) {
+	private final PersistentCache cache;
+	
+	private final TutoringAppointmentService tutoringAppointmentService;
+	
+	@Autowired
+	public TutoringAppointmentServiceImpl(PersistentCache cache, TutoringAppointmentService tutoringAppointmentService) {
 		this.cache = cache;
+		this.tutoringAppointmentService = tutoringAppointmentService;
 	}
 	
-	private final PersistentCache cache;
-
 	@Override
 	public boolean isValid(TutoringAppointmentEntity appointment) {
 		LocalDateTime dateAndTime = LocalDateTime.now();
@@ -72,7 +78,7 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 
 	@Override
 	public TutoringAppointmentEntity save(TutoringAppointmentEntity tutoringAppointment) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -177,5 +183,4 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

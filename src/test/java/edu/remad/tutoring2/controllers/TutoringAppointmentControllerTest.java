@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
-public class TutoringAppointmentControllerTest extends AbstractControllerTest {
+public class TutoringAppointmentControllerTest extends AbstractJunit5Test {
 	
 	@Test
 	public void validateTest() {
