@@ -1,14 +1,10 @@
 package edu.remad.tutoring2.tutoringconfig;
 
-import java.util.Properties;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -24,9 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import edu.remad.tutoring2.appconstants.CORSAppConstants;
-import edu.remad.tutoring2.appconstants.JavaAppConstants;
 import edu.remad.tutoring2.appconstants.PackagesAppConstants;
-import edu.remad.tutoring2.appconstants.SmtpAppConstants;
 import edu.remad.tutoring2.appconstants.ViewResolversAppConstants;
 import edu.remad.tutoring2.security.interceptors.GlobalInterceptor;
 import edu.remad.tutoring2.security.interceptors.HandlerTimeLoggingInterceptor;
@@ -78,28 +72,6 @@ public class TutoringWebMvcConfig implements WebMvcConfigurer {
 	@Bean
 	public SystemEnvironment systemEnvironment() {
 		return SystemEnvironmentFactory.getInstance();
-	}
-
-	@Bean
-	public JavaMailSender createJavaMailSender(SystemEnvironment systemEnvironment) {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.web.de");
-		mailSender.setPort(587);
-		mailSender.setUsername(systemEnvironment.getSmtpUsername());
-		mailSender.setPassword(systemEnvironment.getSmtpPassword());
-
-		Properties props = mailSender.getJavaMailProperties();
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", JavaAppConstants.TRUE);
-		props.put("mail.smtp.starttls.enable", JavaAppConstants.TRUE);
-		props.put("mail.properties.mail.smtp.starttls.required", JavaAppConstants.TRUE);
-		props.put("mail.properties.mail.smtp.ssl.enable", JavaAppConstants.FALSE);
-		props.put("mail.properties.mail.smtp.timeout", SmtpAppConstants.SMTP_TIMEOUT_15_SECONDS_IN_MS);
-		props.put("mail.properties.mail.smtp.connectiontimeout", SmtpAppConstants.SMTP_TIMEOUT_15_SECONDS_IN_MS);
-		props.put("mail.properties.mail.smtp.socketFactory.fallback", JavaAppConstants.TRUE);
-		props.put("mail.debug", JavaAppConstants.TRUE);
-
-		return mailSender;
 	}
 
 	@Override

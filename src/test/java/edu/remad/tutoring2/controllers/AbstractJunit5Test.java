@@ -17,6 +17,7 @@ public abstract class AbstractJunit5Test {
 		appointment.setTutoringAppointmentDate(LocalDateTime.of(2024, 3, 14, 20, 0));
 		appointment.setTutoringAppointmentStartDateTime(LocalDateTime.of(2024, 3, 14, 20, 0));
 		appointment.setTutoringAppointmentEndDateTime(LocalDateTime.of(2024, 3, 14, 21, 0));
+		appointment.setTutoringAppointmentCreationDate(LocalDateTime.of(2024, 3, 14, 10, 0));
 		appointment.setTutoringAppointmentUser(createUser());
 		
 		return appointment;

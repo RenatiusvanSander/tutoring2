@@ -1,9 +1,5 @@
 package edu.remad.tutoring2.controllers;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
-import edu.remad.tutoring2.repositories.TutoringAppointmentEntityRepository;
+import edu.remad.tutoring2.services.TutoringAppointmentService;
 
 @RestController
 @RequestMapping("/api/tutoring-appointments")
 public class TutoringAppointmentController {
 	
-	private final TutoringAppointmentEntityRepository tutoringAppointmentEntityRepository;
+	private final TutoringAppointmentService tutoringAppointmentService;
 	
 	@Autowired
-	public TutoringAppointmentController(TutoringAppointmentEntityRepository tutoringAppointmentEntityRepository) {
-		this.tutoringAppointmentEntityRepository = tutoringAppointmentEntityRepository;
+	public TutoringAppointmentController(TutoringAppointmentService tutoringAppointmentService) {
+		this.tutoringAppointmentService = tutoringAppointmentService;
 	}
 
 	@PostMapping(value = "/create-tutoring-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,52 +28,11 @@ public class TutoringAppointmentController {
 			@RequestBody TutoringAppointmentEntity tutoringAppointment) {
 
 		TutoringAppointmentEntity savedAppointment = null;
-		if (isValid(tutoringAppointment)) {
-			savedAppointment = tutoringAppointmentEntityRepository.save(tutoringAppointment);
-			tutoringAppointmentEntityRepository.flush();
+		if (tutoringAppointmentService.isValid(tutoringAppointment)) {
+			savedAppointment = tutoringAppointmentService.save(tutoringAppointment);
 		}
 
 		return savedAppointment != null ? ResponseEntity.ok(savedAppointment)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-	}
-
-	public boolean isValid(TutoringAppointmentEntity tutoringAppointment) {
-		LocalDateTime dateAndTime = LocalDateTime.now();
-		int mondayToFridayStartTime = 19;
-		int mondayToFridayEndTime = 22;
-		int saturdayToSundayStartTime = 10;
-		int saturdayToSundayEndTime = 21;
-		long minutes = ChronoUnit.MINUTES.between(tutoringAppointment.getTutoringAppointmentStartDateTime(),
-				tutoringAppointment.getTutoringAppointmentEndDateTime());
-
-		DayOfWeek day = dateAndTime.getDayOfWeek();
-		switch (day) {
-		case MONDAY:
-		case TUESDAY:
-		case WEDNESDAY:
-		case THURSDAY:
-		case FRIDAY: {
-
-			if (tutoringAppointment.getTutoringAppointmentStartDateTime().getHour() >= mondayToFridayStartTime
-					&& tutoringAppointment.getTutoringAppointmentEndDateTime().getHour() <= mondayToFridayEndTime
-					&& minutes == 60) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		case SATURDAY:
-		case SUNDAY: {
-			if (tutoringAppointment.getTutoringAppointmentStartDateTime().getHour() >= saturdayToSundayStartTime
-					&& tutoringAppointment.getTutoringAppointmentEndDateTime().getHour() <= saturdayToSundayEndTime
-					&& minutes == 60) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		}
-
-		return false;
 	}
 }

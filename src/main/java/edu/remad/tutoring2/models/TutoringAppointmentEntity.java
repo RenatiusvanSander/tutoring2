@@ -1,6 +1,7 @@
 package edu.remad.tutoring2.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -200,5 +201,37 @@ public class TutoringAppointmentEntity {
 	 */
 	public void setTutoringAppointmentCreationDate(LocalDateTime tutoringAppointmentCreationDate) {
 		this.tutoringAppointmentCreationDate = tutoringAppointmentCreationDate;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tutoringAppointmentCreationDate, tutoringAppointmentDate, tutoringAppointmentEndDateTime,
+				tutoringAppointmentNo, tutoringAppointmentStartDateTime, tutoringAppointmentUser);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TutoringAppointmentEntity other = (TutoringAppointmentEntity) obj;
+		return Objects.equals(tutoringAppointmentCreationDate, other.tutoringAppointmentCreationDate)
+				&& Objects.equals(tutoringAppointmentDate, other.tutoringAppointmentDate)
+				&& Objects.equals(tutoringAppointmentEndDateTime, other.tutoringAppointmentEndDateTime)
+				&& tutoringAppointmentNo == other.tutoringAppointmentNo
+				&& Objects.equals(tutoringAppointmentStartDateTime, other.tutoringAppointmentStartDateTime)
+				&& Objects.equals(tutoringAppointmentUser, other.tutoringAppointmentUser);
+	}
+
+	@Override
+	public String toString() {
+		return "TutoringAppointmentEntity [tutoringAppointmentNo=" + tutoringAppointmentNo
+				+ ", tutoringAppointmentUser=" + tutoringAppointmentUser + ", tutoringAppointmentDate="
+				+ tutoringAppointmentDate + ", tutoringAppointmentStartDateTime=" + tutoringAppointmentStartDateTime
+				+ ", tutoringAppointmentEndDateTime=" + tutoringAppointmentEndDateTime
+				+ ", tutoringAppointmentCreationDate=" + tutoringAppointmentCreationDate + "]";
 	}
 }
