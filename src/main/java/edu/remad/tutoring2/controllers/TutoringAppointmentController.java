@@ -15,9 +15,9 @@ import edu.remad.tutoring2.services.TutoringAppointmentService;
 @RestController
 @RequestMapping("/api/tutoring-appointments")
 public class TutoringAppointmentController {
-	
+
 	private final TutoringAppointmentService tutoringAppointmentService;
-	
+
 	@Autowired
 	public TutoringAppointmentController(TutoringAppointmentService tutoringAppointmentService) {
 		this.tutoringAppointmentService = tutoringAppointmentService;
@@ -26,11 +26,7 @@ public class TutoringAppointmentController {
 	@PostMapping(value = "/create-tutoring-appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TutoringAppointmentEntity> createTutoringAppointment(
 			@RequestBody TutoringAppointmentEntity tutoringAppointment) {
-
-		TutoringAppointmentEntity savedAppointment = null;
-		if (tutoringAppointmentService.isValid(tutoringAppointment)) {
-			savedAppointment = tutoringAppointmentService.save(tutoringAppointment);
-		}
+		TutoringAppointmentEntity savedAppointment = tutoringAppointmentService.save(tutoringAppointment);
 
 		return savedAppointment != null ? ResponseEntity.ok(savedAppointment)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();

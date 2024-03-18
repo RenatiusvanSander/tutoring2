@@ -10,7 +10,7 @@ public abstract class PersistentCache<T> {
 	protected final Map<Long, T> items;
 
 	protected PersistentCache() {
-		items = new HashMap();
+		items = new HashMap<Long, T>();
 	}
 
 	public void add(Long id, T item) {
@@ -47,13 +47,17 @@ public abstract class PersistentCache<T> {
 			items.remove(id);
 		}
 	}
-	
+
 	public int size() {
 		return items.size();
 	}
-	
+
 	public boolean isEmpty() {
 		return items.isEmpty();
+	}
+
+	public void cleanAll() {
+		items.clear();
 	}
 
 	abstract void clean();

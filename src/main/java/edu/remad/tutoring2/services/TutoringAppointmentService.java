@@ -33,6 +33,8 @@ public interface TutoringAppointmentService {
 	
 	TutoringAppointmentEntity save(TutoringAppointmentEntity tutoringAppointment);
 	
+	TutoringAppointmentEntity saveWithoutValidation(TutoringAppointmentEntity tutoringAppointment);
+	
 	List<TutoringAppointmentEntity> saveAll(List<TutoringAppointmentEntity> tutoringAppointments);
 	
 	TutoringAppointmentEntity getById(long id);
@@ -59,11 +61,15 @@ public interface TutoringAppointmentService {
 	
 	List<TutoringAppointmentEntity> deleteMultiple(List<TutoringAppointmentEntity> appointments);
 	
+	void deleteAll();
+	
 	TutoringAppointmentEntity deleteById(long id);
 	
-	TutoringAppointmentEntity deleteByIds(List<Long> ids);
+	List<TutoringAppointmentEntity> deleteByIds(List<Long> ids);
 	
 	TutoringAppointmentEntity update(TutoringAppointmentEntity appointment);
 	
 	List<TutoringAppointmentEntity> updatemultiple(List<TutoringAppointmentEntity> appointment);
+	
+	boolean validated(TutoringAppointmentEntity appointment);
 }

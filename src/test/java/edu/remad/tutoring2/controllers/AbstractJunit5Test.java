@@ -23,6 +23,13 @@ public abstract class AbstractJunit5Test {
 		return appointment;
 	}
 	
+	protected UserEntity createUser(long id) {
+		UserEntity user = createUser();
+		user.setId(id);
+		
+		return user;
+	}
+	
 	protected UserEntity createUser() {
 		UserEntity user = new UserEntity();
 		user.setCellPhone("+4953535343435747");
