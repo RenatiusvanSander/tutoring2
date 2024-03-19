@@ -2,6 +2,7 @@ package edu.remad.tutoring2.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +15,9 @@ import javax.persistence.Table;
 /**
  * Reminder represents calendar reminder of a tutoring appointment.
  */
-//@Entity
-@Table(name = "Reminder")
-public class Reminder {
+@Entity
+@Table(name = "reminder_entities")
+public class ReminderEntity {
 
   /**
    * reminder number as primary key of a data set of 'Reminder'
@@ -55,7 +56,7 @@ public class Reminder {
   /**
    * Constructor
    */
-  public Reminder() {
+  public ReminderEntity() {
   }
 
   /**
@@ -66,7 +67,7 @@ public class Reminder {
    * @param reminderDate                  reminder's date
    * @param reminderCreationDate          reminder's creation date
    */
-  public Reminder(TutoringAppointmentEntity reminderTutoringAppointmentNo,
+  public ReminderEntity(TutoringAppointmentEntity reminderTutoringAppointmentNo,
       Customer reminderCustomer,
       LocalDateTime reminderDate, LocalDateTime reminderCreationDate) {
     this.reminderTutoringAppointment = reminderTutoringAppointmentNo;
@@ -168,11 +169,11 @@ public class Reminder {
       return true;
     }
 
-    if (!(o instanceof Reminder)) {
+    if (!(o instanceof ReminderEntity)) {
       return false;
     }
 
-    Reminder reminder = (Reminder) o;
+    ReminderEntity reminder = (ReminderEntity) o;
     return reminderNo == reminder.reminderNo
         && reminderTutoringAppointment == reminder.reminderTutoringAppointment
         && reminderCustomer == reminder.reminderCustomer && reminderDate.equals(
