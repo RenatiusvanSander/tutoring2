@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -134,7 +135,8 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 
 	@Override
 	public boolean isWeekFullWithAppointmens(TutoringAppointmentEntity appointment) {
-		Set<TutoringAppointmentEntity> appointments = cache.findAppointmentsForWeek(appointment);
+		Set<TutoringAppointmentEntity> appointments = cache
+				.findAppointmentsForWeek(appointment.getTutoringAppointmentDate());
 
 		if (appointments.isEmpty()) {
 			LocalDateTime startOfWeekDate = cache.createStartOfWeekdate(appointment);
@@ -170,7 +172,7 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 		return savedAppointment;
 	}
 
-	@Override
+	@Override // TODO rework
 	public List<TutoringAppointmentEntity> saveAll(List<TutoringAppointmentEntity> tutoringAppointments) {
 		List<TutoringAppointmentEntity> savedAppointments = tutAppointmentEntityRepository
 				.saveAllAndFlush(tutoringAppointments);
@@ -237,10 +239,7 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 	@Override
 	public List<TutoringAppointmentEntity> getAllOfCurrentWeek() {
 		LocalDateTime date = LocalDate.now().atStartOfDay();
-		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity();
-		appointment.setTutoringAppointmentDate(date);
-
-		Set<TutoringAppointmentEntity> currentWeekAppointments = cache.findAppointmentsForWeek(appointment);
+		Set<TutoringAppointmentEntity> currentWeekAppointments = cache.findAppointmentsForWeek(date);
 
 		return currentWeekAppointments.stream().collect(Collectors.toList());
 	}
@@ -253,14 +252,43 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 
 	@Override
 	public List<TutoringAppointmentEntity> getAllForUser(UserEntity user) {
-		// TODO Auto-generated method stub
-		return null;
+		List<TutoringAppointmentEntity> usersAppointments = cache.getAllAppointmentsForUSer(user.getId());
+
+		if (usersAppointments.isEmpty()) {
+			TutoringAppointmentEntity appointment = new TutoringAppointmentEntity();
+			appointment.setTutoringAppointmentUser(user);
+			Example<TutoringAppointmentEntity> example = Example.of(appointment);
+			usersAppointments = tutAppointmentEntityRepository.findAll(example);
+
+			if (!usersAppointments.isEmpty()) {
+				Map<Long, TutoringAppointmentEntity> mappedAppointments = usersAppointments.stream().collect(
+						Collectors.toMap(TutoringAppointmentEntity::getTutoringAppointmentNo, Function.identity()));
+				cache.addAll(mappedAppointments);
+			}
+		}
+
+		return usersAppointments;
 	}
 
 	@Override
 	public List<TutoringAppointmentEntity> getAllOfCurrentDateForUser(UserEntity user) {
-		// TODO Auto-generated method stub
-		return null;
+		LocalDateTime date = LocalDate.now().atStartOfDay();
+		List<TutoringAppointmentEntity> usersAppointments = cache.getAllOfCurrentDateForUser(user.getId(), date);
+
+		if (usersAppointments.isEmpty()) {
+			TutoringAppointmentEntity appointment = new TutoringAppointmentEntity();
+			appointment.setTutoringAppointmentUser(user);
+			Example<TutoringAppointmentEntity> example = Example.of(appointment);
+			usersAppointments = tutAppointmentEntityRepository.findAll(example);
+
+			if (!usersAppointments.isEmpty()) {
+				Map<Long, TutoringAppointmentEntity> mappedAppointments = usersAppointments.stream().collect(
+						Collectors.toMap(TutoringAppointmentEntity::getTutoringAppointmentNo, Function.identity()));
+				cache.addAll(mappedAppointments);
+			}
+		}
+
+		return usersAppointments;
 	}
 
 	@Override
@@ -277,25 +305,24 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 
 	@Override
 	public TutoringAppointmentEntity delete(TutoringAppointmentEntity appointment) {
-		
-		
-		return null;
+		return deleteById(appointment.getTutoringAppointmentNo());
 	}
 
 	@Override
 	public List<TutoringAppointmentEntity> deleteMultiple(List<TutoringAppointmentEntity> appointments) {
-		List<Long> ids = appointments.stream().map(TutoringAppointmentEntity::getTutoringAppointmentNo).collect(Collectors.toList());
+		List<Long> ids = appointments.stream().map(TutoringAppointmentEntity::getTutoringAppointmentNo)
+				.collect(Collectors.toList());
 		tutAppointmentEntityRepository.deleteAllInBatch(appointments);
 		cache.removeAll(ids);
-		
+
 		return appointments;
 	}
 
 	@Override
 	public TutoringAppointmentEntity deleteById(long id) {
 		Optional<TutoringAppointmentEntity> optional = tutAppointmentEntityRepository.findById(id);
-		
-		if(optional.isPresent()) {
+
+		if (optional.isPresent()) {
 			cache.remove(optional.get().getTutoringAppointmentNo());
 			return optional.get();
 		}
@@ -306,27 +333,52 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 	@Override
 	public List<TutoringAppointmentEntity> deleteByIds(List<Long> ids) {
 		List<TutoringAppointmentEntity> deletedAppointments = new ArrayList<>();
-		for(Long id : ids) {
+		for (Long id : ids) {
 			TutoringAppointmentEntity appointment = deleteById(id);
-			
-			if(appointment != null) {
+
+			if (appointment != null) {
 				deletedAppointments.add(appointment);
 			}
 		}
-		
+
 		return deletedAppointments;
 	}
 
 	@Override
 	public TutoringAppointmentEntity update(TutoringAppointmentEntity appointment) {
-		// TODO Auto-generated method stub
-		return null;
+		TutoringAppointmentEntity updatedAppointment = null;
+
+		if (validated(appointment)
+				&& tutAppointmentEntityRepository.existsById(appointment.getTutoringAppointmentNo())) {
+			updatedAppointment = tutAppointmentEntityRepository.saveAndFlush(appointment);
+
+			if (updatedAppointment != null) {
+				cache.add(updatedAppointment.getTutoringAppointmentNo(), updatedAppointment);
+			}
+		}
+
+		return updatedAppointment;
 	}
 
 	@Override
-	public List<TutoringAppointmentEntity> updatemultiple(List<TutoringAppointmentEntity> appointment) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TutoringAppointmentEntity> updateMultiple(List<TutoringAppointmentEntity> appointments) {
+		List<TutoringAppointmentEntity> updatedAppointments = new ArrayList<>();
+
+		for (TutoringAppointmentEntity appointment : appointments) {
+			TutoringAppointmentEntity currentUpdatedAppointment = update(appointment);
+
+			if (currentUpdatedAppointment != null) {
+				updatedAppointments.add(currentUpdatedAppointment);
+			}
+		}
+
+		if (!updatedAppointments.isEmpty()) {
+			Map<Long, TutoringAppointmentEntity> mappedAppointments = updatedAppointments.stream().collect(
+					Collectors.toMap(TutoringAppointmentEntity::getTutoringAppointmentNo, Function.identity()));
+			cache.addAll(mappedAppointments);
+		}
+
+		return updatedAppointments;
 	}
 
 	@Override
@@ -344,8 +396,8 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 		if (!isValid) {
 			return false;
 		}
-		
-		if(!weekIsNotFull) {
+
+		if (!weekIsNotFull) {
 			return false;
 		}
 

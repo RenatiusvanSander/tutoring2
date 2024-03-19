@@ -69,7 +69,7 @@ public interface TutoringAppointmentService {
 	
 	TutoringAppointmentEntity update(TutoringAppointmentEntity appointment);
 	
-	List<TutoringAppointmentEntity> updatemultiple(List<TutoringAppointmentEntity> appointment);
+	List<TutoringAppointmentEntity> updateMultiple(List<TutoringAppointmentEntity> appointment);
 	
 	boolean validated(TutoringAppointmentEntity appointment);
 }
