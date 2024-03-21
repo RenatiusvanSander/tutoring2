@@ -27,4 +27,8 @@ public interface ReminderService {
 	List<ReminderEntity> getAllRemindersOfCurrentDate(LocalDateTime currentDate);
 	
 	boolean clean(LocalDateTime date);
+	
+	void cancelSpecificTaskType(Class<?> clazz);
+	
+	void cancelAllTasks();
 }
