@@ -15,7 +15,7 @@ import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ServiceContractEntity;
 
 public class ServiceContractEntityDeserializer extends StdDeserializer<ServiceContractEntity> {
-
+	
 	/**
 	 * serial version uid
 	 */

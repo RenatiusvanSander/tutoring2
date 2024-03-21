@@ -54,6 +54,21 @@ public class AddressEntity {
 
 	/**
 	 * Constructor
+	 * 
+	 * @param id             address's id
+	 * @param addressStreet  address's street
+	 * @param addressHouseNo address's house number
+	 * @param addressZipCode address's zipcode
+	 */
+	public AddressEntity(Long id, String addressStreet, String addressHouseNo, ZipCodeEntity addressZipCode) {
+		this.id = id;
+		this.addressStreet = addressStreet;
+		this.addressHouseNo = addressHouseNo;
+		this.addressZipCode = addressZipCode;
+	}
+
+	/**
+	 * Constructor
 	 */
 	public AddressEntity() {
 	}

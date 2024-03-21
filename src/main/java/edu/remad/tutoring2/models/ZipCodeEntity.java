@@ -80,6 +80,24 @@ public class ZipCodeEntity {
 		this.address = address;
 	}
 
+	/**
+	 * Constructor
+	 *
+	 * @param id                  zip code's identity
+	 * @param zipCode             zip code itself
+	 * @param zipCodeLocation     location of belonging zip code
+	 * @param zipCodeCreationDate creation time of the zip code
+	 * @param address             address of the zip code
+	 */
+	public ZipCodeEntity(Long id, String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate,
+			AddressEntity address) {
+		this.id = id;
+		this.zipCode = zipCode;
+		this.zipCodeLocation = zipCodeLocation;
+		this.zipCodeCreationDate = zipCodeCreationDate;
+		this.address = address;
+	}
+
 	public String getZipCode() {
 		return zipCode;
 	}
