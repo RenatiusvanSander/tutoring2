@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import edu.remad.tutoring2.appconstants.SchedulerAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.repositories.ReminderEntityRepository;
+import edu.remad.tutoring2.services.EmailService;
 import edu.remad.tutoring2.services.ReminderService;
 import edu.remad.tutoring2.services.tasks.ReminderServiceEmailSendTask;
 
@@ -24,12 +25,15 @@ public class ReminderServiceImpl implements ReminderService {
 
 	private ReminderEntityRepository reminderEntityRepository;
 
+	private EmailService emailService;
+
 	private ScheduledExecutorService scheduler;
 
 	private Set<RunnableScheduledFuture<?>> scheduledTasks;
 
-	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository) {
+	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository, EmailService emailService) {
 		this.reminderEntityRepository = reminderEntityRepository;
+		this.emailService = emailService;
 		scheduler = Executors.newScheduledThreadPool(SchedulerAppConstants.AMOUNT_OF_SCHEDULED_THREADS);
 		scheduledTasks = new HashSet<>();
 
@@ -37,8 +41,9 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	private void initSchedulerPool() {
-		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.DAYS);
-		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask, 0, 1, TimeUnit.DAYS);
+		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.DAYS, emailService);
+		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask, 0,
+				1, TimeUnit.DAYS);
 		scheduledTasks.add(task);
 	}
 
@@ -124,5 +129,11 @@ public class ReminderServiceImpl implements ReminderService {
 		for (RunnableScheduledFuture<?> task : scheduledTasks) {
 			task.cancel(true);
 		}
+	}
+
+	@Override
+	public List<ReminderEntity> getAllReminderOfCurrentDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -31,4 +31,6 @@ public interface ReminderService {
 	void cancelSpecificTaskType(Class<?> clazz);
 	
 	void cancelAllTasks();
+	
+	List<ReminderEntity> getAllReminderOfCurrentDate();
 }
