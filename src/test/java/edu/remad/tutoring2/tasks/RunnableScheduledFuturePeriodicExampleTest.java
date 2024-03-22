@@ -14,7 +14,7 @@ public class RunnableScheduledFuturePeriodicExampleTest {
 
 	@Test
 	public void test() throws ExecutionException, InterruptedException {
-		RunnableScheduledFuture<?> task = new ReminderServiceEmailSendTask(null, 0L, TimeUnit.DAYS);
+		RunnableScheduledFuture<?> task = new ReminderServiceEmailSendTask(null, 0L, TimeUnit.DAYS, null);
 
 	      ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
 	      RunnableScheduledFuture<?> scheduleFuture =
