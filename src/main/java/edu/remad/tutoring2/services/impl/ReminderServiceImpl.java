@@ -17,6 +17,7 @@ import edu.remad.tutoring2.appconstants.SchedulerAppConstants;
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.repositories.ReminderEntityRepository;
+import edu.remad.tutoring2.services.EmailService;
 import edu.remad.tutoring2.services.ReminderService;
 import edu.remad.tutoring2.services.tasks.ReminderServiceEmailSendTask;
 
@@ -25,12 +26,15 @@ public class ReminderServiceImpl implements ReminderService {
 
 	private ReminderEntityRepository reminderEntityRepository;
 
+	private EmailService emailService;
+
 	private ScheduledExecutorService scheduler;
 
 	private Set<RunnableScheduledFuture<?>> scheduledTasks;
 
-	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository) {
+	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository, EmailService emailService) {
 		this.reminderEntityRepository = reminderEntityRepository;
+		this.emailService = emailService;
 		scheduler = Executors.newScheduledThreadPool(SchedulerAppConstants.AMOUNT_OF_SCHEDULED_THREADS);
 		scheduledTasks = new HashSet<>();
 
@@ -126,6 +130,11 @@ public class ReminderServiceImpl implements ReminderService {
 		for (RunnableScheduledFuture<?> task : scheduledTasks) {
 			task.cancel(true);
 		}
+	}
+
+	@Override
+	public List<ReminderEntity> getAllReminderOfCurrentDate() {
+		return null;
 	}
 	
 	private long calculateDelayTo5Am() {
