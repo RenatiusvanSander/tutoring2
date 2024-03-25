@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.appconstants.SchedulerAppConstants;
+import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.repositories.ReminderEntityRepository;
 import edu.remad.tutoring2.services.ReminderService;
@@ -37,8 +38,9 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	private void initSchedulerPool() {
-		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.DAYS);
-		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask, 0, 1, TimeUnit.DAYS);
+		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS);
+		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask,
+				calculateDelayTo5Am(), TimeAppConstants.TIME_PERIOD_DAY_IN_HOURS, TimeUnit.HOURS);
 		scheduledTasks.add(task);
 	}
 
@@ -124,5 +126,20 @@ public class ReminderServiceImpl implements ReminderService {
 		for (RunnableScheduledFuture<?> task : scheduledTasks) {
 			task.cancel(true);
 		}
+	}
+	
+	private long calculateDelayTo5Am() {
+		LocalDateTime timeNow = LocalDateTime.now();
+		int currentHour = timeNow.getHour();
+
+		long delayInHours = 0;
+		if (currentHour < TimeAppConstants.REMINDER_EMAIL_TIME_ON_5_O_CLOCK) {
+			delayInHours = TimeAppConstants.REMINDER_EMAIL_TIME_ON_5_O_CLOCK - currentHour;
+		} else {
+			delayInHours = TimeAppConstants.REMINDER_EMAIL_TIME_ON_5_O_CLOCK + TimeAppConstants.TIME_PERIOD_DAY_IN_HOURS
+					- currentHour;
+		}
+
+		return (long) delayInHours;
 	}
 }
