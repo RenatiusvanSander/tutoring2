@@ -42,7 +42,7 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	private void initSchedulerPool() {
-		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS);
+		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS, emailService);
 		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask,
 				calculateDelayTo5Am(), TimeAppConstants.TIME_PERIOD_DAY_IN_HOURS, TimeUnit.HOURS);
 		scheduledTasks.add(task);
