@@ -192,4 +192,30 @@ public class ReminderServiceImpl implements ReminderService {
 
 		return loadedReminders;
 	}
+
+	@Override
+	public void deleteReminderByTutoringAppointment(TutoringAppointmentEntity deleteAppointment) {
+		ReminderEntity loadedReminder = getReminderByTutoringAppointmentEntity(deleteAppointment);
+		deleteReminder(loadedReminder);
+	}
+
+	@Override
+	public void deleteRemindersByTutoringAppointments(List<TutoringAppointmentEntity> tutoringAppointments) {
+		List<ReminderEntity> lodedReminders = getRemindersByTutoringAppointments(tutoringAppointments);
+
+		if (!lodedReminders.isEmpty()) {
+			List<Long> ids = lodedReminders.stream().map(ReminderEntity::getReminderNo).collect(Collectors.toList());
+			deleteMultipleReminderByIds(ids);
+		}
+	}
+
+	@Override
+	public ReminderEntity updateReminder(TutoringAppointmentEntity updatedAppointment) {
+		ReminderEntity loadedReminder = getReminderByTutoringAppointmentEntity(updatedAppointment);
+		loadedReminder.setReminderDate(updatedAppointment.getTutoringAppointmentDate());
+
+		ReminderEntity updatedReminder = reminderEntityRepository.saveAndFlush(loadedReminder);
+
+		return updatedReminder;
+	}
 }

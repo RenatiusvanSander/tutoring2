@@ -1,6 +1,7 @@
 package edu.remad.tutoring2.services.tasks;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 import javax.mail.MessagingException;
 import javax.naming.OperationNotSupportedException;
 
+import edu.remad.tutoring2.appconstants.TemplateAppConstants;
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.services.EmailService;
@@ -48,27 +50,19 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 	@Override
 	public void run() {
 		boolean hasToRun = true;
+		
 		while (!isToCancel && hasToRun) {
-			LocalDateTime currentDate = LocalDateTime.now();
-			List<ReminderEntity> reminders = reminderService.getAllRemindersOfCurrentDate(currentDate);
+			List<ReminderEntity> reminders = reminderService.getAllRemindersOfCurrentDate(LocalDate.now().atStartOfDay());
 			try {
 				for (ReminderEntity reminder : reminders) {
-					String emailTo = reminder.getReminderUserEntity().getEmail();
-					String subject = "Erinnerung an Ihren Termin am " + reminder.getReminderDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER);
-					Map<String, Object> templateModel = new HashMap<>();
-					templateModel.put("username", reminder.getReminderUserEntity().getUsername());
-					templateModel.put("startTime", reminder.getReminderTutoringAppointment().getTutoringAppointmentStartDateTime().format(TimeAppConstants.TIME_FORMATTER));
-					templateModel.put("endTime", reminder.getReminderTutoringAppointment().getTutoringAppointmentEndDateTime().format(TimeAppConstants.TIME_FORMATTER));
-					emailService.sendMessageUsingFreemarkerTemplate(emailTo, "someTemplateName", subject, templateModel);
+					String subject = TemplateAppConstants.REMINDER_EMAIL_VALUE_SUBJECT_TEXT
+							+ reminder.getReminderDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER);
+					Map<String, Object> templateModel = generateTemplateModel(reminder, subject);
+					emailService.sendMessageUsingFreemarkerTemplate(reminder.getReminderUserEntity().getEmail(),
+							TemplateAppConstants.TEMPLATE_REMINDER_SERVICE_EMAIL_SEND_TASK, subject, templateModel);
 				}
-			} catch (OperationNotSupportedException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (TemplateException e) {
-				e.printStackTrace();
-			} catch (MessagingException e) {
-				e.printStackTrace();
+			} catch (OperationNotSupportedException | IOException | TemplateException | MessagingException e) {
+				throw new RuntimeException();
 			}
 
 			hasToRun = false;
@@ -84,6 +78,21 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 			get = Boolean.TRUE;
 			isToCancel = false;
 		}
+	}
+
+	private Map<String, Object> generateTemplateModel(ReminderEntity reminder, String subject) {
+		Map<String, Object> templateModel = new HashMap<>();
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_VALUE_SUBJECT_TEXT, subject);
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_USERNAME,
+				reminder.getReminderUserEntity().getUsername());
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_START_TIME,
+				reminder.getReminderTutoringAppointment().getTutoringAppointmentStartDateTime()
+						.format(TimeAppConstants.TIME_FORMATTER));
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_END_TIME,
+				reminder.getReminderTutoringAppointment().getTutoringAppointmentEndDateTime()
+						.format(TimeAppConstants.TIME_FORMATTER));
+		
+		return templateModel;
 	}
 
 	@Override

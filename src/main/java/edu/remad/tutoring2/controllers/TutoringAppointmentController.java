@@ -49,6 +49,10 @@ public class TutoringAppointmentController {
 	public ResponseEntity<TutoringAppointmentEntity> deleteTutoringAppointment(
 			@RequestBody TutoringAppointmentEntity tutoringAppointment) {
 		TutoringAppointmentEntity deletedAppointment = tutoringAppointmentService.delete(tutoringAppointment);
+		
+		if(deletedAppointment != null) {
+			reminderService.deleteReminderByTutoringAppointment(deletedAppointment);
+		}
 
 		return deletedAppointment != null ? ResponseEntity.ok(deletedAppointment)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -59,6 +63,10 @@ public class TutoringAppointmentController {
 			@RequestBody List<TutoringAppointmentEntity> tutoringAppointments) {
 		List<TutoringAppointmentEntity> deletedAppointments = tutoringAppointmentService
 				.deleteMultiple(tutoringAppointments);
+		
+		if(!deletedAppointments.isEmpty()) {
+			reminderService.deleteRemindersByTutoringAppointments(deletedAppointments);
+		}
 
 		return deletedAppointments != null ? ResponseEntity.ok(deletedAppointments)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -67,6 +75,10 @@ public class TutoringAppointmentController {
 	@DeleteMapping(value = "/delete-tutoring-appointment/delete-by-id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TutoringAppointmentEntity> deleteTutoringAppointmentById(@PathVariable("id") Long id) {
 		TutoringAppointmentEntity deletedAppointment = tutoringAppointmentService.deleteById(id);
+		
+		if(deletedAppointment != null) {
+			reminderService.deleteReminderByTutoringAppointment(deletedAppointment);
+		}
 
 		return deletedAppointment != null ? ResponseEntity.ok(deletedAppointment)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -75,6 +87,10 @@ public class TutoringAppointmentController {
 	@DeleteMapping(value = "/delete-tutoring-appointment/delete-by-ids", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TutoringAppointmentEntity>> deleteTutoringAppointmentByIds(@RequestBody List<Long> ids) {
 		List<TutoringAppointmentEntity> deletedAppointments = tutoringAppointmentService.deleteByIds(ids);
+		
+		if(!deletedAppointments.isEmpty()) {
+			reminderService.deleteRemindersByTutoringAppointments(deletedAppointments);
+		}
 
 		return deletedAppointments != null ? ResponseEntity.ok(deletedAppointments)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,6 +100,10 @@ public class TutoringAppointmentController {
 	public ResponseEntity<TutoringAppointmentEntity> updateTutoringAppointment(
 			@RequestBody TutoringAppointmentEntity appointment) {
 		TutoringAppointmentEntity updatedAppointment = tutoringAppointmentService.update(appointment);
+		
+		if(updatedAppointment != null) {
+			reminderService.updateReminder(updatedAppointment);
+		}
 		
 		return updatedAppointment != null ? ResponseEntity.ok(updatedAppointment)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -1,5 +1,6 @@
 package edu.remad.tutoring2.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import edu.remad.tutoring2.appconstants.TemplateAppConstants;
+import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.Car;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Version;
@@ -58,5 +61,19 @@ public class TemplateController {
 	@GetMapping(value = "/spring-messages")
 	public String showSpringMessage(@ModelAttribute("model") ModelMap model) {
 		return "spring-messages";
+	}
+	
+	@GetMapping(value = TemplateAppConstants.REMINDER_SERVICE_EMAIL_SEND_TASK_PATH)
+	public String showReminderServiceEmailSendTask(Model model) {
+		String date = LocalDateTime.now().format(TimeAppConstants.DATE_FORMATTER);
+		String subject = TemplateAppConstants.REMINDER_EMAIL_VALUE_SUBJECT_TEXT + date;
+		
+		model.addAttribute(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_SUBJECT, subject);
+		model.addAttribute(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_USERNAME, "JohnDoe");
+		model.addAttribute(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_TUTORING_DATE, date);
+		model.addAttribute(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_START_TIME, "19:00");
+		model.addAttribute(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_END_TIME, "20:00");
+		
+		return TemplateAppConstants.TEMPLATE_NAME_REMINDER_SERVICE_EMAIL_SEND_TASK;
 	}
 }

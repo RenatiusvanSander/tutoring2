@@ -39,5 +39,11 @@ public interface ReminderService {
 	
 	ReminderEntity getReminderByTutoringAppointmentEntity(TutoringAppointmentEntity appointmentEntity);
 
-	List<ReminderEntity> getRemindersByTutoringAppointments(List<TutoringAppointmentEntity> appointments); 
+	List<ReminderEntity> getRemindersByTutoringAppointments(List<TutoringAppointmentEntity> appointments);
+
+	void deleteReminderByTutoringAppointment(TutoringAppointmentEntity deletedAppointment);
+
+	void deleteRemindersByTutoringAppointments(List<TutoringAppointmentEntity> tutoringAppointments);
+
+	ReminderEntity updateReminder(TutoringAppointmentEntity updatedAppointment); 
 }
