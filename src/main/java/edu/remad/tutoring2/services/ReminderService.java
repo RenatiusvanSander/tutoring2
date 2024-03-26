@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.remad.tutoring2.models.ReminderEntity;
+import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
 public interface ReminderService {
 
@@ -13,6 +14,8 @@ public interface ReminderService {
 	 * @return
 	 */
 	ReminderEntity saveReminder(ReminderEntity reminder);
+	
+	ReminderEntity saveReminder(TutoringAppointmentEntity appointment);
 	
 	ReminderEntity updateReminder(ReminderEntity reminder);
 	
@@ -33,4 +36,8 @@ public interface ReminderService {
 	void cancelAllTasks();
 	
 	List<ReminderEntity> getAllReminderOfCurrentDate();
+	
+	ReminderEntity getReminderByTutoringAppointmentEntity(TutoringAppointmentEntity appointmentEntity);
+
+	List<ReminderEntity> getRemindersByTutoringAppointments(List<TutoringAppointmentEntity> appointments); 
 }

@@ -1,7 +1,6 @@
 package edu.remad.tutoring2.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,7 @@ public class TutoringAppointmentControllerTest extends AbstractJunit5Test {
 	public void validateTest() {
 		TutoringAppointmentEntity appointment = createAppointment();
 		
-		TutoringAppointmentController controller = new TutoringAppointmentController(null);
+		TutoringAppointmentController controller = new TutoringAppointmentController(null, null);
 		
 		assertNotNull(controller);
 	}

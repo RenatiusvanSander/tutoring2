@@ -1,5 +1,6 @@
 package edu.remad.tutoring2.services.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,12 +11,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RunnableScheduledFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.appconstants.SchedulerAppConstants;
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
+import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.repositories.ReminderEntityRepository;
 import edu.remad.tutoring2.services.EmailService;
 import edu.remad.tutoring2.services.ReminderService;
@@ -32,6 +37,7 @@ public class ReminderServiceImpl implements ReminderService {
 
 	private Set<RunnableScheduledFuture<?>> scheduledTasks;
 
+	@Autowired
 	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository, EmailService emailService) {
 		this.reminderEntityRepository = reminderEntityRepository;
 		this.emailService = emailService;
@@ -42,7 +48,8 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	private void initSchedulerPool() {
-		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS, emailService);
+		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS,
+				emailService);
 		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask,
 				calculateDelayTo5Am(), TimeAppConstants.TIME_PERIOD_DAY_IN_HOURS, TimeUnit.HOURS);
 		scheduledTasks.add(task);
@@ -136,7 +143,7 @@ public class ReminderServiceImpl implements ReminderService {
 	public List<ReminderEntity> getAllReminderOfCurrentDate() {
 		return null;
 	}
-	
+
 	private long calculateDelayTo5Am() {
 		LocalDateTime timeNow = LocalDateTime.now();
 		int currentHour = timeNow.getHour();
@@ -150,5 +157,39 @@ public class ReminderServiceImpl implements ReminderService {
 		}
 
 		return (long) delayInHours;
+	}
+
+	@Override
+	public ReminderEntity saveReminder(TutoringAppointmentEntity appointment) {
+
+		ReminderEntity reminder = new ReminderEntity();
+		reminder.setReminderDate(appointment.getTutoringAppointmentDate().minusDays(1l));
+		reminder.setReminderTutoringAppointment(appointment);
+		reminder.setReminderCreationDate(LocalDate.now().atStartOfDay());
+		reminder.setReminderUserEntity(appointment.getTutoringAppointmentUser());
+
+		ReminderEntity savedReminder = reminderEntityRepository.saveAndFlush(reminder);
+
+		return savedReminder != null ? savedReminder : null;
+	}
+
+	@Override
+	public ReminderEntity getReminderByTutoringAppointmentEntity(TutoringAppointmentEntity appointmentEntity) {
+		ReminderEntity reminderExample = new ReminderEntity();
+		reminderExample.setReminderTutoringAppointment(appointmentEntity);
+		Optional<ReminderEntity> optional = reminderEntityRepository.findOne(Example.of(reminderExample));
+		ReminderEntity loadedReminder = optional.isPresent() ? optional.get() : null;
+
+		return loadedReminder;
+	}
+
+	@Override
+	public List<ReminderEntity> getRemindersByTutoringAppointments(List<TutoringAppointmentEntity> appointments) {
+		List<Long> ids = appointments.stream().map(appointment -> appointment.getTutoringAppointmentNo())
+				.collect(Collectors.toList());
+		List<ReminderEntity> loadedReminders = reminderEntityRepository
+				.findByReminderTutoringAppointment_TutoringAppointmentNoIn(ids);
+
+		return loadedReminders;
 	}
 }

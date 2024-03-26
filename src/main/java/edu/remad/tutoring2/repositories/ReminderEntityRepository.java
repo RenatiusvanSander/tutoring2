@@ -7,13 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import edu.remad.tutoring2.models.ReminderEntity;
-import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
 @Repository
 public interface ReminderEntityRepository extends JpaRepository<ReminderEntity, Long> {
 
 	/**
-	 * Finds tutoring appointment's date
+	 * Finds reminders's date
 	 * 
 	 * @param date a date as instance of {@link LocalDateTime}
 	 * @return all tutoring appointment dates
@@ -23,11 +22,19 @@ public interface ReminderEntityRepository extends JpaRepository<ReminderEntity, 
 	}
 
 	/**
-	 * Finds tutoring appointments of the date
+	 * Finds reminders by the date
 	 * 
 	 * @param atStartOfDay start of given day
 	 * @param atEndOfDay end of given day
 	 * @return all found tutoring appointments between start of day and end of day
 	 */
 	List<ReminderEntity> findByReminderDateBetween(LocalDateTime atStartOfDay, LocalDateTime atEndOfDay);
+
+	/**
+	 * Finds Reminders by tutoring appointment number / id.
+	 * 
+	 * @param tutoringAppointmentNo tutoring appoint's number
+	 * @return found Reminders
+	 */
+	List<ReminderEntity> findByReminderTutoringAppointment_TutoringAppointmentNoIn(List<Long> tutoringAppointmentNo);
 }
