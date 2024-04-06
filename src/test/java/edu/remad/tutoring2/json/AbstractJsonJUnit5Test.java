@@ -28,7 +28,7 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 		JsonComponentModule jsonComponentModule = new JsonComponentModule();
 		jsonComponentModule.addDeserializer(ZipCodeEntity.class, new ZipCodeEntityDeserializer());
 		jsonComponentModule.addDeserializer(AddressEntity.class, new AddressEntityDeserializer(OBJECTMAPPER));
-		jsonComponentModule.addDeserializer(UserEntity.class, new UserEntityDeserializer());
+		jsonComponentModule.addDeserializer(UserEntity.class, new UserEntityDeserializer(OBJECTMAPPER));
 		
 		OBJECTMAPPER.registerModule(jsonComponentModule);
 		OBJECTMAPPER.registerModule(new JavaTimeModule());

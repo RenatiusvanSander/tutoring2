@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 import com.fasterxml.jackson.databind.deser.DeserializerFactory;
 
 import edu.remad.tutoring2.json.AbstractJsonJUnit5Test;
+import edu.remad.tutoring2.models.UserEntity;
 
 @SpringJUnitWebConfig(classes = { UserEntityDeserializerTest.Config.class })
 public class UserEntityDeserializerTest extends AbstractJsonJUnit5Test {
@@ -51,7 +52,8 @@ public class UserEntityDeserializerTest extends AbstractJsonJUnit5Test {
 		deserializer.setCodec(OBJECTMAPPER);
 		System.out.println(json);
 		
-		deserializer.deserialize(parser, context);
+		UserEntity actualUser = deserializer.deserialize(parser, context);
+		System.out.println(actualUser);
 	}
 	
 	private JsonParser createJsonPaser(String content) throws JsonParseException, IOException {
