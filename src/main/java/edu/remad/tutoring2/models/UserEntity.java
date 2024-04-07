@@ -30,10 +30,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "userentity")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 @Builder
 public class UserEntity {
 

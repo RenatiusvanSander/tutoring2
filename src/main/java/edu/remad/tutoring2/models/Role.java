@@ -1,6 +1,5 @@
 package edu.remad.tutoring2.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,14 +14,12 @@ import javax.validation.constraints.Pattern;
 import edu.remad.tutoring2.appconstants.RegexAppConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
 @Entity(name = "roles")
 public class Role {
@@ -35,5 +32,5 @@ public class Role {
 	private String name;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "roles")
-	private List<UserEntity> users = new ArrayList<>();
+	private List<UserEntity> users;
 }

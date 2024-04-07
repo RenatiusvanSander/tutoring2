@@ -4,43 +4,30 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.JsonParserDelegate;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.DeserializerFactoryConfig;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory;
-import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 import com.fasterxml.jackson.databind.deser.DeserializerFactory;
+import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 
 import edu.remad.tutoring2.json.AbstractJsonJUnit5Test;
-import edu.remad.tutoring2.models.UserEntity;
+import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
-@SpringJUnitWebConfig(classes = { UserEntityDeserializerTest.Config.class })
-public class UserEntityDeserializerTest extends AbstractJsonJUnit5Test {
-	
+
+public class TutoringAppointmentEntityDeserializerTest extends AbstractJsonJUnit5Test {
+
 	private String json;
-	
-	@Configuration
-	static class Config {
-		@Bean
-		public ObjectMapper objectMapper() {
-			return OBJECTMAPPER;
-		}
-	}
-	
+
 	@BeforeEach
 	public void setUp() throws JsonProcessingException {
-		json = OBJECTMAPPER.writeValueAsString(createUser());
+		TutoringAppointmentEntity tutoringAppointment = createAppointment();
+		json = OBJECTMAPPER.writeValueAsString(tutoringAppointment);
 	}
-	
+
 	@Test
 	public void test() throws JsonParseException, IOException {
 		JsonParserDelegate parser = new JsonParserDelegate(createJsonPaser(json));
@@ -48,11 +35,11 @@ public class UserEntityDeserializerTest extends AbstractJsonJUnit5Test {
 		DeserializerFactory deserializerFactory = new BeanDeserializerFactory(new DeserializerFactoryConfig());
 		DeserializationContext context = new Impl(deserializerFactory);
 		
-		UserEntityDeserializer deserializer = new UserEntityDeserializer();
+		TutoringAppointmentEntityDeserializer deserializer = new TutoringAppointmentEntityDeserializer();
 		deserializer.setCodec(OBJECTMAPPER);
-		System.out.println(json);
 		
-		UserEntity actualUser = deserializer.deserialize(parser, context);
-		System.out.println(actualUser);
+		deserializer.deserialize(parser, context);
+		
+		System.out.println(json);
 	}
 }

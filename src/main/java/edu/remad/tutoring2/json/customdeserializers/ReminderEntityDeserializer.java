@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -18,6 +19,7 @@ import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
+@JsonComponent
 public class ReminderEntityDeserializer extends StdDeserializer<ReminderEntity> {
 
 	@Autowired
@@ -45,6 +47,7 @@ public class ReminderEntityDeserializer extends StdDeserializer<ReminderEntity> 
 		TutoringAppointmentEntity reminderTutoringAppointment = objectMapper.readValue(appointment, TutoringAppointmentEntity.class);
 		LocalDateTime reminderDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderDate")).textValue());
 		LocalDateTime reminderCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderCreationDate")).textValue());
+		// TODO deserialize user
 		
 		ReminderEntity reminder = new ReminderEntity(reminderId, reminderTutoringAppointment, null, reminderDate, reminderCreationDate);
 

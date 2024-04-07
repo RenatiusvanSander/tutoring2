@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -25,6 +26,7 @@ import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.UserEntity;
 
+@JsonComponent
 public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 
 	/**

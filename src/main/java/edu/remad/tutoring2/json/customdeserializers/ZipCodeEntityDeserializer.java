@@ -26,6 +26,7 @@ public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
 	 * serial version UID
 	 */
 	private static final long serialVersionUID = -2015161933971036460L;
+	
 	@Autowired
 	private ObjectMapper objectMapper;
 	

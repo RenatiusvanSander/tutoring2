@@ -11,10 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import edu.remad.tutoring2.json.customdeserializers.ServiceContractEntityDeserializer;
-import edu.remad.tutoring2.json.customserializer.ServiceContractEntitySerializer;
 
 /**
  * Store data concerning the service contract we and customer committed and is
@@ -22,7 +20,7 @@ import edu.remad.tutoring2.json.customserializer.ServiceContractEntitySerializer
  */
 @Entity
 @Table(name = "service_contracts")
-@JsonSerialize(using = ServiceContractEntitySerializer.class)
+//@JsonSerialize(using = ServiceContractEntitySerializer.class)
 @JsonDeserialize(using = ServiceContractEntityDeserializer.class)
 public class ServiceContractEntity {
 

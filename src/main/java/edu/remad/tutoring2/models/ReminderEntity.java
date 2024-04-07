@@ -17,6 +17,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "reminder_entities")
+//@JsonSerialize(using = ReminderEntitySerializer.class)
+//@JsonDeserialize(using = ReminderEntityDeserializer.class)
 public class ReminderEntity {
 
 	/**

@@ -11,8 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import edu.remad.tutoring2.json.customdeserializers.AddressEntityDeserializer;
+
 @Entity
 @Table(name = "Address")
+//@JsonSerialize(using = AddressEntitySerializer.class)
+@JsonDeserialize(using = AddressEntityDeserializer.class)
 public class AddressEntity {
 
 	/**

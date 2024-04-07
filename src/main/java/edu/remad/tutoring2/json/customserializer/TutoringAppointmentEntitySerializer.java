@@ -2,6 +2,8 @@ package edu.remad.tutoring2.json.customserializer;
 
 import java.io.IOException;
 
+import org.springframework.boot.jackson.JsonComponent;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -9,7 +11,13 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
+@JsonComponent
 public class TutoringAppointmentEntitySerializer extends StdSerializer<TutoringAppointmentEntity> {
+
+	/**
+	 * serial version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public TutoringAppointmentEntitySerializer() {
 		this(null);
@@ -24,7 +32,7 @@ public class TutoringAppointmentEntitySerializer extends StdSerializer<TutoringA
 			throws IOException {
 		gen.writeStartObject();
 		gen.writeNumberField("tutoringAppointmentNo", value.getTutoringAppointmentNo());
-//		this.tutoringAppointmentUser = tutoringAppointmentUser;
+		gen.writeObjectField("tutoringAppointmentUser", value.getTutoringAppointmentUser());
 		gen.writeStringField("tutoringAppointmentDate", value.getTutoringAppointmentDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeStringField("tutoringAppointmentStartDateTime", value.getTutoringAppointmentStartDateTime().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeStringField("tutoringAppointmentEndDateTime", value.getTutoringAppointmentEndDateTime().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));

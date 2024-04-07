@@ -1,5 +1,6 @@
 package edu.remad.tutoring2.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,11 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import edu.remad.tutoring2.json.customdeserializers.ZipCodeEntityDeserializer;
+
 /**
  * Entity is concerning the zip code of a location.
  */
 @Entity
 @Table(name = "Zipcode")
+// @JsonSerialize(using = ZipCodeEntitySerializer.class)
+@JsonDeserialize(using = ZipCodeEntityDeserializer.class)
 public class ZipCodeEntity {
 
 	/**
@@ -71,22 +78,10 @@ public class ZipCodeEntity {
 	/**
 	 * Constructor
 	 *
-	 * @param zipCodeLocation location of belonging zip code
-	 */
-	public ZipCodeEntity(String zipCode, String zipCodeLocation, AddressEntity address) {
-		this.zipCode = zipCode;
-		this.zipCodeLocation = zipCodeLocation;
-		this.zipCodeCreationDate = null;
-		this.address = address;
-	}
-
-	/**
-	 * Constructor
-	 *
 	 * @param id                  zip code's identity
 	 * @param zipCode             zip code itself
 	 * @param zipCodeLocation     location of belonging zip code
-	 * @param zipCodeCreationDate creation time of the zip code
+	 * @param zipCodeCreationDate creation time of the zip code. When {@code null} date of today with start of day is set.
 	 * @param address             address of the zip code
 	 */
 	public ZipCodeEntity(Long id, String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate,
@@ -94,7 +89,7 @@ public class ZipCodeEntity {
 		this.id = id;
 		this.zipCode = zipCode;
 		this.zipCodeLocation = zipCodeLocation;
-		this.zipCodeCreationDate = zipCodeCreationDate;
+		this.zipCodeCreationDate = zipCodeCreationDate != null ? zipCodeCreationDate : LocalDate.now().atStartOfDay().plusHours(0);
 		this.address = address;
 	}
 

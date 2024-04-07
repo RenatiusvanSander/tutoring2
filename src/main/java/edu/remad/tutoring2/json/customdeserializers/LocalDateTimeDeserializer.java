@@ -12,10 +12,11 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 
+// TODO delete
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 
 	/**
-	 * 
+	 * serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
 

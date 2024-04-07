@@ -8,9 +8,11 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
@@ -60,7 +62,6 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 		String zipCodeLocation = ((TextNode) zipNode.get("zipCodeLocation")).textValue();
 
 		TreeNode creationDate = zipNode.get("zipCodeCreationDate");
-
 		LocalDateTime zipCodeCreationDate = null;
 		if (creationDate instanceof TextNode) {
 			zipCodeCreationDate = JsonBaseDeserializerHelper
@@ -70,13 +71,20 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 			zipCodeCreationDate = LocalDateTime.of(date.get(0).asInt(), date.get(1).asInt(), date.get(3).asInt(),
 					date.get(2).asInt(), date.get(4).asInt());
 		}
-
 		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate, null);
-
 		AddressEntity address = new AddressEntity(id, addressStreet, addressHouseNo, zip);
-
 		zip.setAddress(address);
 
 		return address;
+	}
+	
+	/**
+	 * Sets Codec
+	 * 
+	 * @param c {@link ObjectCodec} shalls be {@link ObjectMapper} or
+	 *          {@link ObjectReader}
+	 */
+	public void setCodec(ObjectCodec c) {
+		objectMapper = (ObjectMapper) c;
 	}
 }

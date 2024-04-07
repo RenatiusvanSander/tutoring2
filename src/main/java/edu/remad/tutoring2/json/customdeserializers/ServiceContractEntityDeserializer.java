@@ -3,6 +3,8 @@ package edu.remad.tutoring2.json.customdeserializers;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import org.springframework.boot.jackson.JsonComponent;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ServiceContractEntity;
 
+@JsonComponent
 public class ServiceContractEntityDeserializer extends StdDeserializer<ServiceContractEntity> {
 	
 	/**
