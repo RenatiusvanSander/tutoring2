@@ -5,6 +5,8 @@ import java.util.List;
 
 import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.Role;
+import edu.remad.tutoring2.models.TokenEntity;
+import edu.remad.tutoring2.models.TokenType;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.models.ZipCodeEntity;
@@ -43,14 +45,19 @@ public abstract class AbstractJunit5Test {
 		user.setPassword("MusterCity");
 		List<AddressEntity> address = List.of(createAddress());
 		user.setAddresses(address);
-		Role role = new Role();
-		role.setId(1);
-		role.setName("Admin");
-		List<Role> roles = List.of(role);
+		List<Role> roles = List.of(createRole());
 		user.setRoles(roles);
 		user.setEnabled(true);
 		
 		return user;
+	}
+
+	private Role createRole() {
+		Role role = new Role();
+		role.setId(1);
+		role.setName("Admin");
+		role.setUsers(List.of(new UserEntity()));
+		return role;
 	}
 	
 	protected AddressEntity createAddress() {
@@ -70,5 +77,9 @@ public abstract class AbstractJunit5Test {
 		zipCode.setZipCodeCreationDate(LocalDateTime.of(2024, 3, 10, 21, 0));
 		
 		return zipCode;
+	}
+	
+	protected TokenEntity createToken() {
+		return new TokenEntity(103L, "token", TokenType.BEARER, false, false, createUser());
 	}
 }

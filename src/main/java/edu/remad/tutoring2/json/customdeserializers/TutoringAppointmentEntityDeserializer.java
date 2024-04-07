@@ -32,6 +32,14 @@ public class TutoringAppointmentEntityDeserializer extends StdDeserializer<Tutor
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+
 	public TutoringAppointmentEntityDeserializer() {
 		this(TutoringAppointmentEntity.class);
 	}

@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 import edu.remad.tutoring2.json.AbstractJsonJUnit5Test;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
-
 public class TutoringAppointmentEntityDeserializerTest extends AbstractJsonJUnit5Test {
 
 	private String json;
@@ -26,6 +25,7 @@ public class TutoringAppointmentEntityDeserializerTest extends AbstractJsonJUnit
 	public void setUp() throws JsonProcessingException {
 		TutoringAppointmentEntity tutoringAppointment = createAppointment();
 		json = OBJECTMAPPER.writeValueAsString(tutoringAppointment);
+		System.out.println(json);
 	}
 
 	@Test
@@ -38,8 +38,8 @@ public class TutoringAppointmentEntityDeserializerTest extends AbstractJsonJUnit
 		TutoringAppointmentEntityDeserializer deserializer = new TutoringAppointmentEntityDeserializer();
 		deserializer.setCodec(OBJECTMAPPER);
 		
-		deserializer.deserialize(parser, context);
+		TutoringAppointmentEntity actualAppointment = deserializer.deserialize(parser, context);
 		
-		System.out.println(json);
+		System.out.println(actualAppointment);
 	}
 }

@@ -1,0 +1,34 @@
+package edu.remad.tutoring2.json.customdeserializers;
+
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.remad.tutoring2.models.TokenEntity;
+
+public class TokenEntityDeserializer extends Tutoring2Deserializer<TokenEntity> {
+
+	/**
+	 * generated serial version UID
+	 */
+	private static final long serialVersionUID = -4076590352948105441L;
+
+	public TokenEntityDeserializer(ObjectMapper objectMapper) {
+		super(TokenEntity.class, objectMapper);
+	}
+
+	@Override
+	public TokenEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+		if(p.getCodec() == null) {
+			p.setCodec(objectMapper);
+		}
+		
+		TreeNode node = p.getCodec().readTree(p);
+		
+		return new TokenEntity();
+	}
+}

@@ -8,9 +8,11 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -31,7 +33,12 @@ public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
 	private ObjectMapper objectMapper;
 	
 	public ZipCodeEntityDeserializer() {
-		this(null);
+		this(ZipCodeEntity.class);
+	}
+	
+	public ZipCodeEntityDeserializer(ObjectMapper objectMapper) {
+		this(ZipCodeEntity.class);
+		this.objectMapper = objectMapper;
 	}
 	
 	public ZipCodeEntityDeserializer(Class<?> vc) {
@@ -51,5 +58,15 @@ public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
 		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate, address);
 		
 		return zip;
+	}
+	
+	/**
+	 * Sets Codec
+	 * 
+	 * @param c {@link ObjectCodec} shalls be {@link ObjectMapper} or
+	 *          {@link ObjectReader}
+	 */
+	public void setCodec(ObjectCodec c) {
+		objectMapper = (ObjectMapper) c;
 	}
 }

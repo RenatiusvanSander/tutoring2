@@ -37,6 +37,14 @@ public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+
 	/**
 	 * Constructor
 	 */
@@ -60,6 +68,10 @@ public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 
 	@Override
 	public UserEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+		if (p.getCodec() == null) {
+			p.setCodec(objectMapper);
+		}
+		
 		TreeNode node = p.getCodec().readTree(p);
 		Long id = ((IntNode) node.get("id")).asLong();
 		String username = ((TextNode) node.get("username")).textValue();
