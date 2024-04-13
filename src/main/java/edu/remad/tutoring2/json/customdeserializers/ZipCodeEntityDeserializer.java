@@ -3,17 +3,13 @@ package edu.remad.tutoring2.json.customdeserializers;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -21,23 +17,19 @@ import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ZipCodeEntity;
 
 @JsonComponent
-public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
+public class ZipCodeEntityDeserializer extends AbstractGenericTutoring2Deserializer<ZipCodeEntity> {
 
 	/**
 	 * serial version UID
 	 */
 	private static final long serialVersionUID = -2015161933971036460L;
 	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	public ZipCodeEntityDeserializer() {
-		this(ZipCodeEntity.class);
+		super(ZipCodeEntity.class);
 	}
 	
 	public ZipCodeEntityDeserializer(ObjectMapper objectMapper) {
-		this(ZipCodeEntity.class);
-		this.objectMapper = objectMapper;
+		super(ZipCodeEntity.class, objectMapper);
 	}
 	
 	public ZipCodeEntityDeserializer(Class<?> vc) {
@@ -58,15 +50,5 @@ public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
 		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate);
 		
 		return zip;
-	}
-	
-	/**
-	 * Sets Codec
-	 * 
-	 * @param c {@link ObjectCodec} shalls be {@link ObjectMapper} or
-	 *          {@link ObjectReader}
-	 */
-	public void setCodec(ObjectCodec c) {
-		objectMapper = (ObjectMapper) c;
 	}
 }

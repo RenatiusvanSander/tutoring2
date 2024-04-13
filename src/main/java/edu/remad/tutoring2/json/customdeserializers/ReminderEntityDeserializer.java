@@ -3,7 +3,6 @@ package edu.remad.tutoring2.json.customdeserializers;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -20,10 +18,7 @@ import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
 @JsonComponent
-public class ReminderEntityDeserializer extends StdDeserializer<ReminderEntity> {
-
-	@Autowired
-	private ObjectMapper objectMapper;
+public class ReminderEntityDeserializer extends AbstractGenericTutoring2Deserializer<ReminderEntity> {
 
 	/**
 	 * serial version UID
@@ -31,7 +26,11 @@ public class ReminderEntityDeserializer extends StdDeserializer<ReminderEntity> 
 	private static final long serialVersionUID = 1L;
 
 	public ReminderEntityDeserializer() {
-		this(null);
+		super(ReminderEntity.class);
+	}
+	
+	public ReminderEntityDeserializer(ObjectMapper objectMapper) {
+		super(ReminderEntity.class, objectMapper);
 	}
 
 	public ReminderEntityDeserializer(Class<?> vc) {
@@ -40,6 +39,9 @@ public class ReminderEntityDeserializer extends StdDeserializer<ReminderEntity> 
 
 	@Override
 	public ReminderEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+		if(p.getCodec() == null) {
+			p.setCodec(objectMapper);
+		}
 		TreeNode node = p.getCodec().readTree(p);
 		
 		Long reminderId = ((IntNode)node.get("reminderNo")).asLong();

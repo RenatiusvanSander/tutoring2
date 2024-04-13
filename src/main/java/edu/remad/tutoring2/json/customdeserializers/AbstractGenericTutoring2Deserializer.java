@@ -1,11 +1,13 @@
 package edu.remad.tutoring2.json.customdeserializers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-public abstract class Tutoring2Deserializer<T> extends StdDeserializer<T> {
+public abstract class AbstractGenericTutoring2Deserializer<T> extends StdDeserializer<T> {
 	
 	/**
 	 * serial version UID
@@ -15,16 +17,17 @@ public abstract class Tutoring2Deserializer<T> extends StdDeserializer<T> {
 	/**
 	 * Jackson's {@link ObjectMapper}
 	 */
+	@Autowired
 	protected ObjectMapper objectMapper;
 	
 	// protected final JsonBaseDeserializerHelper deserializerHelper;
 	
-	protected Tutoring2Deserializer(Class<?> vc) {
+	protected AbstractGenericTutoring2Deserializer(Class<?> vc) {
 		super(vc);
 		// deserializerHelper = new JsonBaseDeserializerHelper();
 	}
 	
-	protected Tutoring2Deserializer(Class<?> vc, ObjectMapper objectMapper) {
+	protected AbstractGenericTutoring2Deserializer(Class<?> vc, ObjectMapper objectMapper) {
 		super(vc);
 		this.objectMapper = objectMapper;
 		// deserializerHelper = new JsonBaseDeserializerHelper();

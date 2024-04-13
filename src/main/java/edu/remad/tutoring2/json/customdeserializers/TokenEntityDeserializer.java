@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.remad.tutoring2.models.TokenEntity;
 
 @JsonComponent
-public class TokenEntityDeserializer extends Tutoring2Deserializer<TokenEntity> {
+public class TokenEntityDeserializer extends AbstractGenericTutoring2Deserializer<TokenEntity> {
 
 	/**
 	 * generated serial version UID
@@ -21,11 +21,15 @@ public class TokenEntityDeserializer extends Tutoring2Deserializer<TokenEntity> 
 	private static final long serialVersionUID = -4076590352948105441L;
 
 	public TokenEntityDeserializer() {
-		super(TokenEntity.class, null );
+		super(TokenEntity.class);
 	}
 	
 	public TokenEntityDeserializer(ObjectMapper objectMapper) {
 		super(TokenEntity.class, objectMapper);
+	}
+	
+	public TokenEntityDeserializer(Class<?> vc) {
+		super(vc);
 	}
 
 	@Override

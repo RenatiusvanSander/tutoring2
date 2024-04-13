@@ -5,18 +5,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
@@ -27,34 +24,27 @@ import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.UserEntity;
 
 @JsonComponent
-public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
+public class UserEntityDeserializer extends AbstractGenericTutoring2Deserializer<UserEntity> {
 
 	/**
 	 * serial version UID
 	 */
 	private static final long serialVersionUID = 70275258098187301L;
 
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	public ObjectMapper getObjectMapper() {
-		return objectMapper;
-	}
-
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
 	/**
 	 * Constructor
 	 */
 	public UserEntityDeserializer() {
-		this(UserEntity.class);
+		super(UserEntity.class);
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param objectMapper object mapper bean
+	 */
 	public UserEntityDeserializer(ObjectMapper objectMapper) {
-		this(UserEntity.class);
-		this.objectMapper = objectMapper;
+		super(UserEntity.class, objectMapper);
 	}
 
 	/**
@@ -104,15 +94,5 @@ public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 				firstName, lastName, gender, cellPhone, addresses, creationDate);
 
 		return user;
-	}
-
-	/**
-	 * Sets Codec
-	 * 
-	 * @param c {@link ObjectCodec} shalls be {@link ObjectMapper} or
-	 *          {@link ObjectReader}
-	 */
-	public void setCodec(ObjectCodec c) {
-		objectMapper = (ObjectMapper) c;
 	}
 }

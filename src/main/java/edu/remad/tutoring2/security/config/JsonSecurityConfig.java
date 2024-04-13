@@ -37,13 +37,14 @@ public class JsonSecurityConfig {
 		mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		mapper.registerModule(new JavaTimeModule());
 		JsonComponentModule jsonComponentModule = new JsonComponentModule();
-		jsonComponentModule.addDeserializer(ServiceContractEntity.class, new ServiceContractEntityDeserializer());
-		jsonComponentModule.addDeserializer(TutoringAppointmentEntity.class, new TutoringAppointmentEntityDeserializer());
+		jsonComponentModule.addDeserializer(ServiceContractEntity.class, new ServiceContractEntityDeserializer(mapper));
+		jsonComponentModule.addDeserializer(TutoringAppointmentEntity.class, new TutoringAppointmentEntityDeserializer(mapper));
 		jsonComponentModule.addDeserializer(UserEntity.class, new UserEntityDeserializer(mapper));
-		jsonComponentModule.addDeserializer(AddressEntity.class, new AddressEntityDeserializer());
-		jsonComponentModule.addDeserializer(ZipCodeEntity.class, new ZipCodeEntityDeserializer());
-		jsonComponentModule.addDeserializer(TokenEntity.class, new TokenEntityDeserializer());
-		jsonComponentModule.addDeserializer(Role.class, new RoleDeserializer());
+		jsonComponentModule.addDeserializer(AddressEntity.class, new AddressEntityDeserializer(mapper));
+		jsonComponentModule.addDeserializer(ZipCodeEntity.class, new ZipCodeEntityDeserializer(mapper));
+		jsonComponentModule.addDeserializer(TokenEntity.class, new TokenEntityDeserializer(mapper));
+		jsonComponentModule.addDeserializer(Role.class, new RoleDeserializer(mapper));
+		
 		jsonComponentModule.addSerializer(ServiceContractEntity.class, new ServiceContractEntitySerializer());
 		jsonComponentModule.addSerializer(TutoringAppointmentEntity.class, new TutoringAppointmentEntitySerializer());		
 		mapper.registerModule(jsonComponentModule);

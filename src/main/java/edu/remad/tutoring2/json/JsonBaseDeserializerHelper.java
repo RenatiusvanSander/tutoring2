@@ -1,5 +1,6 @@
 package edu.remad.tutoring2.json;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +18,8 @@ public final class JsonBaseDeserializerHelper {
 	}
 	
 	public static LocalDateTime convertToLocalDateTimeAsDate(String json) {
-		return LocalDateTime.parse(json, TimeAppConstants.DATE_FORMATTER);
+		LocalDate localDate = LocalDate.parse(json, TimeAppConstants.DATE_FORMATTER);
+		return LocalDateTime.of(localDate, LocalDateTime.now().toLocalTime());
 	}
 	
 	public static ObjectReader createRolesReader(ObjectMapper objectMapper) {

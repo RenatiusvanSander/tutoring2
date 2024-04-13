@@ -15,12 +15,15 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.repositories.TutoringAppointmentEntityRepository;
 import edu.remad.tutoring2.services.TutoringAppointmentService;
 
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service
 public class TutoringAppointmentServiceImpl implements TutoringAppointmentService {
 
@@ -166,6 +169,14 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 
 		if (validated(tutoringAppointment)) {
 			savedAppointment = tutAppointmentEntityRepository.saveAndFlush(tutoringAppointment);
+			savedAppointment.getTutoringAppointmentCreationDate();
+			savedAppointment.getTutoringAppointmentDate();
+			savedAppointment.getTutoringAppointmentEndDateTime();
+			savedAppointment.getTutoringAppointmentNo();
+			savedAppointment.getTutoringAppointmentStartDateTime();
+			savedAppointment.getTutoringAppointmentUser();
+			savedAppointment.getTutoringAppointmentUser().getAddresses().get(0);
+			savedAppointment.getTutoringAppointmentUser().getRoles().get(0);
 			cache.add(savedAppointment.getTutoringAppointmentNo(), savedAppointment);
 		}
 

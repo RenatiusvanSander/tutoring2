@@ -8,12 +8,9 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -24,7 +21,7 @@ import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.ZipCodeEntity;
 
 @JsonComponent
-public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
+public class AddressEntityDeserializer extends AbstractGenericTutoring2Deserializer<AddressEntity> {
 
 	/**
 	 * serial version UID
@@ -32,12 +29,8 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private ObjectMapper objectMapper;
-
-	@Autowired
 	public AddressEntityDeserializer(ObjectMapper objectMapper) {
-		super(AddressEntity.class);
-		this.objectMapper = objectMapper;
+		super(AddressEntity.class, objectMapper);
 	}
 
 	public AddressEntityDeserializer() {
@@ -78,15 +71,5 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 		AddressEntity address = new AddressEntity(id, addressStreet, addressHouseNo, zip);
 
 		return address;
-	}
-	
-	/**
-	 * Sets Codec
-	 * 
-	 * @param c {@link ObjectCodec} shalls be {@link ObjectMapper} or
-	 *          {@link ObjectReader}
-	 */
-	public void setCodec(ObjectCodec c) {
-		objectMapper = (ObjectMapper) c;
 	}
 }
