@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
-import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.ZipCodeEntity;
 
 @JsonComponent
@@ -47,15 +46,16 @@ public class ZipCodeEntityDeserializer extends StdDeserializer<ZipCodeEntity> {
 
 	@Override
 	public ZipCodeEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+		if(p.getCodec() == null) {
+			p.setCodec(objectMapper);
+		}
 		TreeNode node = p.getCodec().readTree(p);
 		
 		Long zipId = ((IntNode)node.get("id")).asLong();
 		String zipCode = ((TextNode)node.get("zipCode")).textValue();
 		String zipCodeLocation = ((TextNode)node.get("zipCodeLocation")).textValue();
-		LocalDateTime zipCodeCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("zipCodeCreationDate")).textValue());
-		AddressEntity address = objectMapper.readValue(node.get("address").traverse(), AddressEntity.class);
-		
-		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate, address);
+		LocalDateTime zipCodeCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTimeAsDate(((TextNode)node.get("zipCodeCreationDate")).textValue());
+		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate);
 		
 		return zip;
 	}

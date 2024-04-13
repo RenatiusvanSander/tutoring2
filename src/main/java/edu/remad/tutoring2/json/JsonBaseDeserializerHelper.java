@@ -16,6 +16,10 @@ public final class JsonBaseDeserializerHelper {
 	    return LocalDateTime.parse(json, TimeAppConstants.LOCAL_DATE_TIME_FORMATTER);
 	}
 	
+	public static LocalDateTime convertToLocalDateTimeAsDate(String json) {
+		return LocalDateTime.parse(json, TimeAppConstants.DATE_FORMATTER);
+	}
+	
 	public static ObjectReader createRolesReader(ObjectMapper objectMapper) {
 		return objectMapper.readerFor(new TypeReference<List<Role>>() {});
 	}

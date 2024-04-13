@@ -50,6 +50,9 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 
 	@Override
 	public AddressEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+		if(p.getCodec() == null) {
+			p.setCodec(objectMapper);
+		}
 		TreeNode node = p.getCodec().readTree(p);
 
 		Long id = ((IntNode) node.get("id")).asLong();
@@ -65,15 +68,14 @@ public class AddressEntityDeserializer extends StdDeserializer<AddressEntity> {
 		LocalDateTime zipCodeCreationDate = null;
 		if (creationDate instanceof TextNode) {
 			zipCodeCreationDate = JsonBaseDeserializerHelper
-					.convertToLocalDateTime(((TextNode) creationDate).textValue());
+					.convertToLocalDateTimeAsDate(((TextNode) creationDate).textValue());
 		} else {
 			ArrayNode date = (ArrayNode) creationDate;
 			zipCodeCreationDate = LocalDateTime.of(date.get(0).asInt(), date.get(1).asInt(), date.get(3).asInt(),
 					date.get(2).asInt(), date.get(4).asInt());
 		}
-		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate, null);
+		ZipCodeEntity zip = new ZipCodeEntity(zipId, zipCode, zipCodeLocation, zipCodeCreationDate);
 		AddressEntity address = new AddressEntity(id, addressStreet, addressHouseNo, zip);
-		zip.setAddress(address);
 
 		return address;
 	}

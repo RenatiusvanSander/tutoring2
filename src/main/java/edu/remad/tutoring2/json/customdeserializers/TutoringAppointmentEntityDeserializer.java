@@ -64,7 +64,9 @@ public class TutoringAppointmentEntityDeserializer extends StdDeserializer<Tutor
 		LocalDateTime tutoringAppointmentEndDateTime = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentEndDateTime")).textValue());
 		LocalDateTime tutoringAppointmentCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("tutoringAppointmentCreationDate")).textValue());
 		
-		UserEntity user = objectMapper.readValue(node.get("tutoringAppointmentUser").traverse(), UserEntity.class);
+		JsonParser parser = node.get("tutoringAppointmentUser").traverse();
+		parser.setCodec(objectMapper);
+		UserEntity user = objectMapper.readValue(parser, UserEntity.class);
 		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity(tutoringAppointmentNo, user, tutoringAppointmentDate, tutoringAppointmentStartDateTime, tutoringAppointmentEndDateTime, tutoringAppointmentCreationDate );
 		
 		return appointment;

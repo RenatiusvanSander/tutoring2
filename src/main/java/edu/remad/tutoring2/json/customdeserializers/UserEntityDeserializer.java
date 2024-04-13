@@ -71,7 +71,7 @@ public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 		if (p.getCodec() == null) {
 			p.setCodec(objectMapper);
 		}
-		
+
 		TreeNode node = p.getCodec().readTree(p);
 		Long id = ((IntNode) node.get("id")).asLong();
 		String username = ((TextNode) node.get("username")).textValue();
@@ -97,7 +97,7 @@ public class UserEntityDeserializer extends StdDeserializer<UserEntity> {
 					arr.get(2).asInt(), arr.get(4).asInt());
 		} else {
 			creationDate = JsonBaseDeserializerHelper
-					.convertToLocalDateTime(((TextNode) node.get("creationDate")).textValue());
+					.convertToLocalDateTimeAsDate(((TextNode) node.get("creationDate")).textValue());
 		}
 
 		UserEntity user = new UserEntity(id, username, email, password, enabled, new ArrayList<>(), new ArrayList<>(),

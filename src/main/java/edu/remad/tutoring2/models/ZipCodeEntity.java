@@ -4,14 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -50,9 +47,6 @@ public class ZipCodeEntity {
 	@Column(name = "zip_code_creation_date", columnDefinition = "TIMESTAMP")
 	private LocalDateTime zipCodeCreationDate;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private AddressEntity address;
-
 	/**
 	 * Constructor
 	 */
@@ -65,14 +59,11 @@ public class ZipCodeEntity {
 	 * @param zipCode             zip code itself
 	 * @param zipCodeLocation     location of belonging zip code
 	 * @param zipCodeCreationDate creation time of the zip code
-	 * @param address             address of the zip code
 	 */
-	public ZipCodeEntity(String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate,
-			AddressEntity address) {
+	public ZipCodeEntity(String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate) {
 		this.zipCode = zipCode;
 		this.zipCodeLocation = zipCodeLocation;
 		this.zipCodeCreationDate = zipCodeCreationDate;
-		this.address = address;
 	}
 
 	/**
@@ -82,15 +73,12 @@ public class ZipCodeEntity {
 	 * @param zipCode             zip code itself
 	 * @param zipCodeLocation     location of belonging zip code
 	 * @param zipCodeCreationDate creation time of the zip code. When {@code null} date of today with start of day is set.
-	 * @param address             address of the zip code
 	 */
-	public ZipCodeEntity(Long id, String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate,
-			AddressEntity address) {
+	public ZipCodeEntity(Long id, String zipCode, String zipCodeLocation, LocalDateTime zipCodeCreationDate) {
 		this.id = id;
 		this.zipCode = zipCode;
 		this.zipCodeLocation = zipCodeLocation;
 		this.zipCodeCreationDate = zipCodeCreationDate != null ? zipCodeCreationDate : LocalDate.now().atStartOfDay().plusHours(0);
-		this.address = address;
 	}
 
 	public String getZipCode() {
@@ -108,8 +96,7 @@ public class ZipCodeEntity {
 	 * @return zip code
 	 */
 	public static ZipCodeEntity from(ZipCodeEntity zipCode) {
-		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation(), zipCode.getZipCodeCreationDate(),
-				zipCode.getAddress());
+		return new ZipCodeEntity(zipCode.getZipCode(), zipCode.getZipCodeLocation(), zipCode.getZipCodeCreationDate());
 	}
 
 	/**
@@ -164,14 +151,6 @@ public class ZipCodeEntity {
 	 */
 	public void setZipCodeCreationDate(LocalDateTime zipCodeCreationDate) {
 		this.zipCodeCreationDate = zipCodeCreationDate;
-	}
-
-	public AddressEntity getAddress() {
-		return address;
-	}
-
-	public void setAddress(AddressEntity address) {
-		this.address = address;
 	}
 
 	@Override

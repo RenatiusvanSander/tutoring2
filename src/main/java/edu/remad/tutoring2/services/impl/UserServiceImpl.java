@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
 		zipCode.setZipCode(registrationDto.getZipCode());
 		zipCode.setZipCodeLocation(registrationDto.getZipCodeLocation());
 		zipCode.setZipCodeCreationDate(registrationDto.getZipCodeCreationDate());
-		zipCode.setAddress(address);
 		address.setAddressZipCode(zipCode);
 		
 		List<AddressEntity> addresses = Arrays.asList(address);

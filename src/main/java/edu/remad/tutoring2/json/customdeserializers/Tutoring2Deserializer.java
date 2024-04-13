@@ -12,6 +12,9 @@ public abstract class Tutoring2Deserializer<T> extends StdDeserializer<T> {
 	 */
 	protected static final long serialVersionUID = 1L;
 	
+	/**
+	 * Jackson's {@link ObjectMapper}
+	 */
 	protected ObjectMapper objectMapper;
 	
 	// protected final JsonBaseDeserializerHelper deserializerHelper;
