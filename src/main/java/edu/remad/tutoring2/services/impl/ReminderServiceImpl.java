@@ -48,10 +48,14 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	private void initSchedulerPool() {
-		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 0L, TimeUnit.HOURS,
+		ReminderServiceEmailSendTask emailSendTask = new ReminderServiceEmailSendTask(this, 30L, TimeUnit.SECONDS,
 				emailService);
-		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask,
+		RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask, 30l,
+				30l, TimeUnit.SECONDS);
+		/*
+		 RunnableScheduledFuture<?> task = (RunnableScheduledFuture<?>) scheduler.scheduleAtFixedRate(emailSendTask,
 				calculateDelayTo5Am(), TimeAppConstants.TIME_PERIOD_DAY_IN_HOURS, TimeUnit.HOURS);
+		 */
 		scheduledTasks.add(task);
 	}
 
@@ -217,5 +221,10 @@ public class ReminderServiceImpl implements ReminderService {
 		ReminderEntity updatedReminder = reminderEntityRepository.saveAndFlush(loadedReminder);
 
 		return updatedReminder;
+	}
+
+	@Override
+	public List<ReminderEntity> getAllReminders() {
+		return reminderEntityRepository.findAll();
 	}
 }

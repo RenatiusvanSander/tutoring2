@@ -52,14 +52,15 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 		boolean hasToRun = true;
 		
 		while (!isToCancel && hasToRun) {
-			List<ReminderEntity> reminders = reminderService.getAllRemindersOfCurrentDate(LocalDate.now().atStartOfDay());
+			List<ReminderEntity> reminders = reminderService.getAllReminders();
+//					reminderService.getAllRemindersOfCurrentDate(LocalDate.now().atStartOfDay());
 			try {
 				for (ReminderEntity reminder : reminders) {
 					String subject = TemplateAppConstants.REMINDER_EMAIL_VALUE_SUBJECT_TEXT
 							+ reminder.getReminderDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER);
 					Map<String, Object> templateModel = generateTemplateModel(reminder, subject);
 					emailService.sendMessageUsingFreemarkerTemplate(reminder.getReminderUserEntity().getEmail(),
-							TemplateAppConstants.TEMPLATE_REMINDER_SERVICE_EMAIL_SEND_TASK, subject, templateModel);
+							subject, TemplateAppConstants.TEMPLATE_REMINDER_SERVICE_EMAIL_SEND_TASK, templateModel);
 				}
 			} catch (OperationNotSupportedException | IOException | TemplateException | MessagingException e) {
 				throw new RuntimeException();
@@ -82,7 +83,7 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 
 	private Map<String, Object> generateTemplateModel(ReminderEntity reminder, String subject) {
 		Map<String, Object> templateModel = new HashMap<>();
-		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_VALUE_SUBJECT_TEXT, subject);
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_SUBJECT, subject);
 		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_USERNAME,
 				reminder.getReminderUserEntity().getUsername());
 		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_START_TIME,
@@ -91,6 +92,7 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_END_TIME,
 				reminder.getReminderTutoringAppointment().getTutoringAppointmentEndDateTime()
 						.format(TimeAppConstants.TIME_FORMATTER));
+		templateModel.put(TemplateAppConstants.REMINDER_EMAIL_ATTRIBUTE_TUTORING_DATE, reminder.getReminderTutoringAppointment().getTutoringAppointmentDate().format(TimeAppConstants.DATE_FORMATTER));
 		
 		return templateModel;
 	}

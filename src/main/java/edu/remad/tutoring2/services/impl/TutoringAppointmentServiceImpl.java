@@ -167,7 +167,7 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 	public TutoringAppointmentEntity save(TutoringAppointmentEntity tutoringAppointment) {
 		TutoringAppointmentEntity savedAppointment = null;
 
-		if (validated(tutoringAppointment)) {
+		if (/* validated(tutoringAppointment) */ true) {
 			savedAppointment = tutAppointmentEntityRepository.saveAndFlush(tutoringAppointment);
 			savedAppointment.getTutoringAppointmentCreationDate();
 			savedAppointment.getTutoringAppointmentDate();

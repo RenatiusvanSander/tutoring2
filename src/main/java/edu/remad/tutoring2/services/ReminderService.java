@@ -45,5 +45,7 @@ public interface ReminderService {
 
 	void deleteRemindersByTutoringAppointments(List<TutoringAppointmentEntity> tutoringAppointments);
 
-	ReminderEntity updateReminder(TutoringAppointmentEntity updatedAppointment); 
+	ReminderEntity updateReminder(TutoringAppointmentEntity updatedAppointment);
+	
+	List<ReminderEntity> getAllReminders();
 }
