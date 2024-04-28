@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import edu.remad.ical4jbuilder.models.ZipCode;
 import edu.remad.tutoring2.json.customdeserializers.ZipCodeEntityDeserializer;
 
 /**
@@ -22,7 +23,7 @@ import edu.remad.tutoring2.json.customdeserializers.ZipCodeEntityDeserializer;
 @Table(name = "Zipcode")
 // @JsonSerialize(using = ZipCodeEntitySerializer.class)
 @JsonDeserialize(using = ZipCodeEntityDeserializer.class)
-public class ZipCodeEntity {
+public class ZipCodeEntity implements ZipCode {
 
 	/**
 	 * primary key for the zip code

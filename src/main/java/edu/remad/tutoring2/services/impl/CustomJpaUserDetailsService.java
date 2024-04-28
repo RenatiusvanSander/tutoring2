@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.remad.ical4jbuilder.models.IRole;
 import edu.remad.tutoring2.models.Role;
 import edu.remad.tutoring2.models.UserEntity;
 import edu.remad.tutoring2.repositories.UserEntityRepository;
@@ -33,7 +34,7 @@ public class CustomJpaUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userEntityRepository.findFirstByUsername(username);
 		user.getRoles().get(0);
-		List<Role> userRoles = user.getRoles();
+		List<IRole> userRoles = user.getRoles();
 
 		System.out.println("##### User is " + user);
 

@@ -3,6 +3,8 @@ package edu.remad.tutoring2.controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import edu.remad.ical4jbuilder.models.Address;
+import edu.remad.ical4jbuilder.models.IRole;
 import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.Role;
 import edu.remad.tutoring2.models.TokenEntity;
@@ -43,20 +45,21 @@ public abstract class AbstractJunit5Test {
 		user.setUsername("mustermann");
 		user.setId(3l);
 		user.setPassword("MusterCity");
-		List<AddressEntity> address = List.of(createAddress());
+		List<Address> address = List.of(createAddress());
 		user.setAddresses(address);
-		List<Role> roles = List.of(createRole());
+		List<IRole> roles = List.of(createRole());
 		user.setRoles(roles);
 		user.setEnabled(true);
 		
 		return user;
 	}
 
-	private Role createRole() {
+	private IRole createRole() {
 		Role role = new Role();
 		role.setId(1);
 		role.setName("Admin");
 		role.setUsers(List.of(new UserEntity()));
+		
 		return role;
 	}
 	
