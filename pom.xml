@@ -245,6 +245,14 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<!-- start of own implementations -->
+		<dependency>
+			<groupId>edu.remad</groupId>
+			<artifactId>ical4j-builder</artifactId>
+			<version>1.0.3-SNAPSHOT</version>
+		</dependency>
+		<!-- end of own implementation -->
 	</dependencies>
 	<!-- ################### -->
 	<!-- end of dependencies -->
