@@ -1,7 +1,6 @@
 package edu.remad.tutoring2.services.impl;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -10,11 +9,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.naming.OperationNotSupportedException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,11 +21,8 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import edu.remad.tutoring2.services.EmailService;
 import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
-import freemarker.core.ParseException;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 
 @Service
 @Primary
@@ -85,33 +79,16 @@ public class EmailServiceImpl implements EmailService {
 		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
 		
 		String from = env.getSmtpUsername();
-		sendHtmlMailWithAttachmnent(from, to, subject, html, null, null);
+		sendHtmlMail(from, to, subject, html);
 	}
 	
-	private void sendHtmlMailWithAttachmnent(String from, String to, String subject, String htmlBody, String fileNameAndFileExtension, ByteArrayResource fileContent) throws MessagingException {
+	private void sendHtmlMail(String from, String to, String subject, String htmlBody) throws MessagingException {
 	    MimeMessage message = mailSender.createMimeMessage();
-	    MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+	    MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 	    helper.setFrom(from);
 	    helper.setTo(to);
 	    helper.setSubject(subject);
 	    helper.setText(htmlBody, true);
-	    
-	    if(StringUtils.isNotBlank(fileNameAndFileExtension) && fileContent.contentLength() > 0) {
-	    	helper.addAttachment(fileNameAndFileExtension, fileContent);
-	    }
-	    
 	    mailSender.send(message);
-	}
-
-	@Override
-	public void sendMessageWithAttachment(String to, String subject, String templateName,
-			Map<String, Object> templateModel, String fileName, byte[] attachment)
-			throws OperationNotSupportedException, TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException, MessagingException {
-		Template template = freeMarkerConfig.getConfiguration().getTemplate(templateName);
-		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
-		
-		String from = env.getSmtpUsername();
-		ByteArrayResource fileContent = new ByteArrayResource(attachment);
-		sendHtmlMailWithAttachmnent(from, to, subject, html, fileName, fileContent);
 	}
 }

@@ -15,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 import javax.mail.MessagingException;
 import javax.naming.OperationNotSupportedException;
 
-import edu.remad.ical4jbuilder.builders.InterchangeCalendarBuilder;
 import edu.remad.tutoring2.appconstants.TemplateAppConstants;
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.ReminderEntity;
@@ -62,7 +61,6 @@ public class ReminderServiceEmailSendTask implements RunnableScheduledFuture<Boo
 					Map<String, Object> templateModel = generateTemplateModel(reminder, subject);
 					emailService.sendMessageUsingFreemarkerTemplate(reminder.getReminderUserEntity().getEmail(),
 							subject, TemplateAppConstants.TEMPLATE_REMINDER_SERVICE_EMAIL_SEND_TASK, templateModel);
-					InterchangeCalendarBuilder builder = new InterchangeCalendarBuilder();
 				}
 			} catch (OperationNotSupportedException | IOException | TemplateException | MessagingException e) {
 				throw new RuntimeException();

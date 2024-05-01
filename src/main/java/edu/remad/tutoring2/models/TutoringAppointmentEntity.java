@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import edu.remad.ical4jbuilder.models.Appointment;
-import edu.remad.ical4jbuilder.models.User;
 import edu.remad.tutoring2.json.customdeserializers.TutoringAppointmentEntityDeserializer;
 import edu.remad.tutoring2.json.customserializer.TutoringAppointmentEntitySerializer;
 
@@ -27,7 +25,7 @@ import edu.remad.tutoring2.json.customserializer.TutoringAppointmentEntitySerial
 @Table(name = "tutoring_appointments")
 @JsonSerialize(using = TutoringAppointmentEntitySerializer.class)
 @JsonDeserialize(using = TutoringAppointmentEntityDeserializer.class)
-public class TutoringAppointmentEntity implements Appointment{
+public class TutoringAppointmentEntity {
 
 	/**
 	 * tutoring appointment number as primary key of a tutoring appointment
@@ -235,9 +233,5 @@ public class TutoringAppointmentEntity implements Appointment{
 				+ tutoringAppointmentDate + ", tutoringAppointmentStartDateTime=" + tutoringAppointmentStartDateTime
 				+ ", tutoringAppointmentEndDateTime=" + tutoringAppointmentEndDateTime
 				+ ", tutoringAppointmentCreationDate=" + tutoringAppointmentCreationDate + "]";
-	}
-
-	@Override
-	public void setTutoringAppointmentUser(User tutoringAppointmentUser) {
 	}
 }

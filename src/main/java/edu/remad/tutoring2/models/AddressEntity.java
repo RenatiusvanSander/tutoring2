@@ -13,15 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import edu.remad.ical4jbuilder.models.Address;
-import edu.remad.ical4jbuilder.models.ZipCode;
 import edu.remad.tutoring2.json.customdeserializers.AddressEntityDeserializer;
 
 @Entity
 @Table(name = "Address")
 //@JsonSerialize(using = AddressEntitySerializer.class)
 @JsonDeserialize(using = AddressEntityDeserializer.class)
-public class AddressEntity implements Address {
+public class AddressEntity {
 
 	/**
 	 * the primary key for an address
@@ -157,10 +155,5 @@ public class AddressEntity implements Address {
 	public String toString() {
 		return "AddressEntity [id=" + id + ", addressStreet=" + addressStreet + ", addressHouseNo=" + addressHouseNo
 				+ ", addressZipCode=" + addressZipCode + "]";
-	}
-
-	@Override
-	public void setAddressZipCode(ZipCode addressZipCode) {
-		this.addressZipCode = this.addressZipCode;
 	}
 }

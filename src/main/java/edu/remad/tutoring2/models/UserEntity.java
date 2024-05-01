@@ -20,8 +20,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import edu.remad.ical4jbuilder.models.Address;
-import edu.remad.ical4jbuilder.models.IRole;
 import edu.remad.tutoring2.appconstants.RegexAppConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,8 +32,10 @@ import lombok.Setter;
 @Table(name = "userentity")
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 @Builder
-public class UserEntity implements edu.remad.ical4jbuilder.models.User {
+public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,148 +87,4 @@ public class UserEntity implements edu.remad.ical4jbuilder.models.User {
 	
 	@Column(name = "creation_date", columnDefinition = "TIMESTAMP")
 	private LocalDateTime creationDate;
-
-	@Override
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setId(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setUsername(String username) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getEmail() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setEmail(String email) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setPassword(String password) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Boolean getEnabled() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setEnabled(Boolean enabled) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<IRole> getRoles() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setRoles(List<IRole> roles) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getFirstName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getLastName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLastName(String lastName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getGender() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setGender(String gender) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getCellPhone() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCellPhone(String cellPhone) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<Address> getAddresses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setAddresses(List<Address> addresses) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public LocalDateTime getCreationDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCreationDate(LocalDateTime creationDate) {
-		// TODO Auto-generated method stub
-		
-	}
 }
