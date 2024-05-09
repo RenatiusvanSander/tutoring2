@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
+import edu.remad.tutoring2.models.UserEntity;
 
 @JsonComponent
 public class ReminderEntityDeserializer extends AbstractGenericTutoring2Deserializer<ReminderEntity> {
@@ -49,10 +50,9 @@ public class ReminderEntityDeserializer extends AbstractGenericTutoring2Deserial
 		TutoringAppointmentEntity reminderTutoringAppointment = objectMapper.readValue(appointment, TutoringAppointmentEntity.class);
 		LocalDateTime reminderDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderDate")).textValue());
 		LocalDateTime reminderCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderCreationDate")).textValue());
-		// TODO deserialize user
+		JsonParser user = node.get("reminderUserEntity").traverse();
+		UserEntity reminderUserEntity = objectMapper.readValue(user, UserEntity.class);
 		
-		ReminderEntity reminder = new ReminderEntity(reminderId, reminderTutoringAppointment, null, reminderDate, reminderCreationDate);
-
-		return reminder;
+		return new ReminderEntity(reminderId, reminderTutoringAppointment, reminderUserEntity, reminderDate, reminderCreationDate);
 	}
 }
