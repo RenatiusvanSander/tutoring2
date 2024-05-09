@@ -9,9 +9,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.naming.OperationNotSupportedException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -79,16 +82,32 @@ public class EmailServiceImpl implements EmailService {
 		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
 		
 		String from = env.getSmtpUsername();
-		sendHtmlMail(from, to, subject, html);
+		sendHtmlMail(from, to, subject, html, null, null);
 	}
 	
-	private void sendHtmlMail(String from, String to, String subject, String htmlBody) throws MessagingException {
+	private void sendHtmlMail(String from, String to, String subject, String htmlBody, InputStreamSource attachment, String fileNameWithExtension) throws MessagingException {
 	    MimeMessage message = mailSender.createMimeMessage();
 	    MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 	    helper.setFrom(from);
 	    helper.setTo(to);
 	    helper.setSubject(subject);
 	    helper.setText(htmlBody, true);
+	    
+	    if(attachment != null && StringUtils.isNotBlank(fileNameWithExtension)) {
+	    	helper.addAttachment(fileNameWithExtension, attachment);
+	    }
+	    
 	    mailSender.send(message);
+	}
+
+	@Override
+	public void sendMessageWithAttachmentUsingFreemarkerTemplate(String to, String subject, String templateName, Map<String, Object> templateModel, byte[] attachment, String fileNameWithExtension)
+			throws IOException, TemplateException, MessagingException, OperationNotSupportedException {
+		Template template = freeMarkerConfig.getConfiguration().getTemplate(templateName);
+		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
+		
+		String from = env.getSmtpUsername();
+		InputStreamSource attachmentStream = new ByteArrayResource(attachment);
+		sendHtmlMail(from, to, subject, html, attachmentStream, fileNameWithExtension);
 	}
 }

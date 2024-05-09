@@ -21,4 +21,7 @@ public interface EmailService {
 
 	void sendMessageUsingFreemarkerTemplate(String to, String subject, String templateName, Map<String, Object> templateModel)
 			throws IOException, TemplateException, MessagingException, OperationNotSupportedException;
+	
+	void sendMessageWithAttachmentUsingFreemarkerTemplate(String to, String subject, String templateName, Map<String, Object> templateModel, byte[] attachment, String fileNameWithExtension)
+			throws IOException, TemplateException, MessagingException, OperationNotSupportedException;
 }
