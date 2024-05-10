@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import edu.remad.tutoring2.json.JsonBaseDeserializerHelper;
+import edu.remad.tutoring2.models.ServiceContractEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 import edu.remad.tutoring2.models.UserEntity;
 
@@ -54,7 +55,12 @@ public class TutoringAppointmentEntityDeserializer extends AbstractGenericTutori
 		JsonParser parser = node.get("tutoringAppointmentUser").traverse();
 		parser.setCodec(objectMapper);
 		UserEntity user = objectMapper.readValue(parser, UserEntity.class);
-		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity(tutoringAppointmentNo, user, tutoringAppointmentDate, tutoringAppointmentStartDateTime, tutoringAppointmentEndDateTime, tutoringAppointmentCreationDate );
+		
+		JsonParser sceParser = node.get("serviceContractEntity").traverse();
+		sceParser.setCodec(objectMapper);
+		ServiceContractEntity serviceContract = objectMapper.readValue(sceParser, ServiceContractEntity.class);
+		
+		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity(tutoringAppointmentNo, user, tutoringAppointmentDate, tutoringAppointmentStartDateTime, tutoringAppointmentEndDateTime, serviceContract, tutoringAppointmentCreationDate );
 		
 		return appointment;
 	}

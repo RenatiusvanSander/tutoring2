@@ -36,6 +36,12 @@ public class TutoringAppointmentEntitySerializer extends StdSerializer<TutoringA
 		gen.writeStringField("tutoringAppointmentDate", value.getTutoringAppointmentDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeStringField("tutoringAppointmentStartDateTime", value.getTutoringAppointmentStartDateTime().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeStringField("tutoringAppointmentEndDateTime", value.getTutoringAppointmentEndDateTime().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		gen.writeObjectFieldStart("serviceContractEntity");
+		gen.writeNumberField("serviceContractNo", value.getServiceContractEntity().getServiceContractNo());
+		gen.writeStringField("serviceContractName", value.getServiceContractEntity().getServiceContractName());
+		gen.writeStringField("serviceContractDescription", value.getServiceContractEntity().getServiceContractDescription());
+		gen.writeStringField("serviceContractCreationDate", value.getServiceContractEntity().getServiceContractCreationDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		gen.writeEndObject();
 		gen.writeStringField("tutoringAppointmentCreationDate", value.getTutoringAppointmentCreationDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeEndObject();
 	}
