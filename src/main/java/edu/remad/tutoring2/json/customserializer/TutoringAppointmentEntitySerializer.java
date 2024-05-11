@@ -20,7 +20,7 @@ public class TutoringAppointmentEntitySerializer extends StdSerializer<TutoringA
 	private static final long serialVersionUID = 1L;
 
 	public TutoringAppointmentEntitySerializer() {
-		this(null);
+		super(TutoringAppointmentEntity.class);
 	}
 	
 	public TutoringAppointmentEntitySerializer(Class<TutoringAppointmentEntity> t) {

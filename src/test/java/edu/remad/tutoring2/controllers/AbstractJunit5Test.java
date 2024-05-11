@@ -3,8 +3,10 @@ package edu.remad.tutoring2.controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.AddressEntity;
 import edu.remad.tutoring2.models.Role;
+import edu.remad.tutoring2.models.ServiceContractEntity;
 import edu.remad.tutoring2.models.TokenEntity;
 import edu.remad.tutoring2.models.TokenType;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
@@ -20,6 +22,7 @@ public abstract class AbstractJunit5Test {
 		appointment.setTutoringAppointmentStartDateTime(LocalDateTime.of(2024, 3, 14, 20, 0));
 		appointment.setTutoringAppointmentEndDateTime(LocalDateTime.of(2024, 3, 14, 21, 0));
 		appointment.setTutoringAppointmentCreationDate(LocalDateTime.of(2024, 3, 14, 10, 0));
+		appointment.setServiceContractEntity(createServiceContractEntity());
 		appointment.setTutoringAppointmentUser(createUser());
 		
 		return appointment;
@@ -57,6 +60,7 @@ public abstract class AbstractJunit5Test {
 		role.setId(1);
 		role.setName("Admin");
 		role.setUsers(List.of(new UserEntity()));
+		
 		return role;
 	}
 	
@@ -77,6 +81,16 @@ public abstract class AbstractJunit5Test {
 		zipCode.setZipCodeCreationDate(LocalDateTime.of(2024, 3, 10, 21, 0));
 		
 		return zipCode;
+	}
+	
+	protected ServiceContractEntity createServiceContractEntity() {
+		ServiceContractEntity serviceContract = new ServiceContractEntity();
+		serviceContract.setServiceContractNo(41l);
+		serviceContract.setServiceContractName("Elektrotechnik Nachhilfe");
+		serviceContract.setServiceContractDescription("Nachhilfe in den Grundlagen der Elektrotechnik");
+		serviceContract.setServiceContractCreationDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		
+		return serviceContract;
 	}
 	
 	protected TokenEntity createToken() {
