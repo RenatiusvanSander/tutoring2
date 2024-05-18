@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -60,7 +61,9 @@ public class TutoringAppointmentEntityDeserializer extends AbstractGenericTutori
 		sceParser.setCodec(objectMapper);
 		ServiceContractEntity serviceContract = objectMapper.readValue(sceParser, ServiceContractEntity.class);
 		
-		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity(tutoringAppointmentNo, user, tutoringAppointmentDate, tutoringAppointmentStartDateTime, tutoringAppointmentEndDateTime, serviceContract, tutoringAppointmentCreationDate );
+		boolean isAccomplished = ((BooleanNode)node.get("isAccomplished")).booleanValue();
+		
+		TutoringAppointmentEntity appointment = new TutoringAppointmentEntity(tutoringAppointmentNo, user, tutoringAppointmentDate, tutoringAppointmentStartDateTime, tutoringAppointmentEndDateTime, serviceContract, isAccomplished, tutoringAppointmentCreationDate );
 		
 		return appointment;
 	}

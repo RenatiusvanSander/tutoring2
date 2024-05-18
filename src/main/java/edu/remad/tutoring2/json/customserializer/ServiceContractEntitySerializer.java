@@ -24,7 +24,7 @@ public class ServiceContractEntitySerializer extends StdSerializer<ServiceContra
 	}
 	
 	public ServiceContractEntitySerializer() {
-		this(null);
+		super(ServiceContractEntity.class);
 	}
 
 	@Override

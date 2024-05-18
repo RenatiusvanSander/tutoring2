@@ -55,7 +55,7 @@ public abstract class AbstractJunit5Test {
 		return user;
 	}
 
-	private Role createRole() {
+	protected Role createRole() {
 		Role role = new Role();
 		role.setId(1);
 		role.setName("Admin");

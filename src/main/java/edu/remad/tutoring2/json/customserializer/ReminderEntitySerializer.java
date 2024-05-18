@@ -20,7 +20,7 @@ public class ReminderEntitySerializer extends StdSerializer<ReminderEntity> {
 	private static final long serialVersionUID = 1L;
 
 	public ReminderEntitySerializer() {
-		this(null);
+		super(ReminderEntity.class);
 	}
 
 	public ReminderEntitySerializer(Class<ReminderEntity> t) {
