@@ -35,8 +35,8 @@ public class InvoiceController {
 	}
 	
 	@GetMapping(value = "/get-invoices/by-invoice-id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<InvoiceEntity>> getInvoicesByInvoiceId(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(Collections.emptyList());
+	public ResponseEntity<InvoiceEntity> getInvoicesByInvoiceId(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(new InvoiceEntity());
 	}
 	
 	@GetMapping(value = "/get-invoices/by-invoice-date/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,12 +45,26 @@ public class InvoiceController {
 	}
 	
 	@GetMapping(value = "/get-invoices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<InvoiceEntity>> getInvoices(@PathVariable("date") String date) {
+	public ResponseEntity<List<InvoiceEntity>> getInvoices() {
 		return ResponseEntity.ok(Collections.emptyList());
 	}
 	
 	@GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) throws IOException {
+		InputStream in = new ByteArrayInputStream("aaa".getBytes());
+		byte[] content = IOUtils.toByteArray(in);
+		HttpHeaders httpHeaders = createHttpHeaders("your-invoice.pdf");
+		
+		return ResponseEntity
+				.ok()
+				.contentLength(content.length)
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.headers(httpHeaders)
+				.body(content);
+	}
+	
+	@GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> downloadInvoices(@PathVariable("id") List<Long> ids) throws IOException {
 		InputStream in = new ByteArrayInputStream("aaa".getBytes());
 		byte[] content = IOUtils.toByteArray(in);
 		HttpHeaders httpHeaders = createHttpHeaders("your-invoice.pdf");
