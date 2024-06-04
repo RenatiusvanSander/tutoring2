@@ -49,7 +49,7 @@ public class InvoiceController {
 		return ResponseEntity.ok(Collections.emptyList());
 	}
 	
-	@GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@GetMapping(value = "/download/invoice/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) throws IOException {
 		InputStream in = new ByteArrayInputStream("aaa".getBytes());
 		byte[] content = IOUtils.toByteArray(in);
@@ -63,8 +63,8 @@ public class InvoiceController {
 				.body(content);
 	}
 	
-	@GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<byte[]> downloadInvoices(@PathVariable("id") List<Long> ids) throws IOException {
+	@GetMapping(value = "/download/invoices/{ids}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> downloadInvoices(@PathVariable("ids") List<Long> ids) throws IOException {
 		InputStream in = new ByteArrayInputStream("aaa".getBytes());
 		byte[] content = IOUtils.toByteArray(in);
 		HttpHeaders httpHeaders = createHttpHeaders("your-invoice.pdf");
