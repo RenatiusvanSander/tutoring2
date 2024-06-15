@@ -56,11 +56,11 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 		jsonComponentModule.addDeserializer(ReminderEntity.class, new ReminderEntityDeserializer(OBJECTMAPPER));
 		
 		jsonComponentModule.addSerializer(new ZipCodeEntitySerializer());
-		jsonComponentModule.addSerializer(new AddressEntitySerializer());
+		jsonComponentModule.addSerializer(new AddressEntitySerializer(AddressEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new ReminderEntitySerializer());
 		jsonComponentModule.addSerializer(new ServiceContractEntitySerializer());
 		jsonComponentModule.addSerializer(new TutoringAppointmentEntitySerializer());
-		jsonComponentModule.addSerializer(new UserEntitySerializer());
+		jsonComponentModule.addSerializer(new UserEntitySerializer(UserEntity.class, OBJECTMAPPER));
 		
 		OBJECTMAPPER.registerModule(jsonComponentModule);
 		OBJECTMAPPER.registerModule(new JavaTimeModule());

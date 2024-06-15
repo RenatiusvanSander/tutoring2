@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.assertj.core.util.Arrays;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JacksonException;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -76,8 +79,19 @@ public class UserEntityDeserializer extends AbstractGenericTutoring2Deserializer
 		String cellPhone = ((TextNode) node.get("cellPhone")).textValue();
 		ObjectReader addressReader = objectMapper.readerFor(new TypeReference<List<AddressEntity>>() {
 		});
-		ArrayNode addressNode = (ArrayNode) node.get("addresses");
-		List<AddressEntity> addresses = addressReader.readValue(addressNode);
+
+		TreeNode addressesNode = node.get("addresses");
+
+		List<AddressEntity> addresses = new ArrayList<>();
+		if (addressesNode instanceof ArrayNode) {
+			ArrayNode addressNode = (ArrayNode) node.get("addresses");
+			addresses = addressReader.readValue(addressNode);
+		} else {
+			String addressNode = ((TextNode) node.get("addresses")).asText();
+			AddressEntity[] address = objectMapper.readValue(addressNode, AddressEntity[].class);
+			addresses = Arrays.asList(address).stream().filter(AddressEntity.class::isInstance)
+					.map(AddressEntity.class::cast).collect(Collectors.toList());
+		}
 
 		TreeNode date = node.get("creationDate");
 		LocalDateTime creationDate = null;

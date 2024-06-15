@@ -68,6 +68,11 @@ public abstract class AbstractJunit5Test {
 		AddressEntity address = new AddressEntity();
 		address.setAddressHouseNo("24");
 		address.setAddressStreet("Hohlenbarg");
+		UserEntity user = new UserEntity();
+		user.setId(3L);
+		user.setEnabled(true);
+		user.setCreationDate(LocalDateTime.now());
+		address.setUser(user);
 		address.setAddressZipCode(createZipCode());
 		
 		return address;
