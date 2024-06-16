@@ -17,12 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 
 import com.mysql.cj.jdbc.Driver;
 
 import edu.remad.tutoring2.security.ContentSecurityPolicySettings;
+import edu.remad.tutoring2.security.filters.DebugLoggingFilter;
+import edu.remad.tutoring2.security.filters.HttpHeadersFilter;
 import edu.remad.tutoring2.security.filters.TenantFilter;
 import edu.remad.tutoring2.services.impl.CustomJpaUserDetailsService;
 
@@ -55,15 +58,19 @@ public class JdbcSecurityConfiguration {
 		http.headers().xssProtection().and()
 				.contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies());
 		http.addFilterAfter(new TenantFilter(), BasicAuthenticationFilter.class)
+				.addFilterAfter(new HttpHeadersFilter(), HeaderWriterFilter.class)
+				.addFilterAfter(new DebugLoggingFilter(), HttpHeadersFilter.class)
 				.securityContext((securityContext) -> securityContext.requireExplicitSave(true))
 				.sessionManagement(
 						session -> session.maximumSessions(1).maxSessionsPreventsLogin(true).expiredUrl("/login"))
-				.authorizeRequests().antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup","/api/v1/csrf").permitAll()
-				.antMatchers("/hello", "/bye", "/login", "/logout", "/templates/**").authenticated().and().formLogin()
-				.loginPage("/myCustomLogin").loginProcessingUrl("/process-login").defaultSuccessUrl("/hello", true)
+				.authorizeRequests().antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup", "/api/v1/csrf")
+				.permitAll().antMatchers("/hello", "/bye", "/login", "/logout", "/templates/**").authenticated().and()
+				.formLogin().loginPage("/myCustomLogin").loginProcessingUrl("/process-login")
+				.defaultSuccessUrl("/hello", true)
 //        .failureUrl("/login.html?error=true")
 //        .failureHandler(authenticationFailureHandler())
-				.and().csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())).logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
+				.and().csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
 						.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))));
 //        .logoutSuccessHandler(logoutSuccessHandler())
 
