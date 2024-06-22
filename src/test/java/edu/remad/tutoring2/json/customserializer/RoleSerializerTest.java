@@ -1,4 +1,4 @@
-package edu.remad.tutoring2.json.customserialier;
+package edu.remad.tutoring2.json.customserializer;
 
 import java.io.IOException;
 import java.io.StringWriter;

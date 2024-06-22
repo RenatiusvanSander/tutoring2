@@ -1,9 +1,13 @@
 package edu.remad.tutoring2.security;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -18,11 +22,21 @@ public class HttpServletRequestImpl extends HttpServletRequestWrapper {
 	
 	@Nullable
 	private HttpHeaders headers;
+	
+	private List<Cookie> cookies;
 
 	public HttpServletRequestImpl(HttpServletRequest request) {
 		super(request);
+		cookies = new ArrayList<>();
+		populateCookies(request);
 	}
 	
+	private void populateCookies(HttpServletRequest request) {
+		for(Cookie requestCookie : request.getCookies()) {
+			cookies.add(requestCookie);
+		}
+	}
+
 	public HttpHeaders getHeaders() {
 		if (this.headers == null) {
 			this.headers = new HttpHeaders();
@@ -75,5 +89,20 @@ public class HttpServletRequestImpl extends HttpServletRequestWrapper {
 
 		return this.headers;
 	}
-
+	
+	/**
+	 * Add {@link Cookie}
+	 * 
+	 * @param cookie cookie to add
+	 */
+	public void addCookie(Cookie cookie) {
+		cookies.add(cookie);
+	}
+	
+	@Override
+	public Cookie[] getCookies() {
+		List<Cookie> tempCookies = new ArrayList<>(cookies);
+		
+		return tempCookies.toArray(new Cookie[0]);
+	}
 }

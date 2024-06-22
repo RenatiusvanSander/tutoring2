@@ -42,7 +42,6 @@ public class UserEntitySerializer extends AbstractGenericTutoring2Serializer<Use
 		gen.writeBooleanField("enabled", value.getEnabled());
 
 		gen.writeArrayFieldStart("roles");
-		// gen.writeStartArray();
 		for (Role role : value.getRoles()) {
 			gen.writeStartObject();
 			gen.writeNumberField("id", role.getId());
