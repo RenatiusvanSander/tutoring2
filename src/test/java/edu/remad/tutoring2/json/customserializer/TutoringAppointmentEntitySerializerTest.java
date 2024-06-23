@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import edu.remad.tutoring2.json.AbstractJsonJUnit5Test;
-import edu.remad.tutoring2.json.customserializer.TutoringAppointmentEntitySerializer;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
 
 public class TutoringAppointmentEntitySerializerTest extends AbstractJsonJUnit5Test {

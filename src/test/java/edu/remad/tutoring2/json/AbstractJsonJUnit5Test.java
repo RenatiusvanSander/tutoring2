@@ -1,15 +1,18 @@
 package edu.remad.tutoring2.json;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.jackson.JsonComponentModule;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -40,6 +43,13 @@ import edu.remad.tutoring2.models.ZipCodeEntity;
 public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 
 	protected static ObjectMapper OBJECTMAPPER;
+	
+	protected StringWriter jsonWriter;
+	
+	@BeforeEach
+	protected void setUp() throws JsonProcessingException {
+		jsonWriter = new StringWriter();
+	}
 
 	@BeforeAll
 	protected static void createStaticMembers() {
@@ -55,7 +65,7 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 		jsonComponentModule.addDeserializer(TokenEntity.class, new TokenEntityDeserializer(OBJECTMAPPER));
 		jsonComponentModule.addDeserializer(ReminderEntity.class, new ReminderEntityDeserializer(OBJECTMAPPER));
 		
-		jsonComponentModule.addSerializer(new ZipCodeEntitySerializer());
+		jsonComponentModule.addSerializer(new ZipCodeEntitySerializer(ZipCodeEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new AddressEntitySerializer(AddressEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new ReminderEntitySerializer());
 		jsonComponentModule.addSerializer(new ServiceContractEntitySerializer());
@@ -74,6 +84,13 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 	}
 	
 	protected JsonGenerator createJsonGenerator(Writer jsonWriter) throws IOException {
+		JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
+	    jsonGenerator.setCodec(OBJECTMAPPER);
+		
+		return jsonGenerator;
+	}
+	
+	protected JsonGenerator createJsonGenerator() throws IOException {
 		JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
 	    jsonGenerator.setCodec(OBJECTMAPPER);
 		

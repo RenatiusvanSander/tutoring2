@@ -47,7 +47,7 @@ public class ServiceContractEntityDeserializer extends AbstractGenericTutoring2D
 		Long serviceContractNo = ((IntNode) node.get("serviceContractNo")).numberValue().longValue();
 		String serviceContractName = ((TextNode)node.get("serviceContractName")).textValue();
 		String serviceContractDescription = ((TextNode)node.get("serviceContractDescription")).textValue();
-		LocalDateTime serviceContractCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTimeAsDate(((TextNode)node.get("serviceContractCreationDate")).textValue());
+		LocalDateTime serviceContractCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("serviceContractCreationDate")).textValue());
 		
 		ServiceContractEntity serviceContract = new ServiceContractEntity(serviceContractNo, serviceContractName, serviceContractDescription, serviceContractCreationDate);
 		

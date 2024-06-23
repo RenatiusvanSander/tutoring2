@@ -35,11 +35,13 @@ public class UserEntitySerializer extends AbstractGenericTutoring2Serializer<Use
 	@Override
 	public void serialize(UserEntity value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 		gen.writeStartObject();
-		gen.writeNumberField("id", value.getId());
-		gen.writeStringField("username", value.getUsername());
-		gen.writeStringField("email", value.getEmail());
-		gen.writeStringField("password", value.getPassword());
-		gen.writeBooleanField("enabled", value.getEnabled());
+		boolean isValueNull = isEntityNull(value);
+		
+		gen.writeNumberField("id", isValueNull ? 0L : value.getId());
+		gen.writeStringField("username", isValueNull ? null : value.getUsername());
+		gen.writeStringField("email", isValueNull ? null : value.getEmail());
+		gen.writeStringField("password", isValueNull ? null : value.getPassword());
+		gen.writeBooleanField("enabled", isValueNull ? false : value.getEnabled());
 
 		gen.writeArrayFieldStart("roles");
 		for (Role role : value.getRoles()) {
@@ -51,14 +53,14 @@ public class UserEntitySerializer extends AbstractGenericTutoring2Serializer<Use
 		}
 		gen.writeEndArray();
 
-		gen.writeStringField("firstName", value.getFirstName());
-		gen.writeStringField("lastName", value.getLastName());
-		gen.writeStringField("gender", value.getGender());
-		gen.writeStringField("cellPhone", value.getCellPhone());
+		gen.writeStringField("firstName", isValueNull ? null : value.getFirstName());
+		gen.writeStringField("lastName", isValueNull ? null : value.getLastName());
+		gen.writeStringField("gender", isValueNull ? null : value.getGender());
+		gen.writeStringField("cellPhone", isValueNull ? null : value.getCellPhone());
 
-		String addresses = objectMapper.writeValueAsString(value.getAddresses());
+		String addresses = objectMapper.writeValueAsString(isValueNull ? null : value.getAddresses());
 		gen.writeStringField("addresses", addresses);
-		gen.writeStringField("creationDate", value.getCreationDate().format(TimeAppConstants.DATE_FORMATTER));
+		gen.writeStringField("creationDate", isValueNull ? null : value.getCreationDate().format(TimeAppConstants.DATE_FORMATTER));
 		gen.writeEndObject();
 	}
 

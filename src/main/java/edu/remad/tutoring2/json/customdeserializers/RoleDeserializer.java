@@ -1,6 +1,7 @@
 package edu.remad.tutoring2.json.customdeserializers;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -47,11 +49,12 @@ public class RoleDeserializer extends AbstractGenericTutoring2Deserializer<Role>
 		TreeNode node = p.getCodec().readTree(p);
 
 		int id = ((IntNode) node.get("id")).intValue();
-		String name = ((TextNode)node.get("name")).asText();
+		String name = ((TextNode)node.get("name")).textValue();
 		
-		ObjectReader rolesReader = JsonBaseDeserializerHelper.createRolesReader(objectMapper);
+		ObjectReader usersReader = JsonBaseDeserializerHelper.createUserReader(objectMapper);
 		ArrayNode usersNode = (ArrayNode) node.get("users");
-		List<UserEntity> users = rolesReader.readValue(usersNode);
+		JsonNode json = usersNode.get(0).get(1);
+		List<UserEntity> users = json == null ? Collections.emptyList() : usersReader.readValue(usersNode);
 
 		return new Role(id, name, users);
 	}

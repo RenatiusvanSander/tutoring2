@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.Role;
+import edu.remad.tutoring2.models.UserEntity;
 
 public final class JsonBaseDeserializerHelper {
 	
@@ -24,5 +25,9 @@ public final class JsonBaseDeserializerHelper {
 	
 	public static ObjectReader createRolesReader(ObjectMapper objectMapper) {
 		return objectMapper.readerFor(new TypeReference<List<Role>>() {});
+	}
+	
+	public static ObjectReader createUserReader(ObjectMapper objectMapper) {
+		return objectMapper.readerFor(new TypeReference<List<UserEntity>>() {});
 	}
 }

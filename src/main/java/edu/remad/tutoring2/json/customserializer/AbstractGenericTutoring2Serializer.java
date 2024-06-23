@@ -62,6 +62,10 @@ public abstract class AbstractGenericTutoring2Serializer<T> extends StdSerialize
 	public ObjectCodec getCodec() {
 		return objectMapper;
 	}
+	
+	protected boolean isEntityNull(T entity) {
+		return entity instanceof Object;
+	}
 
 	public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;
 }
