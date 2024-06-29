@@ -46,12 +46,17 @@ public class ReminderEntityDeserializer extends AbstractGenericTutoring2Deserial
 		TreeNode node = p.getCodec().readTree(p);
 		
 		Long reminderId = ((IntNode)node.get("reminderNo")).asLong();
+		
 		JsonParser appointment = node.get("reminderTutoringAppointment").traverse();
+		appointment.setCodec(objectMapper);
 		TutoringAppointmentEntity reminderTutoringAppointment = objectMapper.readValue(appointment, TutoringAppointmentEntity.class);
+		
+		JsonParser user = node.get("reminderUserEntity").traverse();
+		user.setCodec(objectMapper);
+		UserEntity reminderUserEntity = objectMapper.readValue(user, UserEntity.class);
+		
 		LocalDateTime reminderDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderDate")).textValue());
 		LocalDateTime reminderCreationDate = JsonBaseDeserializerHelper.convertToLocalDateTime(((TextNode)node.get("reminderCreationDate")).textValue());
-		JsonParser user = node.get("reminderUserEntity").traverse();
-		UserEntity reminderUserEntity = objectMapper.readValue(user, UserEntity.class);
 		
 		return new ReminderEntity(reminderId, reminderTutoringAppointment, reminderUserEntity, reminderDate, reminderCreationDate);
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.AddressEntity;
+import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.Role;
 import edu.remad.tutoring2.models.ServiceContractEntity;
 import edu.remad.tutoring2.models.TokenEntity;
@@ -100,5 +101,16 @@ public abstract class AbstractJunit5Test {
 	
 	protected TokenEntity createToken() {
 		return new TokenEntity(103L, "token", TokenType.BEARER, false, false, createUser());
+	}
+	
+	protected ReminderEntity createReminder() {
+		ReminderEntity reminder = new ReminderEntity();
+		reminder.setReminderNo(10L);
+		reminder.setReminderTutoringAppointment(createAppointment());
+		reminder.setReminderUserEntity(createUser(3L));
+		reminder.setReminderDate(LocalDateTime.of(2024, 3, 10, 21, 0));
+		reminder.setReminderCreationDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		
+		return reminder;
 	}
 }

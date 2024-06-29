@@ -28,6 +28,7 @@ public class ZipCodeSerializerTest extends AbstractJsonJUnit5Test {
 		ZipCodeEntitySerializer serializer = new ZipCodeEntitySerializer();
 		serializer.serialize(zipCode, createJsonGenerator(), OBJECTMAPPER.getSerializerProvider());
 		
+		System.out.println(jsonWriter.toString());
 		Assertions.assertEquals(expectedJson, jsonWriter.toString());
 	}
 }

@@ -34,21 +34,19 @@ public class UserEntitySerializer extends AbstractGenericTutoring2Serializer<Use
 
 	@Override
 	public void serialize(UserEntity value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		gen.writeStartObject();
 		boolean isValueNull = isEntityNull(value);
 		
+		gen.writeStartObject();
 		gen.writeNumberField("id", isValueNull ? 0L : value.getId());
 		gen.writeStringField("username", isValueNull ? null : value.getUsername());
 		gen.writeStringField("email", isValueNull ? null : value.getEmail());
 		gen.writeStringField("password", isValueNull ? null : value.getPassword());
 		gen.writeBooleanField("enabled", isValueNull ? false : value.getEnabled());
-
+		
 		gen.writeArrayFieldStart("roles");
 		for (Role role : value.getRoles()) {
 			gen.writeStartObject();
-			gen.writeNumberField("id", role.getId());
-			gen.writeStringField("name", role.getName());
-			writeUserArray(gen, role);
+			gen.writeObjectField(null, provider);
 			gen.writeEndObject();
 		}
 		gen.writeEndArray();

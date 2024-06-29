@@ -27,8 +27,8 @@ public class ZipCodeEntitySerializer extends AbstractGenericTutoring2Serializer<
 		super(t);
 	}
 
-	public ZipCodeEntitySerializer(Class<ZipCodeEntity> class1, ObjectMapper oBJECTMAPPER) {
-		super(class1, oBJECTMAPPER);
+	public ZipCodeEntitySerializer(Class<ZipCodeEntity> clazz, ObjectMapper oBJECTMAPPER) {
+		super(clazz, oBJECTMAPPER);
 	}
 
 	@Override

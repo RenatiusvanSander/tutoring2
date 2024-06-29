@@ -36,7 +36,7 @@ public class AddressEntitySerializer extends AbstractGenericTutoring2Serializer<
 		gen.writeNumberField("id", value.getId());
 		gen.writeStringField("addressStreet", value.getAddressStreet());
 		gen.writeStringField("addressHouseNo", value.getAddressHouseNo());
-		gen.writeObjectField("user", value.getUser());
+		//gen.writeObjectField("user", value.getUser());
 		gen.writeObjectField("addressZipCode", value.getAddressZipCode());
 		gen.writeEndObject();
 	}
