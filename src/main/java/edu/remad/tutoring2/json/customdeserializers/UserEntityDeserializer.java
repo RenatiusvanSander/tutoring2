@@ -1,7 +1,6 @@
 package edu.remad.tutoring2.json.customdeserializers;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +68,7 @@ public class UserEntityDeserializer extends AbstractGenericTutoring2Deserializer
 		}
 
 		TreeNode node = p.getCodec().readTree(p);
-		Long id = ((IntNode) node.get("id")).asLong();
+		Long id = node.get("id") instanceof NullNode ? -1L : ((IntNode) node.get("id")).asLong();
 		TreeNode usernameNode = node.get("username");
 		String username =  usernameNode instanceof NullNode ? "" : ((TextNode) node.get("username")).textValue();
 		String email = node.get("email") instanceof NullNode ? "" : ((TextNode) node.get("email")).textValue();
@@ -77,7 +76,7 @@ public class UserEntityDeserializer extends AbstractGenericTutoring2Deserializer
 		boolean enabled = ((BooleanNode) node.get("enabled")).booleanValue();
 		// roles
 		// tokens
-		String firstName = node.get("firstName") instanceof NullNode ? "" : ((TextNode) node.get("firstName")).textValue();
+		String firstName = node.get("firstName") instanceof NullNode ? "null" : ((TextNode) node.get("firstName")).textValue();
 		String lastName = node.get("lastName") instanceof NullNode ? "" : ((TextNode) node.get("lastName")).textValue();
 		String gender = node.get("gender") instanceof NullNode ? "" : ((TextNode) node.get("gender")).textValue();
 		String cellPhone = node.get("cellPhone") instanceof NullNode ? "" : ((TextNode) node.get("cellPhone")).textValue();
