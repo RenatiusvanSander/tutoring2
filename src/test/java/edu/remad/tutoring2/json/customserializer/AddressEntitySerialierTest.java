@@ -5,12 +5,14 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import edu.remad.tutoring2.json.AbstractJsonJUnit5Test;
 import edu.remad.tutoring2.models.AddressEntity;
 
+@JsonComponent
 public class AddressEntitySerialierTest extends AbstractJsonJUnit5Test {
 
 	private AddressEntity address;

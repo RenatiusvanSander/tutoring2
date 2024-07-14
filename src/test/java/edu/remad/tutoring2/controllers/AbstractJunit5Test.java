@@ -5,6 +5,8 @@ import java.util.List;
 
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
 import edu.remad.tutoring2.models.AddressEntity;
+import edu.remad.tutoring2.models.InvoiceEntity;
+import edu.remad.tutoring2.models.PriceEntity;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.Role;
 import edu.remad.tutoring2.models.ServiceContractEntity;
@@ -112,5 +114,20 @@ public abstract class AbstractJunit5Test {
 		reminder.setReminderCreationDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		
 		return reminder;
+	}
+	
+	protected InvoiceEntity createInvoice() {
+		InvoiceEntity invoice = new InvoiceEntity();
+		invoice.setInvoiceNo(125L);
+		invoice.setInvoiceServiceContract(createServiceContractEntity());
+		invoice.setInvoiceUser(createUser());
+		
+		return invoice;
+	}
+	
+	protected PriceEntity createPrice() {
+		PriceEntity price = new PriceEntity();
+		
+		return price;
 	}
 }

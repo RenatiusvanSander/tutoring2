@@ -64,7 +64,7 @@ public abstract class AbstractGenericTutoring2Serializer<T> extends StdSerialize
 	}
 	
 	protected boolean isEntityNull(T entity) {
-		return entity instanceof Object;
+		return entity == null;
 	}
 
 	public abstract void serialize(T value, JsonGenerator gen, SerializerProvider provider) throws IOException;

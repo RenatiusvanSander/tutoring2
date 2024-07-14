@@ -26,12 +26,14 @@ import edu.remad.tutoring2.json.customdeserializers.TutoringAppointmentEntityDes
 import edu.remad.tutoring2.json.customdeserializers.UserEntityDeserializer;
 import edu.remad.tutoring2.json.customdeserializers.ZipCodeEntityDeserializer;
 import edu.remad.tutoring2.json.customserializer.AddressEntitySerializer;
+import edu.remad.tutoring2.json.customserializer.InvoiceEntitySerializer;
 import edu.remad.tutoring2.json.customserializer.ReminderEntitySerializer;
 import edu.remad.tutoring2.json.customserializer.ServiceContractEntitySerializer;
 import edu.remad.tutoring2.json.customserializer.TutoringAppointmentEntitySerializer;
 import edu.remad.tutoring2.json.customserializer.UserEntitySerializer;
 import edu.remad.tutoring2.json.customserializer.ZipCodeEntitySerializer;
 import edu.remad.tutoring2.models.AddressEntity;
+import edu.remad.tutoring2.models.InvoiceEntity;
 import edu.remad.tutoring2.models.ReminderEntity;
 import edu.remad.tutoring2.models.Role;
 import edu.remad.tutoring2.models.ServiceContractEntity;
@@ -65,12 +67,13 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 		jsonComponentModule.addDeserializer(TokenEntity.class, new TokenEntityDeserializer(OBJECTMAPPER));
 		jsonComponentModule.addDeserializer(ReminderEntity.class, new ReminderEntityDeserializer(OBJECTMAPPER));
 		
-		jsonComponentModule.addSerializer(new ZipCodeEntitySerializer(ZipCodeEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new AddressEntitySerializer(AddressEntity.class, OBJECTMAPPER));
+		jsonComponentModule.addSerializer(new InvoiceEntitySerializer(InvoiceEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new ReminderEntitySerializer());
 		jsonComponentModule.addSerializer(new ServiceContractEntitySerializer());
 		jsonComponentModule.addSerializer(new TutoringAppointmentEntitySerializer());
 		jsonComponentModule.addSerializer(new UserEntitySerializer(UserEntity.class, OBJECTMAPPER));
+		jsonComponentModule.addSerializer(new ZipCodeEntitySerializer(ZipCodeEntity.class, OBJECTMAPPER));
 		
 		OBJECTMAPPER.registerModule(jsonComponentModule);
 		OBJECTMAPPER.registerModule(new JavaTimeModule());
@@ -78,9 +81,8 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 	
 	protected JsonParser createJsonPaser(String content) throws JsonParseException, IOException {
 		JsonFactory factory = new JsonFactory();
-		JsonParser jsonParser = factory.createParser(content);
 		
-		return jsonParser;
+		return factory.createParser(content);
 	}
 	
 	protected JsonGenerator createJsonGenerator(Writer jsonWriter) throws IOException {
