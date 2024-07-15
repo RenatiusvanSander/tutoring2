@@ -1,5 +1,6 @@
 package edu.remad.tutoring2.controllers;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -120,13 +121,22 @@ public abstract class AbstractJunit5Test {
 		InvoiceEntity invoice = new InvoiceEntity();
 		invoice.setInvoiceNo(125L);
 		invoice.setInvoiceServiceContract(createServiceContractEntity());
+		invoice.setInvoiceTutoringHours(1L);
+		invoice.setInvoiceDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		invoice.setInvoiceTutoringDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		invoice.setInvoiceUser(createUser());
+		invoice.setPrice(createPrice());
+		invoice.setInvoiceCreationDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		
 		return invoice;
 	}
 	
 	protected PriceEntity createPrice() {
 		PriceEntity price = new PriceEntity();
+		price.setId(3L);
+		price.setPrice(new BigDecimal(12.45F));
+		price.setUser(createUser());
+		price.setServiceContract(createServiceContractEntity());
 		
 		return price;
 	}
