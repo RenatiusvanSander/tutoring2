@@ -37,8 +37,8 @@ public class ReminderEntitySerializer extends AbstractGenericTutoring2Serializer
 		gen.writeNumberField("reminderNo", reminder.getReminderNo());
 		gen.writeObjectField("reminderTutoringAppointment", reminder.getReminderTutoringAppointment());
 		gen.writeObjectField("reminderUserEntity", reminder.getReminderUserEntity());
-		gen.writeStringField("reminderDate", reminder.getReminderDate().format(TimeAppConstants.DATE_FORMATTER));
-		gen.writeStringField("reminderCreationDate", reminder.getReminderCreationDate().format(TimeAppConstants.DATE_FORMATTER));
+		gen.writeStringField("reminderDate", reminder.getReminderDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
+		gen.writeStringField("reminderCreationDate", reminder.getReminderCreationDate().format(TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		gen.writeEndObject();
 	}
 }
