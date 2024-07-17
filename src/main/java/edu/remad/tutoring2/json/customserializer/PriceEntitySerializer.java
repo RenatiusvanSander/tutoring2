@@ -18,6 +18,10 @@ public class PriceEntitySerializer extends AbstractGenericTutoring2Serializer<Pr
 	 */
 	private static final long serialVersionUID = -1999078113969148643L;
 
+	public PriceEntitySerializer() {
+		super(PriceEntity.class);
+	}
+	
 	public PriceEntitySerializer(Class<PriceEntity> vc) {
 		super(vc);
 	}

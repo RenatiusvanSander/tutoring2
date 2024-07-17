@@ -18,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import edu.remad.tutoring2.controllers.AbstractJunit5Test;
 import edu.remad.tutoring2.json.customdeserializers.AddressEntityDeserializer;
+import edu.remad.tutoring2.json.customdeserializers.InvoiceEntityDeserializer;
 import edu.remad.tutoring2.json.customdeserializers.PriceEntityDeserializer;
 import edu.remad.tutoring2.json.customdeserializers.ReminderEntityDeserializer;
 import edu.remad.tutoring2.json.customdeserializers.RoleDeserializer;
@@ -70,6 +71,7 @@ public abstract class AbstractJsonJUnit5Test extends AbstractJunit5Test {
 		jsonComponentModule.addDeserializer(TokenEntity.class, new TokenEntityDeserializer(OBJECTMAPPER));
 		jsonComponentModule.addDeserializer(ReminderEntity.class, new ReminderEntityDeserializer(OBJECTMAPPER));
 		jsonComponentModule.addDeserializer(PriceEntity.class, new PriceEntityDeserializer(OBJECTMAPPER));
+		jsonComponentModule.addDeserializer(InvoiceEntity.class, new InvoiceEntityDeserializer(OBJECTMAPPER));
 		
 		jsonComponentModule.addSerializer(new AddressEntitySerializer(AddressEntity.class, OBJECTMAPPER));
 		jsonComponentModule.addSerializer(new InvoiceEntitySerializer(InvoiceEntity.class, OBJECTMAPPER));
