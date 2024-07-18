@@ -1,21 +1,40 @@
 package edu.remad.tutoring2.services.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.models.InvoiceEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
+import edu.remad.tutoring2.repositories.InvoiceEntityRepository;
 import edu.remad.tutoring2.services.InvoiceService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
+	private final InvoiceEntityRepository invoiceEntityRepository;
+	
+	public InvoiceServiceImpl(InvoiceEntityRepository invoiceEntityRepository) {
+		this.invoiceEntityRepository = invoiceEntityRepository;
+	}
+	
 	@Override
 	public InvoiceEntity saveInvoice(TutoringAppointmentEntity tutoringAppointment) {
-		// TODO Auto-generated method stub
-		return null;
+		InvoiceEntity unsavedNewInvoice = new InvoiceEntity();
+		unsavedNewInvoice.setInvoiceCreationDate(LocalDateTime.now());
+		unsavedNewInvoice.setInvoiceDate(LocalDate.now().atStartOfDay());
+		unsavedNewInvoice.setInvoiceServiceContract(tutoringAppointment.getServiceContractEntity());
+		unsavedNewInvoice.setInvoiceTutoringDate(tutoringAppointment.getTutoringAppointmentDate());
+		unsavedNewInvoice.setInvoiceTutoringHours(tutoringAppointment.getTutoringAppointmentStartDateTime().until(tutoringAppointment.getTutoringAppointmentEndDateTime(), ChronoUnit.HOURS));
+		unsavedNewInvoice.setInvoiceUser(tutoringAppointment.getTutoringAppointmentUser());
+		//unsavedNewInvoice.setPrice(tutoringAppointment.);
+		
+		InvoiceEntity loadedInvoice = invoiceEntityRepository.saveAndFlush(unsavedNewInvoice);
+		
+		return loadedInvoice;
 	}
 
 	@Override

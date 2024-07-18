@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.compress.utils.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.remad.tutoring2.models.InvoiceEntity;
+import edu.remad.tutoring2.services.InvoiceService;
+import edu.remad.tutoring2.services.TutoringAppointmentService;
 
 @Controller
 @RequestMapping(InvoiceController.REQUEST_MAPPING_INVOICE)
@@ -25,8 +28,21 @@ public class InvoiceController {
 	
 	public static final String REQUEST_MAPPING_INVOICE = "/api/invoices";
 	
+	private final TutoringAppointmentService tutoringAppointmentService;
+	
+	private final InvoiceService invoiceService;
+	
+	@Autowired
+	public InvoiceController(TutoringAppointmentService tutoringAppointmentService, InvoiceService invoiceService) {
+		this.tutoringAppointmentService = tutoringAppointmentService;
+		this.invoiceService = invoiceService;
+	}
+	
 	@PostMapping(value = "/create-invoice/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void createInvoice(@PathVariable("id") Long tutoringAppointmentId) {
+	public ResponseEntity<InvoiceEntity> createInvoice(@PathVariable("id") Long tutoringAppointmentId) {
+		
+		
+		return ResponseEntity.ok(new InvoiceEntity());
 	}
 	
 	@GetMapping(value = "/get-invoices/by-user-id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
