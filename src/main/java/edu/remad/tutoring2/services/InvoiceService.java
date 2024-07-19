@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.remad.tutoring2.models.InvoiceEntity;
 import edu.remad.tutoring2.models.TutoringAppointmentEntity;
+import edu.remad.tutoring2.models.UserEntity;
 
 public interface InvoiceService {
 
@@ -12,11 +13,11 @@ public interface InvoiceService {
 	
 	InvoiceEntity saveInvoice(InvoiceEntity invoice);
 	
-	List<InvoiceEntity> getInvoicesByUserId();
-	
-	InvoiceEntity getInvoicesById(Long Id);
+	InvoiceEntity getInvoiceById(Long Id);
 	
 	List<InvoiceEntity> getInvoicesByInvoiceDate(LocalDateTime invoiceDate);
+	
+	List<InvoiceEntity> getInvoicesByInvoiceDate(UserEntity user, LocalDateTime invoiceDate);
 	
 	List<InvoiceEntity> getInvoices();
 	
@@ -31,4 +32,6 @@ public interface InvoiceService {
 	byte[] saveInvoiceFile(byte[] invoiceFile);
 	
 	List<byte[]> saveInvoiceFiles(List<Long> ids);
+
+	List<InvoiceEntity> getInvoicesByUserId(UserEntity user);
 }

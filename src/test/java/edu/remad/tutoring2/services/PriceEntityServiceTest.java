@@ -2,9 +2,10 @@ package edu.remad.tutoring2.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Objects;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,16 +34,7 @@ public class PriceEntityServiceTest extends AbstractJunit5ServiceJpaTest {
 
 	@BeforeEach
 	public void setUp() {
-		List<ServiceContractEntity> serviceContracts = serviceContractService.getAllServiceContracts();
-		for (ServiceContractEntity sc : serviceContracts) {
-			if (sc.getServiceContractNo() != 25l) {
-				serviceContractService.deleteServiceContract(sc);
-			}
-		}
-
 		user = userEntityRepository.findFirstByUsername("admin");
-
-		priceService.deleteAll();
 	}
 
 	@Test
@@ -83,7 +75,6 @@ public class PriceEntityServiceTest extends AbstractJunit5ServiceJpaTest {
 		ServiceContractEntity sce = serviceContractService.createServiceContract(sc);
 
 		PriceEntity savedPrice = priceService.save(user, BigDecimal.valueOf(15.00), sce);
-
 		priceService.deletePrice(savedPrice.getId());
 
 		try {
@@ -93,15 +84,18 @@ public class PriceEntityServiceTest extends AbstractJunit5ServiceJpaTest {
 		}
 	}
 
+	@Test
 	public void loadPriceByUserAndServiceContractTest() {
 		ServiceContractEntity sc = createServiceContractEntity();
 		sc.setServiceContractNo(0l);
 		ServiceContractEntity sce = serviceContractService.createServiceContract(sc);
-
 		PriceEntity savedPrice = priceService.save(user, BigDecimal.valueOf(15.00), sce);
-		
-		PriceEntity actualPrice = priceService.loadPriceByUserAndServiceContract(user, sce);
-		assertNotNull(actualPrice);
-	}
 
+		PriceEntity actualPrice = priceService.loadPriceByUserAndServiceContract(user, sce);
+		
+		assertNotNull(actualPrice);
+		assertEquals(savedPrice.getId(), actualPrice.getId());
+		assertTrue(Objects.equals(savedPrice.getPrice(), actualPrice.getPrice()));
+		assertTrue(Objects.equals(savedPrice, actualPrice));
+	}
 }
