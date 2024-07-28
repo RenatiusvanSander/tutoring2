@@ -252,6 +252,11 @@
 			<artifactId>ical4j-builder</artifactId>
 			<version>1.0.6-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>edu.remad</groupId>
+			<artifactId>pdf-toolboxing</artifactId>
+			<version>0.10.1-SNAPSHOT</version>
+		</dependency>
 		<!-- end of own implementation -->
 	</dependencies>
 	<!-- ################### -->

@@ -21,15 +21,15 @@ public interface InvoiceService {
 	
 	List<InvoiceEntity> getInvoices();
 	
-	List<InvoiceEntity> getPagedInvoicesByUserId();
+	List<InvoiceEntity> getPagedInvoicesByUserId(int page, int size);
 	
 	byte[] loadInvoiceFile(Long id);
 	
-	List<byte[]> loadInvoices(List<Long> ids);
+	List<byte[]> loadInvoiceFiles(List<Long> ids);
 	
 	List<byte[]> loadInvoicesAndMergeToOneFile(List<Long> ids);
 	
-	byte[] saveInvoiceFile(byte[] invoiceFile);
+	byte[] saveInvoiceFile(byte[] invoiceFile, long invoiceNo);
 	
 	List<byte[]> saveInvoiceFiles(List<Long> ids);
 

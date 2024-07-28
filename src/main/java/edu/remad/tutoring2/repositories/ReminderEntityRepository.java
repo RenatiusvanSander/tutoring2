@@ -15,7 +15,7 @@ public interface ReminderEntityRepository extends JpaRepository<ReminderEntity, 
 	 * Finds reminders's date
 	 * 
 	 * @param date a date as instance of {@link LocalDateTime}
-	 * @return all tutoring appointment dates
+	 * @return all tutoring appointment date reminders
 	 */
 	default List<ReminderEntity> findByReminderDate(LocalDateTime date) {
 	    return findByReminderDateBetween(date.toLocalDate().atStartOfDay(), date.toLocalDate().plusDays(1).atStartOfDay());
@@ -26,7 +26,7 @@ public interface ReminderEntityRepository extends JpaRepository<ReminderEntity, 
 	 * 
 	 * @param atStartOfDay start of given day
 	 * @param atEndOfDay end of given day
-	 * @return all found tutoring appointments between start of day and end of day
+	 * @return all found tutoring appointment reminders between start of day and end of day
 	 */
 	List<ReminderEntity> findByReminderDateBetween(LocalDateTime atStartOfDay, LocalDateTime atEndOfDay);
 
