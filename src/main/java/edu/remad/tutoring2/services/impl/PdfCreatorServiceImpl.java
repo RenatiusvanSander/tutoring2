@@ -1,11 +1,16 @@
 package edu.remad.tutoring2.services.impl;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.models.InvoiceEntity;
 import edu.remad.tutoring2.services.PdfCreatorService;
+import edu.remad.tutoring2.services.pdf.ContentLayoutData;
+import edu.remad.tutoring2.services.pdf.PDFComplexInvoiceBuilder;
+import edu.remad.tutoring2.services.pdf.PDFCreationBuilder;
 import edu.remad.tutoring2.services.pdf.utilities.PdfUtilities;
 
 @Service
@@ -13,14 +18,26 @@ public class PdfCreatorServiceImpl implements PdfCreatorService {
 
 	@Override
 	public byte[] createInvoicePdf(InvoiceEntity invoice) {
-		PdfUtilities.createContentLayoutData2(invoice);
-		return null;
+		return new PDFComplexInvoiceBuilder().invoice(invoice).build();
 	}
 
 	@Override
 	public byte[] mergeInvoices(List<byte[]> invoicesToMerge) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public byte[] createInvoicesPdfs(List<InvoiceEntity> invoices) throws IOException {
+		byte[] invoicesPdfs = new byte[0];
+
+		if (invoices.isEmpty()) {
+			return invoicesPdfs; // own exception would be better
+		}
+
+		List<ContentLayoutData> contentLayoutDatas = PdfUtilities.createContentLayoutDatas(invoices);
+		invoicesPdfs = new PDFCreationBuilder().contentLayoutData(contentLayoutDatas).paperFormat(PDRectangle.A4)
+				.buildAsByteArray();
+
+		return invoicesPdfs;
+	}
 }

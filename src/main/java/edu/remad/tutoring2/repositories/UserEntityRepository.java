@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.remad.tutoring2.models.UserEntity;
 
 @Repository
-public interface UserEntityRepository extends JpaRepository<UserEntity, String> {
+public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
 	UserEntity findByEmail(String email);
 

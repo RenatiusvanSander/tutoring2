@@ -29,9 +29,9 @@ public interface InvoiceService {
 	
 	List<byte[]> loadInvoicesAndMergeToOneFile(List<Long> ids);
 	
-	byte[] saveInvoiceFile(byte[] invoiceFile, long invoiceNo);
+	byte[] createAndSaveInvoiceFile(long invoiceNo);
 	
-	List<byte[]> saveInvoiceFiles(List<Long> ids);
+	List<byte[]> createAndSaveInvoiceFiles(List<Long> ids);
 
 	List<InvoiceEntity> getInvoicesByUserId(UserEntity user);
 }

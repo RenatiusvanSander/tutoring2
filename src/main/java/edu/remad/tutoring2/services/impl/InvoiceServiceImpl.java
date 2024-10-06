@@ -163,11 +163,14 @@ public class InvoiceServiceImpl extends AbstractTutoringService<InvoiceEntity> i
 		return null;
 	}
 
+	// Maybe restructure
 	@Override
-	public byte[] saveInvoiceFile(byte[] invoiceFile, long invoiceNo) {
+	public byte[] createAndSaveInvoiceFile(long invoiceNo) {
 		InvoiceEntity loadedInvoice = getInvoiceById(invoiceNo);
 
 		if (loadedInvoice != null) {
+			// TODO PDF Service
+			byte[] invoiceFile = null;
 			loadedInvoice.setInvoiceFile(invoiceFile);
 			loadedInvoice = saveInvoice(loadedInvoice);
 		}
@@ -176,8 +179,9 @@ public class InvoiceServiceImpl extends AbstractTutoringService<InvoiceEntity> i
 	}
 
 	@Override
-	public List<byte[]> saveInvoiceFiles(List<Long> ids) {
+	public List<byte[]> createAndSaveInvoiceFiles(List<Long> ids) {
 		// PDF-Service
+		
 		return null;
 	}
 

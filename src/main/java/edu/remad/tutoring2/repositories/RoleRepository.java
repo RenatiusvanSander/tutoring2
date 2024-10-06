@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.remad.tutoring2.models.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
 	Role findByName(String name);
 }
