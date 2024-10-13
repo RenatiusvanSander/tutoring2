@@ -9,7 +9,7 @@ public interface PdfCreatorService {
 
 	byte[] createInvoicePdf(InvoiceEntity invoice);
 	
-	byte[] createInvoicesPdfs(List<InvoiceEntity> invoices) throws IOException;
+	byte[] createInvoicesPdfs(List<InvoiceEntity> invoices);
 	
 	byte[] mergeInvoices(List<byte[]> invoicesToMerge);
 }

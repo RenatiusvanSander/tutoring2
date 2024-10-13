@@ -34,4 +34,8 @@ public interface InvoiceService {
 	List<byte[]> createAndSaveInvoiceFiles(List<Long> ids);
 
 	List<InvoiceEntity> getInvoicesByUserId(UserEntity user);
+
+	List<InvoiceEntity> getInvoicesByIds(List<Long> ids);
+	
+	boolean createAndSaveInvoices(List<Long> ids);
 }

@@ -40,8 +40,6 @@ public class InvoiceController {
 	
 	@PostMapping(value = "/create-invoice/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<InvoiceEntity> createInvoice(@PathVariable("id") Long tutoringAppointmentId) {
-		
-		
 		return ResponseEntity.ok(new InvoiceEntity());
 	}
 	

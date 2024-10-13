@@ -27,7 +27,7 @@ public class PdfCreatorServiceImpl implements PdfCreatorService {
 	}
 
 	@Override
-	public byte[] createInvoicesPdfs(List<InvoiceEntity> invoices) throws IOException {
+	public byte[] createInvoicesPdfs(List<InvoiceEntity> invoices) {
 		byte[] invoicesPdfs = new byte[0];
 
 		if (invoices.isEmpty()) {
@@ -35,9 +35,11 @@ public class PdfCreatorServiceImpl implements PdfCreatorService {
 		}
 
 		List<ContentLayoutData> contentLayoutDatas = PdfUtilities.createContentLayoutDatas(invoices);
-		invoicesPdfs = new PDFCreationBuilder().contentLayoutData(contentLayoutDatas).paperFormat(PDRectangle.A4)
-				.buildAsByteArray();
-
-		return invoicesPdfs;
+		try {
+			return new PDFCreationBuilder().contentLayoutData(contentLayoutDatas).paperFormat(PDRectangle.A4)
+					.buildAsByteArray();
+		} catch (IOException e) {
+			throw new RuntimeException("Create one PDF from multiple invoices does not work."); // own exception
+		}
 	}
 }

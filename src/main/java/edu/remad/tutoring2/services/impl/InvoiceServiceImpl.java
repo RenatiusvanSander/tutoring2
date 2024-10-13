@@ -186,6 +186,13 @@ public class InvoiceServiceImpl extends AbstractTutoringService<InvoiceEntity> i
 	}
 
 	@Override
+	public boolean createAndSaveInvoices(List<Long> ids) {
+		// PDF-Service
+		
+		return false;
+	}
+
+	@Override
 	protected void deProxy(InvoiceEntity invoice) {
 		invoice.getInvoiceServiceContract();
 		invoice.getInvoiceUser();
@@ -204,4 +211,8 @@ public class InvoiceServiceImpl extends AbstractTutoringService<InvoiceEntity> i
 		return loadedInvoices;
 	}
 
+	@Override
+	public List<InvoiceEntity> getInvoicesByIds(List<Long> ids) {
+		return invoiceEntityRepository.findAllById(ids);
+	}
 }
