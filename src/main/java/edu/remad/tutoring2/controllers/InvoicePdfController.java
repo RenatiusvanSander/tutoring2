@@ -39,7 +39,7 @@ public class InvoicePdfController {
 				.headers(httpHeaders).body(pdfInvoiceFile);
 	}
 
-	@GetMapping(value = "/getPdfInvoicesInOneFile/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@GetMapping(value = "/getPdfInvoicesInOneFile/{ids}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> getPdfInvoices(@PathVariable("ids") List<Long> ids) {
 		List<InvoiceEntity> invoiceEntities = invoiceService.getInvoicesByIds(ids);
 		byte[] infoicesPfs = pdfCreatorService.createInvoicesPdfs(invoiceEntities);

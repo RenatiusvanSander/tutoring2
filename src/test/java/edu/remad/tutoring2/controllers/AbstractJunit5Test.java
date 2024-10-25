@@ -1,7 +1,11 @@
 package edu.remad.tutoring2.controllers;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.remad.tutoring2.appconstants.TimeAppConstants;
@@ -129,6 +133,28 @@ public abstract class AbstractJunit5Test {
 		invoice.setInvoiceCreationDate(LocalDateTime.parse("2024-05-11 00:00", TimeAppConstants.LOCAL_DATE_TIME_FORMATTER));
 		
 		return invoice;
+	}
+	
+	protected InvoiceEntity create2ndInvoice() {
+		InvoiceEntity invoice = new InvoiceEntity();
+		invoice.setInvoiceNo(126L);
+		invoice.setInvoiceServiceContract(createServiceContractEntity());
+		invoice.setInvoiceTutoringHours(1L);
+		invoice.setInvoiceDate(LocalDateTime.now());
+		invoice.setInvoiceTutoringDate(LocalDateTime.now().plus(1, ChronoUnit.HOURS));
+		invoice.setInvoiceUser(createUser());
+		invoice.setPrice(createPrice());
+		invoice.setInvoiceCreationDate(LocalDateTime.now().toLocalDate().atStartOfDay());
+		
+		return invoice;
+	}
+	
+	protected List<InvoiceEntity> createInvoices() {
+		List<InvoiceEntity> invoices = new ArrayList<>();
+		invoices.add(createInvoice());
+		invoices.add(create2ndInvoice());
+		
+		return invoices;
 	}
 	
 	protected PriceEntity createPrice() {

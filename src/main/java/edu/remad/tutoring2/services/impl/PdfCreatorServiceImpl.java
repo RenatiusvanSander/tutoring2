@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.models.InvoiceEntity;
 import edu.remad.tutoring2.services.PdfCreatorService;
+import edu.remad.tutoring2.services.impl.exceptions.PdfCreatorServiceException;
 import edu.remad.tutoring2.services.pdf.ContentLayoutData;
 import edu.remad.tutoring2.services.pdf.PDFComplexInvoiceBuilder;
 import edu.remad.tutoring2.services.pdf.PDFCreationBuilder;
@@ -31,15 +32,22 @@ public class PdfCreatorServiceImpl implements PdfCreatorService {
 		byte[] invoicesPdfs = new byte[0];
 
 		if (invoices.isEmpty()) {
-			return invoicesPdfs; // own exception would be better
+			throw new PdfCreatorServiceException("PdfCreatorServiceException: No invoices data were given.");
 		}
 
-		List<ContentLayoutData> contentLayoutDatas = PdfUtilities.createContentLayoutDatas(invoices);
 		try {
-			return new PDFCreationBuilder().contentLayoutData(contentLayoutDatas).paperFormat(PDRectangle.A4)
+			List<ContentLayoutData> contentLayoutDatas = PdfUtilities.createContentLayoutDatas(invoices);
+			invoicesPdfs = new PDFCreationBuilder().contentLayoutData(contentLayoutDatas).paperFormat(PDRectangle.A4)
 					.buildAsByteArray();
-		} catch (IOException e) {
-			throw new RuntimeException("Create one PDF from multiple invoices does not work."); // own exception
+			
+			if(invoicesPdfs.length == 0) {
+				throw new PdfCreatorServiceException("PdfCreatorServiceException: Invoices PDFs are not created into one file.");
+			}
+			
+			return invoicesPdfs;
+						
+		} catch (IOException | PdfCreatorServiceException e) {
+			throw new PdfCreatorServiceException("PdfCreatorServiceException: Create one PDF from multiple invoices does not work.", e); // own exception
 		}
 	}
 }
