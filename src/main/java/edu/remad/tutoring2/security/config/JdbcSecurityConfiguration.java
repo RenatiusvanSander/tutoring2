@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,8 +21,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
-
-import com.mysql.cj.jdbc.Driver;
 
 import edu.remad.tutoring2.security.ContentSecurityPolicySettings;
 import edu.remad.tutoring2.security.filters.DebugLoggingFilter;
@@ -53,6 +52,7 @@ public class JdbcSecurityConfiguration {
 	 * @throws Exception
 	 */
 	@Bean
+	@Order(1)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors();
 		http.headers().xssProtection().and()

@@ -1,20 +1,12 @@
 package edu.remad.tutoring2.security.filters;
 
 import java.io.IOException;
-import java.time.Duration;
-//import java.time.temporal.ChronoUnit;
-//import java.time.temporal.TemporalUnit;
-import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.boot.web.server.Cookie;
-import org.springframework.boot.web.server.Cookie.SameSite;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class HttpHeadersFilter extends OncePerRequestFilter {
