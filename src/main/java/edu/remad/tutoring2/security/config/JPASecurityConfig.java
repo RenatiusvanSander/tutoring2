@@ -28,8 +28,8 @@ import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
 @EnableJpaRepositories(basePackages = PackagesAppConstants.EDU_REMAD_TUTORING2_REPOSITORIES)
 public class JPASecurityConfig {
 
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(SystemEnvironment systemEnvironment) {
+    @Bean
+    LocalContainerEntityManagerFactoryBean entityManagerFactory(SystemEnvironment systemEnvironment) {
 		final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(dataSource(systemEnvironment));
 		entityManagerFactoryBean.setPackagesToScan(new String[] { PackagesAppConstants.EDU_REMAD_TUTORING2_MODELS });
@@ -53,8 +53,8 @@ public class JPASecurityConfig {
 		return hibernateProperties;
 	}
 
-	@Bean
-	public DataSource dataSource(SystemEnvironment systemEnvironment) {
+    @Bean
+    DataSource dataSource(SystemEnvironment systemEnvironment) {
 		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
@@ -71,8 +71,8 @@ public class JPASecurityConfig {
 		return dataSource;
 	}
 
-	@Bean
-	public PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory, DataSource dataSource) {
+    @Bean
+    PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory, DataSource dataSource) {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory);
 		//transactionManager.setDataSource(dataSource);
@@ -80,8 +80,8 @@ public class JPASecurityConfig {
 		return transactionManager;
 	}
 
-	@Bean
-	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+    @Bean
+    PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 }

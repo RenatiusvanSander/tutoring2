@@ -12,8 +12,8 @@ import edu.remad.tutoring2.appconstants.PackagesAppConstants;
 @ComponentScan(PackagesAppConstants.EDU_REMAD_TUTORING2 + ".services")
 public class ServicesTestConfig {
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
+    @Bean
+    PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 }

@@ -14,8 +14,8 @@ import edu.remad.tutoring2.systemenvironment.SystemEnvironment;
 @Configuration
 public class SpringJavaMailConfig {
 
-	@Bean
-	public JavaMailSender createJavaMailSender(SystemEnvironment systemEnvironment) {
+    @Bean
+    JavaMailSender createJavaMailSender(SystemEnvironment systemEnvironment) {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.web.de");
 		mailSender.setPort(587);

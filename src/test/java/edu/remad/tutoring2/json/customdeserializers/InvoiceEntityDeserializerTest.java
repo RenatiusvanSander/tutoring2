@@ -29,8 +29,8 @@ public class InvoiceEntityDeserializerTest extends AbstractJsonJUnit5Test {
 
 	@Configuration
 	static class Config {
-		@Bean
-		public ObjectMapper objectMapper() {
+        @Bean
+        ObjectMapper objectMapper() {
 			return OBJECTMAPPER;
 		}
 	}

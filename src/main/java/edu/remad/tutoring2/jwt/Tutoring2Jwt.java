@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 public class Tutoring2Jwt extends JwtAuthenticationToken {
 	
 	/**
-	 * 
+	 * serial version UID
 	 */
 	private static final long serialVersionUID = -5384041248247392229L;
 

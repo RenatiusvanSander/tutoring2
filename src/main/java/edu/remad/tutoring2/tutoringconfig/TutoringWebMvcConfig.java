@@ -38,8 +38,8 @@ public class TutoringWebMvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/").setViewName("index");
 	}
 
-	@Bean
-	public InternalResourceViewResolver viewResolver() {
+    @Bean
+    InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix(ViewResolversAppConstants.PATH_WEB_INF + "view/");
@@ -69,8 +69,8 @@ public class TutoringWebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/project/**");
 	}
 
-	@Bean
-	public SystemEnvironment systemEnvironment() {
+    @Bean
+    SystemEnvironment systemEnvironment() {
 		return SystemEnvironmentFactory.getInstance();
 	}
 
@@ -80,8 +80,8 @@ public class TutoringWebMvcConfig implements WebMvcConfigurer {
 		registry.jsp(ViewResolversAppConstants.PATH_WEB_INF + "view/", ViewResolversAppConstants.JSP_SUFFIX);
 	}
 
-	@Bean(name = "messageSource")
-	public ResourceBundleMessageSource messageSource() {
+    @Bean(name = "messageSource")
+    ResourceBundleMessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.addBasenames("messages/messages", "messages/welcomes");
 		messageSource.setDefaultEncoding("UTF-8");
@@ -89,8 +89,8 @@ public class TutoringWebMvcConfig implements WebMvcConfigurer {
 		return messageSource;
 	}
 
-	@Bean
-	public LocaleChangeInterceptor localeChangeInterceptor() {
+    @Bean
+    LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 
 		return localeChangeInterceptor;

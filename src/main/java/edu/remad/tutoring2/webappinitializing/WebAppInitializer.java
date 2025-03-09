@@ -1,6 +1,5 @@
 package edu.remad.tutoring2.webappinitializing;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -31,9 +30,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 		return new String[] { "/" };
 	}
 
-	@Bean
-	@Override
-	public WebApplicationContext createRootApplicationContext() {
+    @Override
+	protected WebApplicationContext createRootApplicationContext() {
 		Class<?>[] configClasses = getRootConfigClasses();
 		if (!ObjectUtils.isEmpty(configClasses)) {
 			AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();

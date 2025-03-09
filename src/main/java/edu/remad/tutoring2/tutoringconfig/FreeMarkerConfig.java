@@ -13,8 +13,8 @@ import edu.remad.tutoring2.appconstants.ViewResolversAppConstants;
 @Configuration
 public class FreeMarkerConfig {
 
-	@Bean 
-	public FreeMarkerViewResolver freeMarkerViewResolver() { 
+    @Bean
+    FreeMarkerViewResolver freeMarkerViewResolver() { 
 	    FreeMarkerViewResolver resolver = new FreeMarkerViewResolver(); 
 	    resolver.setCache(true); 
 	    //resolver.setPrefix(ViewResolversAppConstants.FREE_MARKER_PREFIX); 
@@ -24,8 +24,8 @@ public class FreeMarkerConfig {
 	    return resolver; 
 	}
 
-	@Bean
-	public FreeMarkerConfigurer freeMarkerConfigurer() {
+    @Bean
+    FreeMarkerConfigurer freeMarkerConfigurer() {
 		Properties properties = new Properties();
 		properties.put("auto_import", "/spring.ftl as spring");
 		properties.put("template_exception_handler", "rethrow");

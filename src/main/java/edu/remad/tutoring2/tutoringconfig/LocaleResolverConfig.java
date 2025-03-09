@@ -14,16 +14,16 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 public class LocaleResolverConfig {
 
-	@Bean
-	public CookieLocaleResolver cookieLocaleResolver() {
+    @Bean
+    CookieLocaleResolver cookieLocaleResolver() {
 		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
 		localeResolver.setDefaultLocale(Locale.GERMANY);
 
 		return localeResolver;
 	}
 
-	@Bean
-	public LocaleResolver localResolver() {
+    @Bean
+    LocaleResolver localResolver() {
 		List<Locale> supportedLocales = List.of(Locale.FRANCE, Locale.FRENCH, Locale.GERMAN, Locale.GERMANY, Locale.US);
 
 		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
@@ -33,16 +33,16 @@ public class LocaleResolverConfig {
 		return localeResolver;
 	}
 
-	@Bean
-	public SessionLocaleResolver sessionLocaleResolver() {
+    @Bean
+    SessionLocaleResolver sessionLocaleResolver() {
 		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
 		localeResolver.setDefaultLocale(Locale.GERMANY);
 		
 		return localeResolver;
 	}
 
-	@Bean
-	public FixedLocaleResolver fixedLocaleResolver() {
+    @Bean
+    FixedLocaleResolver fixedLocaleResolver() {
 		FixedLocaleResolver localeResolver = new FixedLocaleResolver();
 		localeResolver.setDefaultLocale(Locale.GERMANY);
 		

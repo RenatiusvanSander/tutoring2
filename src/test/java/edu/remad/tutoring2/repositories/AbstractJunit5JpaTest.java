@@ -46,13 +46,13 @@ public abstract class AbstractJunit5JpaTest extends AbstractJunit5Test{
 	@EnableJpaRepositories(basePackages = PackagesAppConstants.EDU_REMAD_TUTORING2_REPOSITORIES)
 	protected static class Config {
 
-		@Bean
-		public SystemEnvironment systemEnvironment() {
+        @Bean
+        SystemEnvironment systemEnvironment() {
 			return SystemEnvironmentFactory.getInstance();
 		}
 
-		@Bean
-		public LocalContainerEntityManagerFactoryBean entityManagerFactory(SystemEnvironment systemEnvironment) {
+        @Bean
+        LocalContainerEntityManagerFactoryBean entityManagerFactory(SystemEnvironment systemEnvironment) {
 			final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 			entityManagerFactoryBean.setDataSource(dataSource(systemEnvironment));
 			entityManagerFactoryBean
@@ -77,8 +77,8 @@ public abstract class AbstractJunit5JpaTest extends AbstractJunit5Test{
 			return hibernateProperties;
 		}
 
-		@Bean
-		public DataSource dataSource(SystemEnvironment systemEnvironment) {
+        @Bean
+        DataSource dataSource(SystemEnvironment systemEnvironment) {
 			final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 			dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
@@ -95,17 +95,17 @@ public abstract class AbstractJunit5JpaTest extends AbstractJunit5Test{
 			return dataSource;
 		}
 
-		@Bean
-		public PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory,
-				DataSource dataSource) {
+        @Bean
+        PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory,
+                                               DataSource dataSource) {
 			JpaTransactionManager transactionManager = new JpaTransactionManager();
 			transactionManager.setEntityManagerFactory(entityManagerFactory);
 
 			return transactionManager;
 		}
 
-		@Bean
-		public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        @Bean
+        PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 			return new PersistenceExceptionTranslationPostProcessor();
 		}
 	}

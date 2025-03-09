@@ -31,8 +31,8 @@ import edu.remad.tutoring2.models.ZipCodeEntity;
 @Configuration
 public class JsonSecurityConfig {
 
-	@Bean
-	public ObjectMapper objectMapper() {
+    @Bean
+    ObjectMapper objectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		mapper.registerModule(new JavaTimeModule());

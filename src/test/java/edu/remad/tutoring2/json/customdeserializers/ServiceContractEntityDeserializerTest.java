@@ -29,8 +29,8 @@ public class ServiceContractEntityDeserializerTest extends AbstractJsonJUnit5Tes
 
 	@Configuration
 	static class Config {
-		@Bean
-		public ObjectMapper objectMapper() {
+        @Bean
+        ObjectMapper objectMapper() {
 			return OBJECTMAPPER;
 		}
 	}

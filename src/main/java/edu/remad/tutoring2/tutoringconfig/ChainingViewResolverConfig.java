@@ -8,8 +8,8 @@ import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 @Configuration
 public class ChainingViewResolverConfig {
 
-	@Bean
-	public ViewResolver resourceBundleViewResolver() {
+    @Bean
+    ViewResolver resourceBundleViewResolver() {
 		ResourceBundleViewResolver viewResolver = new ResourceBundleViewResolver();
 		viewResolver.setBasename("views");
 		viewResolver.setOrder(0);

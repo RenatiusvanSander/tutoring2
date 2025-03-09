@@ -28,8 +28,8 @@ public class ReminderEntityDeserializerTest extends AbstractJsonJUnit5Test {
 
 	@Configuration
 	static class Config {
-		@Bean
-		public ObjectMapper objectMapper() {
+        @Bean
+        ObjectMapper objectMapper() {
 			return OBJECTMAPPER;
 		}
 	}
