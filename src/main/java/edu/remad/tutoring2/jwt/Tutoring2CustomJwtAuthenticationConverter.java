@@ -43,7 +43,7 @@ public class Tutoring2CustomJwtAuthenticationConverter implements Converter<Jwt,
 	}
 
 	private Collection<? extends GrantedAuthority> extractJwtResourceRoles(Jwt jwt) {
-		if (jwt.getClaimAsBoolean("resource_access") == null) {
+		if (jwt.getClaimAsMap("resource_access") == null) {
 			return Set.of();
 		}
 
@@ -59,7 +59,7 @@ public class Tutoring2CustomJwtAuthenticationConverter implements Converter<Jwt,
 		Map<String, Object> resource = (Map<String, Object>) resourceAccess.get(resourceId);
 		Collection<String> resourceRoles = (Collection<String>) resource.get("roles");
 
-		return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("Role_" + role))
+		return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
 				.collect(Collectors.toSet());
 	}
 
