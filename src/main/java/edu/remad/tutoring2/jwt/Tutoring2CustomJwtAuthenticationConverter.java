@@ -1,5 +1,10 @@
 package edu.remad.tutoring2.jwt;
 
+import static edu.remad.tutoring2.appconstants.JwtAppConstants.JWT_CLAIM_RESSOURCE_ACCESS;
+import static edu.remad.tutoring2.appconstants.JwtAppConstants.JWT_CONVERTER_PRINCIPAL_ATTRIBUTE;
+import static edu.remad.tutoring2.appconstants.JwtAppConstants.JWT_CONVERTER_RESOURCE_ID;
+import static edu.remad.tutoring2.appconstants.JwtAppConstants.JWT_ROLES_KEY;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -17,14 +22,13 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converts roles from Keycloak to Spring Security roles. It reads JWT and fetches all claims and roles as roles. 
+ */
 @Component
 public class Tutoring2CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
 	private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
-
-	private final String principalAttribute = "preferred_username";
-
-	private final String resourceId = "tutoring2-resource-server";
 
 	/**
 	 * Default Constructor
@@ -43,21 +47,21 @@ public class Tutoring2CustomJwtAuthenticationConverter implements Converter<Jwt,
 	}
 
 	private Collection<? extends GrantedAuthority> extractJwtResourceRoles(Jwt jwt) {
-		if (jwt.getClaimAsMap("resource_access") == null) {
+		if (jwt.getClaimAsMap(JWT_CLAIM_RESSOURCE_ACCESS) == null) {
 			return Set.of();
 		}
 
 		Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
-		if (resourceAccess.get(resourceId) == null) {
+		if (resourceAccess.get(JWT_CONVERTER_RESOURCE_ID) == null) {
 			return Set.of();
 		}
 
-		if (resourceAccess.get(resourceId) == null) {
+		if (resourceAccess.get(JWT_CONVERTER_RESOURCE_ID) == null) {
 			return Set.of();
 		}
 
-		Map<String, Object> resource = (Map<String, Object>) resourceAccess.get(resourceId);
-		Collection<String> resourceRoles = (Collection<String>) resource.get("roles");
+		Map<String, Object> resource = (Map<String, Object>) resourceAccess.get(JWT_CONVERTER_RESOURCE_ID);
+		Collection<String> resourceRoles = (Collection<String>) resource.get(JWT_ROLES_KEY);
 
 		return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
 				.collect(Collectors.toSet());
@@ -65,8 +69,9 @@ public class Tutoring2CustomJwtAuthenticationConverter implements Converter<Jwt,
 
 	private String getPrincipalClaimName(Jwt jwt) {
 		String claimName = JwtClaimNames.SUB;
-		if (principalAttribute != null) {
-			claimName = principalAttribute;
+		
+		if (JWT_CONVERTER_PRINCIPAL_ATTRIBUTE != null) {
+			claimName = JWT_CONVERTER_PRINCIPAL_ATTRIBUTE;
 		}
 
 		return jwt.getClaim(claimName);

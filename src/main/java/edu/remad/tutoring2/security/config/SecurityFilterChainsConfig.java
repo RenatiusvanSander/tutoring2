@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -35,9 +32,6 @@ public class SecurityFilterChainsConfig {
 	@Autowired
 	private Tutoring2CustomJwtAuthenticationConverter jwtAuthConverter;
 
-	@Autowired
-	private AuthenticationManager providerManager;
-
 	/**
 	 * Does form login filter chain and has also http security.
 	 * 
@@ -46,43 +40,34 @@ public class SecurityFilterChainsConfig {
 	 * @throws Exception
 	 */
 	@Bean
-//	@Order(1)
+	@Order(1)
 	SecurityFilterChain formloginSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.cors().and().headers(headers -> headers.xssProtection().and()
+                .contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies()));
+
+        http.addFilterAfter(new TenantFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new HttpHeadersFilter(), HeaderWriterFilter.class)
+                .addFilterAfter(new DebugLoggingFilter(), HttpHeadersFilter.class)
+                .securityContext((securityContext) -> securityContext.requireExplicitSave(true))
+                .sessionManagement(
+                        session -> session.maximumSessions(1).maxSessionsPreventsLogin(true).expiredUrl("/login"))
+                .authorizeRequests(requests -> requests.antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup", "/api/v1/csrf")
+                        .permitAll().antMatchers("/hello", "/bye", "/login", "/logout", "/templates/**").authenticated())
+                .formLogin(login -> login.loginPage("/myCustomLogin").loginProcessingUrl("/process-login")
+                        .defaultSuccessUrl("/hello", true)).csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
+                        .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))));
+//        .logoutSuccessHandler(logoutSuccessHandler())
+
+		return http.build();
+	}
+
+	@Bean
+	@Order(2)
+	SecurityFilterChain oauth2rescourceserverSecurityFilterChain(HttpSecurity http) throws Exception {
 		return http.securityMatcher(AntPathRequestMatcher.antMatcher("/v2/**"))
 				.authorizeHttpRequests(requests -> requests.anyRequest().authenticated()).csrf(csrf -> csrf.disable())
 				.oauth2ResourceServer(server -> server.jwt().jwtAuthenticationConverter(jwtAuthConverter))
-				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.build();
-//		http.cors().and().headers().xssProtection().and()
-//				.contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies());
-//
-//		http.addFilterAfter(new TenantFilter(), BasicAuthenticationFilter.class)
-//				.addFilterAfter(new HttpHeadersFilter(), HeaderWriterFilter.class)
-//				.addFilterAfter(new DebugLoggingFilter(), HttpHeadersFilter.class)
-//				.securityContext((securityContext) -> securityContext.requireExplicitSave(true))
-//				.sessionManagement(
-//						session -> session.maximumSessions(1).maxSessionsPreventsLogin(true).expiredUrl("/login"))
-//				.authorizeRequests().antMatchers("/", "/helloWorld", "/logoutSuccess", "/signup", "/api/v1/csrf")
-//				.permitAll().antMatchers("/hello", "/bye", "/login", "/logout", "/templates/**").authenticated().and()
-//				.formLogin().loginPage("/myCustomLogin").loginProcessingUrl("/process-login")
-//				.defaultSuccessUrl("/hello", true)
-////        .failureUrl("/login.html?error=true")
-////        .failureHandler(authenticationFailureHandler())
-//				.and().csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/logoutSuccess")
-//						.addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES))));
-////        .logoutSuccessHandler(logoutSuccessHandler())
-//
-//		return http.build();
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
 	}
-
-//	@Bean
-//	@Order(2)
-//	SecurityFilterChain oauth2rescourceserverSecurityFilterChain(HttpSecurity http) throws Exception {
-//		return http.securityMatcher(AntPathRequestMatcher.antMatcher("/v2/**"))
-//				.authorizeHttpRequests(requests -> requests.anyRequest().authenticated()).csrf(csrf -> csrf.disable())
-//				.oauth2ResourceServer(server -> server.jwt().jwtAuthenticationConverter(jwtAuthConverter))
-//				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//				.build();
-//	}
 }
