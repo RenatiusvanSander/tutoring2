@@ -13,7 +13,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Example;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,6 @@ public class TutoringAppointmentServiceImpl implements TutoringAppointmentServic
 	private static final int USERS_PER_WEEK = 2;
 	private static final int MAX_APPOINTMENTS_PER_WEEK = 10;
 
-	@Autowired
 	public TutoringAppointmentServiceImpl(TutoringAppointmentPersistentCache cache,
 			TutoringAppointmentEntityRepository tutoringAppointmentEntityRepository) {
 		this.cache = cache;

@@ -1,6 +1,5 @@
 package edu.remad.tutoring2.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.dto.AddressDto;
@@ -14,7 +13,6 @@ public class AddressServiceImpl implements AddressService {
 
 	private final AddressRepository addressRepository;
 	
-	@Autowired
 	public AddressServiceImpl(AddressRepository addressRepository) {
 		super();
 		this.addressRepository = addressRepository;

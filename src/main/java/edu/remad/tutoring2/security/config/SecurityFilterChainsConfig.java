@@ -31,6 +31,21 @@ public class SecurityFilterChainsConfig {
 
 	@Autowired
 	private Tutoring2CustomJwtAuthenticationConverter jwtAuthConverter;
+	
+	/**
+	 * 
+	 * @param http similar to spring security xml config for filtering request
+	 * @return created security filter chain, {@link SecurityFilterChain}
+	 * @throws Exception
+	 */
+	@Bean
+	@Order(1)
+	SecurityFilterChain oauth2rescourceserverSecurityFilterChain(HttpSecurity http) throws Exception {
+		return http.securityMatcher(AntPathRequestMatcher.antMatcher("/v2/**"))
+				.authorizeHttpRequests(requests -> requests.anyRequest().authenticated()).csrf(csrf -> csrf.disable())
+				.oauth2ResourceServer(server -> server.jwt().jwtAuthenticationConverter(jwtAuthConverter))
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
+	}
 
 	/**
 	 * Does form login filter chain and has also http security.
@@ -40,7 +55,7 @@ public class SecurityFilterChainsConfig {
 	 * @throws Exception
 	 */
 	@Bean
-	@Order(1)
+	@Order(2)
 	SecurityFilterChain formloginSecurityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().headers(headers -> headers.xssProtection().and()
                 .contentSecurityPolicy(contentSecurityPolicies.getContentSecurityPolicies()));
@@ -62,12 +77,4 @@ public class SecurityFilterChainsConfig {
 		return http.build();
 	}
 
-	@Bean
-	@Order(2)
-	SecurityFilterChain oauth2rescourceserverSecurityFilterChain(HttpSecurity http) throws Exception {
-		return http.securityMatcher(AntPathRequestMatcher.antMatcher("/v2/**"))
-				.authorizeHttpRequests(requests -> requests.anyRequest().authenticated()).csrf(csrf -> csrf.disable())
-				.oauth2ResourceServer(server -> server.jwt().jwtAuthenticationConverter(jwtAuthConverter))
-				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).build();
-	}
 }

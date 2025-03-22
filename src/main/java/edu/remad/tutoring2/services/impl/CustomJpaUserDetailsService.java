@@ -3,7 +3,6 @@ package edu.remad.tutoring2.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +22,6 @@ public class CustomJpaUserDetailsService implements UserDetailsService {
 
 	private UserEntityRepository userEntityRepository;
 
-	@Autowired
 	public CustomJpaUserDetailsService(UserEntityRepository userEntityRepository) {
 		this.userEntityRepository = userEntityRepository;
 	}

@@ -2,7 +2,6 @@ package edu.remad.tutoring2.services.impl;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.models.PriceEntity;
@@ -17,7 +16,6 @@ public class PriceServiceImpl extends AbstractTutoringService<PriceEntity> imple
 
 	private final PriceEntityRepository priceEntityRepository;
 	
-	@Autowired
 	public PriceServiceImpl(PriceEntityRepository priceEntityRepository) {
 		this.priceEntityRepository = priceEntityRepository;
 	}

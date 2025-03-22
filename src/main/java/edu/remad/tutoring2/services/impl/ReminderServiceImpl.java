@@ -13,7 +13,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,6 @@ public class ReminderServiceImpl implements ReminderService {
 
 	private Set<RunnableScheduledFuture<?>> scheduledTasks;
 
-	@Autowired
 	public ReminderServiceImpl(ReminderEntityRepository reminderEntityRepository, EmailService emailService) {
 		this.reminderEntityRepository = reminderEntityRepository;
 		this.emailService = emailService;

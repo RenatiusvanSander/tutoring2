@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.remad.tutoring2.models.ServiceContractEntity;
@@ -17,7 +16,6 @@ public class ServiceContractServiceImpl implements ServiceContractService {
 
 	private final ServiceContractEntityRepository serviceContractEntityRepository;
 
-	@Autowired
 	public ServiceContractServiceImpl(ServiceContractEntityRepository serviceContractEntityRepository) {
 		this.serviceContractEntityRepository = serviceContractEntityRepository;
 	}
